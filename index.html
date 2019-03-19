@@ -45,19 +45,19 @@
                         <p class="card-text">Select photos from your computer or the web to get started.</p>
                         <p>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                    aria-describedby="inputGroupFileAddon01">
-                                <label class="custom-file-label" for="inputGroupFile01">Choose image file</label>
+                                <input type="file" class="custom-file-input" id="photostack-import-file" multiple
+                                    accept="image/*">
+                                <label class="custom-file-label" for="photostack-import-file">Choose image file</label>
                             </div>
                         </p>
                         <p>
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" placeholder="Enter image URL"
-                                    aria-label="Enter image URL" aria-describedby="button-import-url"
+                                    aria-label="Enter image URL" aria-describedby="photostack-import-url"
                                     id="photostack-import-url">
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button"
-                                        id="button-import-url">Import</button>
+                                        id="photostack-import-url-button">Import</button>
                                 </div>
                             </div>
                         </p>
@@ -65,10 +65,19 @@
                     </div>
                 </div>
             </div>
-            <!-- Photos container -->
-            <div class="col-8" id="image-container">
+            <!-- Preview container -->
+            <div class="col-8" id="preview-container">
                 <!-- Temporary text for when no photos are imported -->
-                <div style="text-align: center; font-style: italic">Photos will appear here!</div>
+                <div class="card">
+                    <div class="card-header">
+                        Image preview
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center" id="photostack-preview">
+                            <p><i>Photo preview will appear here</i></p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

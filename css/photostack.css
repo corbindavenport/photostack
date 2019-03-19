@@ -10,6 +10,14 @@
     margin-bottom: 5px;
 }
 
+#image-container .card .card-body {
+    padding: 0;
+}
+
+#image-container .card img {
+    max-width: 100%;
+}
+
 #photostack-original-container, #photostack-canvas-container {
     display: none;
 }

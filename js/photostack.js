@@ -10,36 +10,60 @@ function increaseImageCount(number) {
     document.getElementById('photostack-image-count').textContent = newCount
 }
 
-// Render images and add previews to image container
-function renderPeviews() {
-    var container = document.getElementById('image-container')
-    // Delete existing content and add loading spinner
-    container.innerHTML = '<div class="text-center" id="temporary-image-loading"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'
-    // Create image of each canvas and add them to image container
-    var originals = document.querySelectorAll('#photostack-canvas-container canvas')
-    originals.forEach(function (canvas) {
-        // Create card container
-        var card = document.createElement('div')
-        card.classList.add('card')
-        // Create image element
-        var image = document.createElement('img')
-        image.setAttribute('src', canvas.toDataURL('image/png'))
-        card.appendChild(image)
-        // Add filename to bottom of card
-        var footer = document.createElement('div')
-        footer.classList.add('card-footer')
-        footer.classList.add('text-center')
-        footer.textContent = canvas.getAttribute('data-filename')
-        card.append(footer)
-        // Add card to image container
-        container.appendChild(card)
-    })
-    // Remove spinner when complete
-    container.removeChild(document.getElementById('temporary-image-loading'))
+// Render a preview image
+function renderPeview() {
+    var container = document.getElementById('photostack-preview')
+    var canvas = document.getElementById('photostack-canvas-container').firstChild
+    // Clear existing content
+    container.innerHTML = ''
+    // Create image element
+    var image = document.createElement('img')
+    image.setAttribute('src', canvas.toDataURL('image/png'))
+    container.appendChild(image)
 }
 
+// Add image from local file
+document.getElementById('photostack-import-file').addEventListener('change', function () {
+    // Disable file picker while import is in progress
+    document.getElementById('photostack-import-file').disabled = true
+    document.querySelector('label[for="photostack-import-file"]').textContent = 'Importing images...'
+    // Get files
+    var files = document.getElementById('photostack-import-file').files
+    // Add each image to originals container
+    Array.prototype.forEach.call(files, function(file) {
+        var image = new Image()
+        var reader = new FileReader()
+        reader.onload = function () {
+            image.src = reader.result
+            // Save image to originals container
+            document.getElementById('photostack-original-container').appendChild(image)
+            // Create canvas element for image
+            var canvas = document.createElement('canvas')
+            canvas.setAttribute('data-filename', file.name)
+            // Add canvas element to photos container
+            document.getElementById('photostack-canvas-container').appendChild(canvas)
+            canvas.width = image.naturalWidth
+            canvas.height = image.naturalHeight
+            canvas.getContext('2d').drawImage(image, 0, 0)
+            // Increase image counter
+            increaseImageCount(1)
+        }
+        reader.onerror = function () {
+            alert('Could not import this image: ' + file.name)
+        }
+        reader.readAsDataURL(file)
+    })
+    // Render previews
+    renderPeview()
+    // Clear file select
+    document.getElementById('photostack-import-file').value = ''
+    // Re-enable file picker
+    document.getElementById('photostack-import-file').disabled = false
+    document.querySelector('label[for="photostack-import-file"]').textContent = 'Choose image file'
+})
+
 // Add image from URL
-document.getElementById('button-import-url').addEventListener('click', function () {
+document.getElementById('photostack-import-url-button').addEventListener('click', function () {
     // Get image URL
     var url = document.getElementById('photostack-import-url').value
     // Get image
@@ -63,7 +87,7 @@ document.getElementById('button-import-url').addEventListener('click', function 
             // Increase image counter
             increaseImageCount(1)
             // Render previews
-            renderPeviews()
+            renderPeview()
         }
         image.onerror = function () {
             if (!url.includes('https://cors-anywhere.herokuapp.com/')) {
