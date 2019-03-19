@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>PhotoStack</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/photostack.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">PhotoStack</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Main container -->
+    <div class="container">
+        <div class="row">
+            <!-- Settings panel container -->
+            <div class="col-4" id="settings-container">
+                <!-- Import photos card -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Import</h5>
+                        <p class="card-text">Select photos from your computer or the web to get started.</p>
+                        <p>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                    aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose image file</label>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Enter image URL"
+                                    aria-label="Enter image URL" aria-describedby="button-import-url"
+                                    id="photostack-import-url">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        id="button-import-url">Import</button>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Photos container -->
+            <div class="col-8" id="image-container">
+                <!-- Temporary text for when no photos are imported -->
+                <div style="text-align: center; font-style: italic">Photos will appear here!</div>
+            </div>
+        </div>
+    </div>
+    <!-- Container where original photos are kept as canvas elements -->
+    <div id="photostack-originals"></div>
+    <!-- Scripts -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.getimagedata.min.js"></script>
+    <script src="js/photostack.js"></script>
+</body>
+
+</html>
