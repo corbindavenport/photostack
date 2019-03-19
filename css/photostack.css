@@ -10,6 +10,6 @@
     margin-bottom: 5px;
 }
 
-#photostack-originals {
+#photostack-original-container, #photostack-canvas-container {
     display: none;
 }
