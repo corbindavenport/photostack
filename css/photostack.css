@@ -1,0 +1,11 @@
+.container {
+    margin-top: 80px;
+}
+
+#photostack-preview img {
+    max-width: 100%;
+}
+
+#photostack-original-container, #photostack-canvas-container {
+    display: none;
+}

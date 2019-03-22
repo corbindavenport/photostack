@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>PhotoStack</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/photostack.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">PhotoStack ALPHA</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Watermarks (coming soon)</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/corbindavenport/photostack/blob/master/README.md" target="_blank">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">Donate</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Main container -->
+    <div class="container">
+        <div class="row">
+            <!-- Settings panel container -->
+            <div class="col-4" id="settings-container">
+                <!-- Export card -->
+                <button class="btn btn-primary mb-3" id="photostack-export-button" style="width: 100%" type="button">Export images (PNG)</button>
+                <!-- Import photos card -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Import</h5>
+                        <p class="card-text">Select photos from your computer or the web to get started.</p>
+                        <p>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="photostack-import-file" multiple
+                                    accept="image/*">
+                                <label class="custom-file-label" for="photostack-import-file">Choose image file</label>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Enter image URL"
+                                    aria-label="Enter image URL" aria-describedby="photostack-import-url"
+                                    id="photostack-import-url">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        id="photostack-import-url-button">Import</button>
+                                </div>
+                            </div>
+                        </p>
+                        <p><span id="photostack-image-count">0</span> photos currently imported</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Preview container -->
+            <div class="col-8" id="preview-container">
+                <!-- Temporary text for when no photos are imported -->
+                <div class="card">
+                    <div class="card-header">
+                        Image preview
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center" id="photostack-preview">
+                            <p><i>Photo preview will appear here</i></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Container where original photos are kept as <img> elements -->
+    <div id="photostack-original-container"></div>
+    <!-- Container where canvas elements for each image are kept -->
+    <div id="photostack-canvas-container"></div>
+    <!-- Scripts -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/FileSaver.min.js"></script>
+    <script src="js/canvas-toBlob.js"></script>
+    <script src="js/jszip.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/photostack.js"></script>
+</body>
+
+</html>
