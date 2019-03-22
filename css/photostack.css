@@ -2,19 +2,7 @@
     margin-top: 80px;
 }
 
-#image-container {
-    min-height: 100%;
-}
-
-#image-container .card {
-    margin-bottom: 5px;
-}
-
-#image-container .card .card-body {
-    padding: 0;
-}
-
-#image-container .card img {
+#photostack-preview img {
     max-width: 100%;
 }
 

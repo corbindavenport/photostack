@@ -18,7 +18,7 @@ function renderPeview() {
     container.innerHTML = ''
     // Create image element
     var image = document.createElement('img')
-    image.setAttribute('src', canvas.toDataURL('image/png'))
+    image.setAttribute('src', canvas.toDataURL())
     container.appendChild(image)
 }
 
@@ -30,7 +30,8 @@ document.getElementById('photostack-import-file').addEventListener('change', fun
     // Get files
     var files = document.getElementById('photostack-import-file').files
     // Add each image to originals container
-    Array.prototype.forEach.call(files, function(file) {
+    for (var i = 0, len = files.length; i < len; i++) {
+        var file = files[i]
         var image = new Image()
         var reader = new FileReader()
         reader.onload = function () {
@@ -47,14 +48,14 @@ document.getElementById('photostack-import-file').addEventListener('change', fun
             canvas.getContext('2d').drawImage(image, 0, 0)
             // Increase image counter
             increaseImageCount(1)
+            // Render preview
+            renderPeview()
         }
         reader.onerror = function () {
             alert('Could not import this image: ' + file.name)
         }
         reader.readAsDataURL(file)
-    })
-    // Render previews
-    renderPeview()
+    }
     // Clear file select
     document.getElementById('photostack-import-file').value = ''
     // Re-enable file picker
