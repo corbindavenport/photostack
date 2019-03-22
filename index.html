@@ -14,7 +14,7 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="#">PhotoStack</a>
+        <a class="navbar-brand" href="#">PhotoStack ALPHA</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -25,13 +25,13 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Watermarks</a>
+                    <a class="nav-link disabled" href="#">Watermarks (coming soon)</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="https://github.com/corbindavenport/photostack/blob/master/README.md" target="_blank">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Donate</a>
+                    <a class="nav-link" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">Donate</a>
                 </li>
             </ul>
         </div>
@@ -41,6 +41,8 @@
         <div class="row">
             <!-- Settings panel container -->
             <div class="col-4" id="settings-container">
+                <!-- Export card -->
+                <button class="btn btn-primary mb-3" id="photostack-export-button" style="width: 100%" type="button">Export images (PNG)</button>
                 <!-- Import photos card -->
                 <div class="card">
                     <div class="card-body">
@@ -90,8 +92,10 @@
     <div id="photostack-canvas-container"></div>
     <!-- Scripts -->
     <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/FileSaver.min.js"></script>
+    <script src="js/canvas-toBlob.js"></script>
+    <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.getimagedata.min.js"></script>
     <script src="js/photostack.js"></script>
 </body>
 

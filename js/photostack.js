@@ -101,3 +101,24 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
     }
     addImageToCanvas(url)
 })
+
+// Export images
+document.getElementById('photostack-export-button').addEventListener('click', function () {
+    var zip = new JSZip()
+    // Create data URL for each canvas element and add it to zip
+    var canvases = document.querySelectorAll('#photostack-canvas-container canvas')
+    canvases.forEach(function (canvas, i) {
+        var canvasData = canvas.toDataURL('image/png')
+        // JSZip requires the base64 part of the string to be removed
+        canvasData = canvasData.replace('data:image/png;base64,', '')
+        var fileName = 'image' + i + '.png'
+        zip.file(fileName, canvasData, { base64: true });
+        console.log('Added ' + fileName + ' to zip')
+    })
+    // Generate zip
+    console.log('Generating zip...')
+    zip.generateAsync({ type: 'blob' })
+        .then(function (content) {
+            saveAs(content, 'images.zip');
+        })
+})
