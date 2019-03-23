@@ -9,11 +9,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/photostack.css">
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-59452245-5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-59452245-5');
+    </script>
+    <!-- Google AdSense -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-8658798838164073",
+            enable_page_level_ads: true
+        });
+    </script>
 </head>
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <a class="navbar-brand" href="#">PhotoStack ALPHA</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,21 +45,25 @@
                     <a class="nav-link disabled" href="#">Watermarks (coming soon)</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://github.com/corbindavenport/photostack/blob/master/README.md" target="_blank">About</a>
+                    <a class="nav-link" href="https://github.com/corbindavenport/photostack/blob/master/README.md"
+                        target="_blank">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">Donate</a>
+                    <a class="nav-link"
+                        href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"
+                        target="_blank">Donate</a>
                 </li>
             </ul>
         </div>
     </nav>
     <!-- Main container -->
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <!-- Settings panel container -->
-            <div class="col-4" id="settings-container">
+            <div class="col-md-4">
                 <!-- Export card -->
-                <button class="btn btn-primary mb-3" id="photostack-export-button" style="width: 100%" type="button">Export images (PNG)</button>
+                <button class="btn btn-primary mb-3" id="photostack-export-button" style="width: 100%"
+                    type="button">Export images (PNG)</button>
                 <!-- Import photos card -->
                 <div class="card">
                     <div class="card-body">
@@ -61,7 +82,7 @@
                                     aria-label="Enter image URL" aria-describedby="photostack-import-url"
                                     id="photostack-import-url">
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button"
+                                    <button class="btn btn-secondary" type="button"
                                         id="photostack-import-url-button">Import</button>
                                 </div>
                             </div>
@@ -71,7 +92,7 @@
                 </div>
             </div>
             <!-- Preview container -->
-            <div class="col-8" id="preview-container">
+            <div class="col-md">
                 <!-- Temporary text for when no photos are imported -->
                 <div class="card">
                     <div class="card-header">
@@ -79,10 +100,22 @@
                     </div>
                     <div class="card-body">
                         <div class="text-center" id="photostack-preview">
-                            <p><i>Photo preview will appear here</i></p>
+                            <p><i>An image preview will appear here once you start editing, or you can <a
+                                        href="javascript:renderPreviewCanvas()">see one now</a>.</i></p>
                         </div>
                     </div>
                 </div>
+            </div>
+            <!-- Desktop ad container -->
+            <div class="col-md d-sm-none d-md-block" style="max-width: 190px">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <ins class="adsbygoogle"
+                        style="display:inline-block;width:160px;height:600px"
+                        data-ad-client="ca-pub-8658798838164073"
+                        data-ad-slot="2199465112"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
         </div>
     </div>

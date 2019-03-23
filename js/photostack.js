@@ -10,16 +10,49 @@ function increaseImageCount(number) {
     document.getElementById('photostack-image-count').textContent = newCount
 }
 
-// Render a preview image
-function renderPeview() {
-    var container = document.getElementById('photostack-preview')
-    var canvas = document.getElementById('photostack-canvas-container').firstChild
+// Render canvas of first image, apply settings, and show a preview
+function renderPreviewCanvas() {
+    // Silently fail if there are no images imported
+    if (!document.querySelectorAll('#photostack-original-container img').length) {
+        console.log('Nothing to preview.')
+        return
+    }
+    console.log('Rendering preview...')
+    var previewContainer = document.getElementById('photostack-preview')
+    var originalsContainer = document.getElementById('photostack-original-container')
+    var canvasContainer = document.getElementById('photostack-canvas-container')
+    // Create canvas element for first imported image
+    var canvas = document.createElement('canvas')
+    var originalImage = originalsContainer.firstChild
+    // Add canvas element to canvas container
+    canvasContainer.appendChild(canvas)
+    canvas.width = originalImage.naturalWidth
+    canvas.height = originalImage.naturalHeight
+    canvas.getContext('2d').drawImage(originalImage, 0, 0)
     // Clear existing content
-    container.innerHTML = ''
+    previewContainer.innerHTML = ''
     // Create image element
-    var image = document.createElement('img')
-    image.setAttribute('src', canvas.toDataURL())
-    container.appendChild(image)
+    var previewImage = document.createElement('img')
+    previewImage.setAttribute('src', canvas.toDataURL())
+    previewContainer.appendChild(previewImage)
+}
+
+// Render canvases of all images (for exporting)
+function renderAllCanvas() {
+    var originals = document.querySelectorAll('#photostack-original-container img')
+    var canvasContainer = document.getElementById('photostack-canvas-container')
+    // Clear current canvas elements
+    canvasContainer.innerHTML = ''
+    // Creat canvas for each original image
+    originals.forEach(function (original, i) {
+        // Create canvas element
+        var canvas = document.createElement('canvas')
+        // Add canvas element to canvas container
+        canvasContainer.appendChild(canvas)
+        canvas.width = original.naturalWidth
+        canvas.height = original.naturalHeight
+        canvas.getContext('2d').drawImage(original, 0, 0)
+    });
 }
 
 // Add image from local file
@@ -29,33 +62,28 @@ document.getElementById('photostack-import-file').addEventListener('change', fun
     document.querySelector('label[for="photostack-import-file"]').textContent = 'Importing images...'
     // Get files
     var files = document.getElementById('photostack-import-file').files
+    console.log('Number of files selected: ' + files.length)
+    var filesImported = 0
     // Add each image to originals container
-    for (var i = 0, len = files.length; i < len; i++) {
-        var file = files[i]
-        var image = new Image()
+    Array.prototype.forEach.call(files, function (file) {
+        var image = document.createElement('img')
         var reader = new FileReader()
+        // Set the image source to the reader result, once the reader is done
         reader.onload = function () {
             image.src = reader.result
-            // Save image to originals container
-            document.getElementById('photostack-original-container').appendChild(image)
-            // Create canvas element for image
-            var canvas = document.createElement('canvas')
-            canvas.setAttribute('data-filename', file.name)
-            // Add canvas element to photos container
-            document.getElementById('photostack-canvas-container').appendChild(canvas)
-            canvas.width = image.naturalWidth
-            canvas.height = image.naturalHeight
-            canvas.getContext('2d').drawImage(image, 0, 0)
-            // Increase image counter
-            increaseImageCount(1)
-            // Render preview
-            renderPeview()
         }
         reader.onerror = function () {
             alert('Could not import this image: ' + file.name)
         }
+        // Once both the reader and image is done, we can safely add it to the originals container and clean up
+        image.onload = function () {
+            // Save image to originals container
+            document.getElementById('photostack-original-container').appendChild(image)
+            // Increase image counter
+            increaseImageCount(1)
+        }
         reader.readAsDataURL(file)
-    }
+    })
     // Clear file select
     document.getElementById('photostack-import-file').value = ''
     // Re-enable file picker
@@ -69,26 +97,15 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
     var url = document.getElementById('photostack-import-url').value
     // Get image
     function addImageToCanvas(url) {
-        var image = new Image()
+        var image = document.createElement('img')
         image.crossOrigin = 'anonymous'
         image.src = url
         image.onload = function () {
             console.log('Loaded image URL: ' + url)
             // Save image to originals container
             document.getElementById('photostack-original-container').appendChild(image)
-            // Create canvas element for image
-            var canvas = document.createElement('canvas')
-            var filename = url.substring(url.lastIndexOf('/') + 1)
-            canvas.setAttribute('data-filename', filename)
-            // Add canvas element to photos container
-            document.getElementById('photostack-canvas-container').appendChild(canvas)
-            canvas.width = image.naturalWidth
-            canvas.height = image.naturalHeight
-            canvas.getContext('2d').drawImage(image, 0, 0)
             // Increase image counter
             increaseImageCount(1)
-            // Render previews
-            renderPeview()
         }
         image.onerror = function () {
             if (!url.includes('https://cors-anywhere.herokuapp.com/')) {
@@ -106,6 +123,7 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
 document.getElementById('photostack-export-button').addEventListener('click', function () {
     var zip = new JSZip()
     // Create data URL for each canvas element and add it to zip
+    renderAllCanvas()
     var canvases = document.querySelectorAll('#photostack-canvas-container canvas')
     canvases.forEach(function (canvas, i) {
         var canvasData = canvas.toDataURL('image/png')

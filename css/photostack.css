@@ -1,5 +1,5 @@
-.container {
-    margin-top: 80px;
+.container-fluid {
+    margin-top: 90px;
 }
 
 #photostack-preview img {
@@ -9,3 +9,9 @@
 #photostack-original-container, #photostack-canvas-container {
     display: none;
 }
+
+.card {
+    margin-bottom: 15px;
+}
+
+/* Hide side ad unit on small screens */
