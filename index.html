@@ -13,7 +13,7 @@
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <a class="navbar-brand" href="#">PhotoStack ALPHA</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,10 +37,10 @@
         </div>
     </nav>
     <!-- Main container -->
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <!-- Settings panel container -->
-            <div class="col-4" id="settings-container">
+            <div class="col-4">
                 <!-- Export card -->
                 <button class="btn btn-primary mb-3" id="photostack-export-button" style="width: 100%" type="button">Export images (PNG)</button>
                 <!-- Import photos card -->
@@ -61,7 +61,7 @@
                                     aria-label="Enter image URL" aria-describedby="photostack-import-url"
                                     id="photostack-import-url">
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button"
+                                    <button class="btn btn-secondary" type="button"
                                         id="photostack-import-url-button">Import</button>
                                 </div>
                             </div>
@@ -71,7 +71,7 @@
                 </div>
             </div>
             <!-- Preview container -->
-            <div class="col-8" id="preview-container">
+            <div class="col-8">
                 <!-- Temporary text for when no photos are imported -->
                 <div class="card">
                     <div class="card-header">
@@ -79,7 +79,7 @@
                     </div>
                     <div class="card-body">
                         <div class="text-center" id="photostack-preview">
-                            <p><i>Photo preview will appear here</i></p>
+                            <p><i>An image preview will appear here once you start editing, or you can <a href="javascript:renderPreviewCanvas()">see one now</a>.</i></p>
                         </div>
                     </div>
                 </div>
