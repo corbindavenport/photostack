@@ -17,10 +17,12 @@ function renderPreviewCanvas() {
         console.log('Nothing to preview.')
         return
     }
-    console.log('Rendering preview...')
+    // Find elements
     var previewContainer = document.getElementById('photostack-preview')
     var originalsContainer = document.getElementById('photostack-original-container')
     var canvasContainer = document.getElementById('photostack-canvas-container')
+    // Create loading icon
+    previewContainer.innerHTML = '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'
     // Create canvas element for first imported image
     var canvas = document.createElement('canvas')
     var originalImage = originalsContainer.firstChild
@@ -29,11 +31,10 @@ function renderPreviewCanvas() {
     canvas.width = originalImage.naturalWidth
     canvas.height = originalImage.naturalHeight
     canvas.getContext('2d').drawImage(originalImage, 0, 0)
-    // Clear existing content
-    previewContainer.innerHTML = ''
     // Create image element
     var previewImage = document.createElement('img')
     previewImage.setAttribute('src', canvas.toDataURL())
+    previewContainer.innerHTML = ''
     previewContainer.appendChild(previewImage)
 }
 

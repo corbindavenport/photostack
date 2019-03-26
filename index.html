@@ -26,6 +26,8 @@
             enable_page_level_ads: true
         });
     </script>
+    <!-- Themeing -->
+    <meta name="theme-color" content="#303030">
 </head>
 
 <body>
@@ -90,6 +92,26 @@
                         <p><span id="photostack-image-count">0</span> photos currently imported</p>
                     </div>
                 </div>
+                <!-- Resize card -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Scale image</h5>
+                        <p>
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" placeholder="Image width (px)"
+                                    aria-label="Enter image URL" aria-describedby="photostack-import-url"
+                                    id="photostack-image-width">
+                                <div class="input-group-append">
+                                    <button class="btn btn-secondary" type="button"
+                                        id="photostack-image-width-button">Resize</button>
+                                </div>
+                            </div>
+                        </p>
+                        <p class="card-text">
+                            Only resizing to a maxiumum width is supported right now.
+                        </p>
+                    </div>
+                </div>
             </div>
             <!-- Preview container -->
             <div class="col-md">
@@ -109,12 +131,10 @@
             <!-- Desktop ad container -->
             <div class="col-md d-sm-none d-md-block" style="max-width: 190px">
                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <ins class="adsbygoogle"
-                        style="display:inline-block;width:160px;height:600px"
-                        data-ad-client="ca-pub-8658798838164073"
-                        data-ad-slot="2199465112"></ins>
+                <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px"
+                    data-ad-client="ca-pub-8658798838164073" data-ad-slot="2199465112"></ins>
                 <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
+                    (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
             </div>
         </div>

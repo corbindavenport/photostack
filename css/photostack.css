@@ -4,6 +4,7 @@
 
 #photostack-preview img {
     max-width: 100%;
+    margin: -1.25rem;
 }
 
 #photostack-original-container, #photostack-canvas-container {
