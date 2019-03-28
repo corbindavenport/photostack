@@ -82,7 +82,7 @@
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" placeholder="Enter image URL"
                                     aria-label="Enter image URL" aria-describedby="photostack-import-url"
-                                    id="photostack-import-url">
+                                    id="photostack-import-url" autocomplete="off">
                                 <div class="input-group-append">
                                     <button class="btn btn-secondary" type="button"
                                         id="photostack-import-url-button">Import</button>
@@ -100,12 +100,16 @@
                             <div class="input-group mb-3">
                                 <input type="number" class="form-control" placeholder="Image width (px)"
                                     aria-label="Enter image URL" aria-describedby="photostack-import-url"
-                                    id="photostack-image-width">
+                                    id="photostack-image-width" autocomplete="off">
                                 <div class="input-group-append">
-                                    <button class="btn btn-secondary" type="button"
+                                    <button class="btn btn-primary" type="button"
                                         id="photostack-image-width-button">Resize</button>
                                 </div>
                             </div>
+                        </p>
+                        <p>
+                            <button class="btn btn-primary btn-block" type="button"
+                                id="photostack-reset-image-width-button">Reset image scale</button>
                         </p>
                         <p class="card-text">
                             Only resizing to a maxiumum width is supported right now.

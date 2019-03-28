@@ -1,13 +1,24 @@
-// Global image configuration
-var config = {
-
-}
-
 // Increase image count after imports
 function increaseImageCount(number) {
     var currentCount = parseInt(document.getElementById('photostack-image-count').textContent)
     var newCount = currentCount + number
     document.getElementById('photostack-image-count').textContent = newCount
+}
+
+// Apply settings to a canvas
+function applyCanvasSettings(canvas, originalImage) {
+    // Resize image
+    if (document.getElementById('photostack-image-width').value != '') {
+        var userWidth = parseInt(document.getElementById('photostack-image-width').value)
+        // Create aspect ratio from original canvas size
+        var ratio = (canvas.width / canvas.height)
+        // Set new canvas size
+        var canvasContent = canvas.getImageData
+        canvas.width = userWidth
+        canvas.height = userWidth / ratio
+        // Resizing the canvas wipes its contents, so we need to re-draw the image
+        canvas.getContext('2d').drawImage(originalImage, 0, 0, canvas.width, canvas.height)
+    }
 }
 
 // Render canvas of first image, apply settings, and show a preview
@@ -31,6 +42,8 @@ function renderPreviewCanvas() {
     canvas.width = originalImage.naturalWidth
     canvas.height = originalImage.naturalHeight
     canvas.getContext('2d').drawImage(originalImage, 0, 0)
+    // Apply settings
+    applyCanvasSettings(canvas, originalImage)
     // Create image element
     var previewImage = document.createElement('img')
     previewImage.setAttribute('src', canvas.toDataURL())
@@ -53,7 +66,9 @@ function renderAllCanvas() {
         canvas.width = original.naturalWidth
         canvas.height = original.naturalHeight
         canvas.getContext('2d').drawImage(original, 0, 0)
-    });
+        // Apply settings
+        applyCanvasSettings(canvas, original)
+    })
 }
 
 // Add image from local file
@@ -140,4 +155,13 @@ document.getElementById('photostack-export-button').addEventListener('click', fu
         .then(function (content) {
             saveAs(content, 'images.zip');
         })
+})
+
+// Scale image panel
+document.getElementById('photostack-image-width-button').addEventListener('click', function() {
+    renderPreviewCanvas()
+})
+document.getElementById('photostack-reset-image-width-button').addEventListener('click', function() {
+    document.getElementById('photostack-image-width').value = ''
+    renderPreviewCanvas()
 })
