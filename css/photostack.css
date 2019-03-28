@@ -1,4 +1,4 @@
-.container-fluid {
+.container-fluid, .container {
     margin-top: 90px;
 }
 
@@ -7,7 +7,7 @@
     margin: -1.25rem;
 }
 
-#photostack-original-container, #photostack-canvas-container {
+#photostack-original-container, #photostack-canvas-container, #photostack-watermark-sample {
     display: none;
 }
 
@@ -16,3 +16,9 @@
 }
 
 /* Hide side ad unit on small screens */
+
+@media (max-width: 767.98px) {
+    .photostack-ad {
+        display: none
+    }
+}

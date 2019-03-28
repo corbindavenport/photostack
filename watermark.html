@@ -40,11 +40,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="watermark.html">Watermarks</a>
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Watermarks <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://github.com/corbindavenport/photostack/blob/master/README.md"
@@ -60,22 +60,36 @@
     </nav>
     <!-- Main container -->
     <div class="container-fluid">
+        <div class="row photostack-watermark-row">
+            <!-- Watermark select/save/delete -->
+            <div class="col">
+                <div class="card">
+                    <div class="input-group input-group-lg">
+                        <select class="custom-select" id="photostack-watermark-select" autocomplete="off">
+                            <option selected disabled>Select watermark...</option>
+                        </select>
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="button" id="photostack-import-url-button">Save</button>
+                            <button class="btn btn-secondary" id="photostack-delete-watermark" type="button">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <!-- Settings panel container -->
             <div class="col-md-4">
-                <!-- Export card -->
-                <button class="btn btn-block btn-primary mb-3" id="photostack-export-button"
-                    type="button">Export images (PNG)</button>
-                <!-- Import photos card -->
+                <!-- Image options -->
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Import</h5>
-                        <p class="card-text">Select photos from your computer or the web to get started.</p>
+                        <h5 class="card-title">Image</h5>
+                        <p class="card-text">This will replace whatever watermark is currently being used.</p>
                         <p>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="photostack-import-file" multiple
                                     accept="image/*">
-                                <label class="custom-file-label" for="photostack-import-file">Choose image file</label>
+                                <label class="custom-file-label" for="photostack-import-file">Choose image
+                                    file</label>
                             </div>
                         </p>
                         <p>
@@ -89,31 +103,6 @@
                                 </div>
                             </div>
                         </p>
-                        <p><span id="photostack-image-count">0</span> photos currently imported</p>
-                    </div>
-                </div>
-                <!-- Resize card -->
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Scale image</h5>
-                        <p>
-                            <div class="input-group mb-3">
-                                <input type="number" class="form-control" placeholder="Image width (px)"
-                                    aria-label="Enter image URL" aria-describedby="photostack-import-url"
-                                    id="photostack-image-width" autocomplete="off">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button"
-                                        id="photostack-image-width-button">Resize</button>
-                                </div>
-                            </div>
-                        </p>
-                        <p>
-                            <button class="btn btn-primary btn-block" type="button"
-                                id="photostack-reset-image-width-button">Reset image scale</button>
-                        </p>
-                        <p class="card-text">
-                            Only resizing to a maxiumum width is supported right now.
-                        </p>
                     </div>
                 </div>
             </div>
@@ -122,18 +111,17 @@
                 <!-- Temporary text for when no photos are imported -->
                 <div class="card">
                     <div class="card-header">
-                        Image preview
+                        Watermark preview
                     </div>
                     <div class="card-body">
                         <div class="text-center" id="photostack-preview">
-                            <p><i>An image preview will appear here once you start editing, or you can <a
-                                        href="javascript:renderPreviewCanvas()">see one now</a>.</i></p>
+
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Desktop ad container -->
-            <div class="col-md photostack-ad" style="max-width: 190px">
+            <div class="col-md d-sm-none d-md-block" style="max-width: 190px">
                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                 <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px"
                     data-ad-client="ca-pub-8658798838164073" data-ad-slot="2199465112"></ins>
@@ -143,9 +131,9 @@
             </div>
         </div>
     </div>
-    <!-- Container where original photos are kept as <img> elements -->
-    <div id="photostack-original-container"></div>
-    <!-- Container where canvas elements for each image are kept -->
+    <!-- Sample image -->
+    <img src="img/watermark-test.jpg" id="photostack-watermark-sample">
+    <!-- Container where the watermark preview is generated -->
     <div id="photostack-canvas-container"></div>
     <!-- Scripts -->
     <script src="js/jquery-3.3.1.min.js"></script>
@@ -153,7 +141,7 @@
     <script src="js/canvas-toBlob.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/photostack.js"></script>
+    <script src="js/watermark.js"></script>
 </body>
 
 </html>
