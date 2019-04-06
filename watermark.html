@@ -69,8 +69,7 @@
                             <option disabled selected>Select a watermark...</option>
                         </select>
                         <div class="input-group-append">
-                            <button class="btn btn-secondary" type="button"
-                                id="photostack-save-watermark">Save</button>
+                            <button class="btn btn-secondary" type="button" id="photostack-save-watermark">Save</button>
                             <button class="btn btn-secondary" id="photostack-delete-watermark"
                                 type="button">Delete</button>
                         </div>
@@ -114,28 +113,30 @@
                         <p>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="photostack-watermark-size">Size</span>
+                                    <span class="input-group-text"
+                                        aria-describedby="photostack-watermark-size">Size</span>
                                 </div>
-                                <input type="number" class="form-control" min="0" aria-label="Size"
-                                    aria-describedby="photostack-watermark-size" value="10">
+                                <input type="number" class="form-control" min="0" max="10" aria-label="Size"
+                                    id="photostack-watermark-size" value="10" autocomplete="off">
                             </div>
                         </p>
                         <p>
                             <div class="form-group">
                                 <label for="photostack-watermark-opacity">Watermark opacity</label>
-                                <input type="range" class="form-control-range" id="photostack-watermark-opacity">
+                                <input type="range" class="form-control-range" id="photostack-watermark-opacity" autocomplete="off">
                             </div>
                         </p>
                         <p>
                             <div class="form-group">
                                 <label for="photostack-watermark-horizontal-inset">Horizontal inset</label>
-                                <input type="range" class="form-control-range" id="photostack-watermark-horizontal-inset">
+                                <input type="range" class="form-control-range" autocomplete="off"
+                                    id="photostack-watermark-horizontal-inset">
                             </div>
                         </p>
                         <p>
                             <div class="form-group">
                                 <label for="photostack-watermark-vertical-inset">Vertical inset</label>
-                                <input type="range" class="form-control-range" id="photostack-watermark-vertical-inset">
+                                <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-vertical-inset">
                             </div>
                         </p>
                     </div>
@@ -148,37 +149,46 @@
                             <!-- First row -->
                             <div class="row mb-3">
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-primary" id="photostack-watermark-pos-1">1</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-1">1</button>
                                 </div>
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-primary" id="photostack-watermark-pos-2">2</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-2">2</button>
                                 </div>
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-primary" id="photostack-watermark-pos-3">3</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-3">3</button>
                                 </div>
                             </div>
                             <!-- Second row -->
                             <div class="row mb-3">
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-primary" id="photostack-watermark-pos-4">4</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-4">4</button>
                                 </div>
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-primary" id="photostack-watermark-pos-5">5</button>
+                                    <button type="button" class="btn btn-block btn-primary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-5">5</button>
                                 </div>
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-primary" id="photostack-watermark-pos-6">6</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-6">6</button>
                                 </div>
                             </div>
                             <!-- Third row -->
                             <div class="row mb-3">
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-primary" id="photostack-watermark-pos-7">7</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-7">7</button>
                                 </div>
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-primary" id="photostack-watermark-pos-8">8</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-8">8</button>
                                 </div>
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-primary" id="photostack-watermark-pos-9">9</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-9">9</button>
                                 </div>
                             </div>
                         </p>
