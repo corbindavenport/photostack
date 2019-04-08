@@ -158,10 +158,15 @@ document.getElementById('photostack-export-button').addEventListener('click', fu
 })
 
 // Scale image panel
-document.getElementById('photostack-image-width-button').addEventListener('click', function() {
+document.getElementById('photostack-image-width-button').addEventListener('click', function () {
     renderPreviewCanvas()
 })
-document.getElementById('photostack-reset-image-width-button').addEventListener('click', function() {
+document.getElementById('photostack-reset-image-width-button').addEventListener('click', function () {
     document.getElementById('photostack-image-width').value = ''
     renderPreviewCanvas()
 })
+
+// Prevent unload
+window.onbeforeunload = function () {
+    return 'Are you sure you want to navigate away?'
+}

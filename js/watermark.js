@@ -218,3 +218,8 @@ document.getElementById('photostack-delete-watermark').addEventListener('click',
 
 // Render initial preview of canvas
 renderPreviewCanvas()
+
+// Prevent unload
+window.onbeforeunload = function () {
+    return 'Are you sure you want to navigate away?'
+}
