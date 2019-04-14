@@ -84,6 +84,8 @@ function importLocalImage(file) {
     image.onload = function () {
         // Save image to globalWatermark
         globalWatermark.image = image.src
+        // Regenerate preview
+        renderPreviewCanvas()
     }
     reader.readAsDataURL(file)
     // Clear file select
@@ -116,6 +118,8 @@ function importExternalImage(url) {
             } else {
                 // Save image to globalWatermark
                 globalWatermark.image = data
+                // Regenerate preview
+                renderPreviewCanvas()
             }
         }
         image.onerror = function () {
@@ -130,6 +134,19 @@ function importExternalImage(url) {
     downloadExternalImage(url)
 }
 
+// Apply current settings to a canvas
+function applyWatermarkSettings(canvas, testImage) {
+    var watermark = new Image()
+    watermark.src = globalWatermark.image
+    // Calculate new size of watermark
+    var resizeRatio = watermark.height / watermark.width
+    var userSize = parseInt(document.getElementById('photostack-watermark-size').value)
+    watermark.width = canvas.width * (userSize / 100)
+    watermark.height = watermark.width * resizeRatio
+    // Draw watermark to canvas
+    canvas.getContext('2d').drawImage(watermark, 0, 0, watermark.width, watermark.height)
+}
+
 // Render canvas of preview image
 function renderPreviewCanvas() {
     // Find elements
@@ -138,6 +155,8 @@ function renderPreviewCanvas() {
     var testImage = document.getElementById('photostack-watermark-sample')
     // Create loading icon
     previewContainer.innerHTML = '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'
+    // Clear existing canvas content
+    canvasContainer.innerHTML = ''
     // Create canvas
     var canvas = document.createElement('canvas')
     // Add canvas element to canvas container
@@ -146,7 +165,9 @@ function renderPreviewCanvas() {
     canvas.height = testImage.naturalHeight
     canvas.getContext('2d').drawImage(testImage, 0, 0)
     // Apply settings
-    //TODO: applyCanvasSettings(canvas, testImage)
+    if (globalWatermark.image) {
+        applyWatermarkSettings(canvas, testImage)
+    }
     // Create preview element
     var previewImage = document.createElement('img')
     previewImage.setAttribute('src', canvas.toDataURL())

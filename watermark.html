@@ -84,8 +84,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Image</h5>
-                        <p class="card-text">This will replace whatever watermark is currently being used. Maximum
-                            watermark file size is 1MB.</p>
+                        <p class="card-text">This will replace whatever watermark is currently being used. <b>Maximum file size is 1MB.</b></p>
                         <p>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="photostack-import-file"
@@ -117,7 +116,7 @@
                                     <span class="input-group-text"
                                         aria-describedby="photostack-watermark-size">Size</span>
                                 </div>
-                                <input type="number" class="form-control" min="0" max="10" aria-label="Size"
+                                <input type="number" class="form-control" min="0" max="100" aria-label="Size"
                                     id="photostack-watermark-size" value="10" autocomplete="off">
                             </div>
                         </p>
@@ -227,6 +226,8 @@
     <img src="img/watermark-test.jpg" id="photostack-watermark-sample">
     <!-- Container where the watermark preview is generated -->
     <div id="photostack-canvas-container"></div>
+    <!-- Container where the current watermark image is saved -->
+    <div id="photostack-watermark-original"></div>
     <!-- Scripts -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/FileSaver.min.js"></script>
