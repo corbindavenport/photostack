@@ -14,11 +14,13 @@ function updateGlobalWatermark() {
     // Size
     globalWatermark.size = document.getElementById('photostack-watermark-size').value
     // Opacity
-    globalWatermark.opacity = document.getElementById('photostack-watermark-opacity').value
+    globalWatermark.opacity = parseInt(document.getElementById('photostack-watermark-opacity').value)
     // Horizontal inset
-    globalWatermark.horizontalInset = document.getElementById('photostack-watermark-horizontal-inset').value
+    globalWatermark.horizontalInset = parseInt(document.getElementById('photostack-watermark-horizontal-inset').value)
+    globalWatermark.horizontalInset = globalWatermark.horizontalInset - 50 // This sets the middle slider position to zero
     // Vertical inset
-    globalWatermark.veritcalInset = document.getElementById('photostack-watermark-vertical-inset').value
+    globalWatermark.veritcalInset = parseInt(document.getElementById('photostack-watermark-vertical-inset').value)
+    globalWatermark.veritcalInset = globalWatermark.veritcalInset - 50 // This sets the middle slider position to zero
     // Anchor position
     globalWatermark.anchorPosition = parseInt(document.querySelector('.photostack-anchor-btn.btn-primary').id.replace('photostack-watermark-pos-', ''))
     // Display new settings in console
@@ -136,15 +138,54 @@ function importExternalImage(url) {
 
 // Apply current settings to a canvas
 function applyWatermarkSettings(canvas, testImage) {
+    // Silently return if no watermark image has been imported
+    if (!globalWatermark.image) {
+        return
+    } else {
+        console.log('Applying watermark settings to preview...')
+    }
     var watermark = new Image()
     watermark.src = globalWatermark.image
     // Calculate new size of watermark
     var resizeRatio = watermark.height / watermark.width
-    var userSize = parseInt(document.getElementById('photostack-watermark-size').value)
+    var userSize = parseInt(globalWatermark.size)
     watermark.width = canvas.width * (userSize / 100)
     watermark.height = watermark.width * resizeRatio
-    // Draw watermark to canvas
-    canvas.getContext('2d').drawImage(watermark, 0, 0, watermark.width, watermark.height)
+    // Create temporary canvas for the watermark
+    var watermarkCanvas = document.createElement('canvas')
+    watermarkCanvas.width = watermark.width
+    watermarkCanvas.height = watermark.height
+    // Set opacity
+    var opacity = parseInt(globalWatermark.opacity) / 100
+    watermarkCanvas.getContext('2d').globalAlpha = opacity
+    // Set horiztonal and vertical insets
+    var horizontalInset = canvas.width * (globalWatermark.horizontalInset / 100)
+    var veritcalInset = canvas.height * (globalWatermark.veritcalInset / 100)
+    // Set anchor position
+    if (globalWatermark.anchorPosition === 1) {
+        // We don't need to change the X position
+    } else if (globalWatermark.anchorPosition === 2) {
+        // Center-top alignment
+        horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2) + horizontalInset
+    } else if (globalWatermark.anchorPosition === 3) {
+        // Center-right alignment
+        horizontalInset = canvas.width - watermarkCanvas.width + horizontalInset
+    } else if (globalWatermark.anchorPosition === 4) {
+        // TODO
+    } else if (globalWatermark.anchorPosition === 5) {
+        // TODO
+    } else if (globalWatermark.anchorPosition === 6) {
+        // TODO
+    } else if (globalWatermark.anchorPosition === 7) {
+        // TODO
+    } else if (globalWatermark.anchorPosition === 8) {
+        // TODO
+    } else if (globalWatermark.anchorPosition === 9) {
+        // TODO
+    }
+    // Draw completed image to temporary canvas
+    watermarkCanvas.getContext('2d').drawImage(watermark, 0, 0, watermark.width, watermark.height)
+    canvas.getContext('2d').drawImage(watermarkCanvas, horizontalInset, veritcalInset)
 }
 
 // Render canvas of preview image
@@ -206,15 +247,19 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
 // Update globalWatemark when input changes
 document.getElementById('photostack-watermark-size').addEventListener('change', function () {
     updateGlobalWatermark()
+    renderPreviewCanvas()
 })
 document.getElementById('photostack-watermark-opacity').addEventListener('change', function () {
     updateGlobalWatermark()
+    renderPreviewCanvas()
 })
 document.getElementById('photostack-watermark-horizontal-inset').addEventListener('change', function () {
     updateGlobalWatermark()
+    renderPreviewCanvas()
 })
 document.getElementById('photostack-watermark-vertical-inset').addEventListener('change', function () {
     updateGlobalWatermark()
+    renderPreviewCanvas()
 })
 document.querySelectorAll('.photostack-anchor-btn').forEach(function (button) {
     button.addEventListener('click', function () {
@@ -226,6 +271,7 @@ document.querySelectorAll('.photostack-anchor-btn').forEach(function (button) {
         button.classList.remove('btn-secondary')
         button.classList.add('btn-primary')
         updateGlobalWatermark()
+        renderPreviewCanvas()
     })
 })
 
