@@ -163,25 +163,36 @@ function applyWatermarkSettings(canvas, testImage) {
     var veritcalInset = canvas.height * (globalWatermark.veritcalInset / 100)
     // Set anchor position
     if (globalWatermark.anchorPosition === 1) {
-        // We don't need to change the X position
+        // Top-left alignment
+        // Because the X and Y values start from the top-left, we don't need to change anything here
     } else if (globalWatermark.anchorPosition === 2) {
-        // Center-top alignment
+        // Top-center alignment
         horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2) + horizontalInset
     } else if (globalWatermark.anchorPosition === 3) {
-        // Center-right alignment
+        // Top-right alignment
         horizontalInset = canvas.width - watermarkCanvas.width + horizontalInset
     } else if (globalWatermark.anchorPosition === 4) {
-        // TODO
+        // Middle-left alignment
+        veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2) + veritcalInset
     } else if (globalWatermark.anchorPosition === 5) {
-        // TODO
+        // Middle-center alignment
+        veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2) + veritcalInset
+        horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2) + horizontalInset
     } else if (globalWatermark.anchorPosition === 6) {
-        // TODO
+        // Middle-right alignment
+        veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2) + veritcalInset
+        horizontalInset = canvas.width - watermarkCanvas.width + horizontalInset
     } else if (globalWatermark.anchorPosition === 7) {
-        // TODO
+        // Bottom-left alignment
+        veritcalInset = canvas.height - watermarkCanvas.height + veritcalInset
     } else if (globalWatermark.anchorPosition === 8) {
-        // TODO
+        // Bottom-center alignment
+        veritcalInset = canvas.height - watermarkCanvas.height + veritcalInset
+        horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2) + horizontalInset
     } else if (globalWatermark.anchorPosition === 9) {
-        // TODO
+        // Bottom-right alignment
+        veritcalInset = canvas.height - watermarkCanvas.height + veritcalInset
+        horizontalInset = canvas.width - watermarkCanvas.width + horizontalInset
     }
     // Draw completed image to temporary canvas
     watermarkCanvas.getContext('2d').drawImage(watermark, 0, 0, watermark.width, watermark.height)
