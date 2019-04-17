@@ -17,10 +17,8 @@ function updateGlobalWatermark() {
     globalWatermark.opacity = parseInt(document.getElementById('photostack-watermark-opacity').value)
     // Horizontal inset
     globalWatermark.horizontalInset = parseInt(document.getElementById('photostack-watermark-horizontal-inset').value)
-    globalWatermark.horizontalInset = globalWatermark.horizontalInset - 50 // This sets the middle slider position to zero
     // Vertical inset
     globalWatermark.veritcalInset = parseInt(document.getElementById('photostack-watermark-vertical-inset').value)
-    globalWatermark.veritcalInset = globalWatermark.veritcalInset - 50 // This sets the middle slider position to zero
     // Anchor position
     globalWatermark.anchorPosition = parseInt(document.querySelector('.photostack-anchor-btn.btn-primary').id.replace('photostack-watermark-pos-', ''))
     // Display new settings in console
@@ -45,14 +43,16 @@ function loadWatermark() {
     console.log('Loading watermark:', watermarkObj)
     // TODO: Validate input
     globalWatermark = watermarkObj
+    // Generate preview
+    renderPreviewCanvas()
     // Set size in UI
     document.getElementById('photostack-watermark-size').value = globalWatermark.size
     // Set opacity in UI
     document.getElementById('photostack-watermark-opacity').value = globalWatermark.opacity
     // Set horizontal inset in UI
-    document.getElementById('photostack-watermark-horizontal-inset').value = globalWatermark.horizontalInset
+    document.getElementById('photostack-watermark-horizontal-inset').value = parseInt(globalWatermark.horizontalInset)
     // Set vertical inset in UI
-    document.getElementById('photostack-watermark-vertical-inset').value = globalWatermark.veritcalInset
+    document.getElementById('photostack-watermark-vertical-inset').value = parseInt(globalWatermark.veritcalInset)
     // Clear .btn-primary style from the currently-active anchor position
     var oldAnchor = document.querySelector('.photostack-anchor-btn.btn-primary')
     oldAnchor.classList.remove('btn-primary')
@@ -161,38 +161,39 @@ function applyWatermarkSettings(canvas, testImage) {
     // Set horiztonal and vertical insets
     var horizontalInset = canvas.width * (globalWatermark.horizontalInset / 100)
     var veritcalInset = canvas.height * (globalWatermark.veritcalInset / 100)
+    console.log("horiz: " + horizontalInset + ", vertical: " + veritcalInset)
     // Set anchor position
     if (globalWatermark.anchorPosition === 1) {
         // Top-left alignment
-        // Because the X and Y values start from the top-left, we don't need to change anything here
+        // Because the X and Y values start from the top-left, nothing happens here
     } else if (globalWatermark.anchorPosition === 2) {
-        // Top-center alignment
-        horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2) + horizontalInset
+        // Top-center alignment (Ignore: Horizontal)
+        horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
     } else if (globalWatermark.anchorPosition === 3) {
         // Top-right alignment
-        horizontalInset = canvas.width - watermarkCanvas.width + horizontalInset
+        horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
     } else if (globalWatermark.anchorPosition === 4) {
-        // Middle-left alignment
-        veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2) + veritcalInset
+        // Middle-left alignment (Ignore: Vertical)
+        veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
     } else if (globalWatermark.anchorPosition === 5) {
-        // Middle-center alignment
-        veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2) + veritcalInset
-        horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2) + horizontalInset
+        // Middle-center alignment (Ignore: Vertical & Horizontal)
+        horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
+        veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
     } else if (globalWatermark.anchorPosition === 6) {
-        // Middle-right alignment
-        veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2) + veritcalInset
-        horizontalInset = canvas.width - watermarkCanvas.width + horizontalInset
+        // Middle-right alignment (Ignore: Vertical)
+        horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
+        veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
     } else if (globalWatermark.anchorPosition === 7) {
         // Bottom-left alignment
-        veritcalInset = canvas.height - watermarkCanvas.height + veritcalInset
+        veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
     } else if (globalWatermark.anchorPosition === 8) {
-        // Bottom-center alignment
-        veritcalInset = canvas.height - watermarkCanvas.height + veritcalInset
-        horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2) + horizontalInset
+        // Bottom-center alignment (Ignore: Horizontal)
+        veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
+        horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
     } else if (globalWatermark.anchorPosition === 9) {
         // Bottom-right alignment
-        veritcalInset = canvas.height - watermarkCanvas.height + veritcalInset
-        horizontalInset = canvas.width - watermarkCanvas.width + horizontalInset
+        veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
+        horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
     }
     // Draw completed image to temporary canvas
     watermarkCanvas.getContext('2d').drawImage(watermark, 0, 0, watermark.width, watermark.height)
