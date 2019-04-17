@@ -3,8 +3,8 @@ var globalWatermark = {
     image: '',
     size: parseInt(document.getElementById('photostack-watermark-size').value),
     opacity: parseInt(document.getElementById('photostack-watermark-opacity').value),
-    horizontalInset: parseInt(document.getElementById('photostack-watermark-horizontal-inset').value),
-    veritcalInset: parseInt(document.getElementById('photostack-watermark-vertical-inset').value),
+    horizontalInset: parseInt(document.getElementById('photostack-watermark-horizontal-inset').value) - 50,
+    veritcalInset: parseInt(document.getElementById('photostack-watermark-vertical-inset').value) - 50,
     anchorPosition: parseInt(document.querySelector('.photostack-anchor-btn.btn-primary').id.replace('photostack-watermark-pos-', ''))
 }
 console.log('Default watermark:', globalWatermark)
@@ -191,17 +191,12 @@ function applyWatermarkSettings(canvas, testImage) {
 // Render canvas of preview image
 function renderPreviewCanvas() {
     // Find elements
-    var previewContainer = document.getElementById('photostack-preview')
+    var previewImage = document.getElementById('photostack-watermark-preview')
     var canvasContainer = document.getElementById('photostack-canvas-container')
     var testImage = document.getElementById('photostack-watermark-sample')
-    // Create loading icon
-    previewContainer.innerHTML = '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'
-    // Clear existing canvas content
-    canvasContainer.innerHTML = ''
     // Create canvas
     var canvas = document.createElement('canvas')
     // Add canvas element to canvas container
-    canvasContainer.appendChild(canvas)
     canvas.width = testImage.naturalWidth
     canvas.height = testImage.naturalHeight
     canvas.getContext('2d').drawImage(testImage, 0, 0)
@@ -209,11 +204,8 @@ function renderPreviewCanvas() {
     if (globalWatermark.image) {
         applyWatermarkSettings(canvas, testImage)
     }
-    // Create preview element
-    var previewImage = document.createElement('img')
+    // Change preview image to newly-generated image
     previewImage.setAttribute('src', canvas.toDataURL())
-    previewContainer.innerHTML = ''
-    previewContainer.appendChild(previewImage)
 }
 
 // Read watermarks from localStorage
@@ -282,9 +274,6 @@ document.getElementById('photostack-save-watermark').addEventListener('click', f
 document.getElementById('photostack-delete-watermark').addEventListener('click', function () {
     alert('Not implemented yet!')
 })
-
-// Render initial preview of canvas
-renderPreviewCanvas()
 
 // Prevent unload
 window.onbeforeunload = function () {

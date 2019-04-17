@@ -29,7 +29,7 @@ function renderPreviewCanvas() {
         return
     }
     // Find elements
-    var previewContainer = document.getElementById('photostack-preview')
+    var previewContainer = document.getElementById('photostack-editor-preview')
     var originalsContainer = document.getElementById('photostack-original-container')
     var canvasContainer = document.getElementById('photostack-canvas-container')
     // Create loading icon
