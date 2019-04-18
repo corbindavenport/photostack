@@ -240,7 +240,7 @@ for (var i = 0; i < localStorage.length; i++) {
 // Load watermark from storage
 document.getElementById('photostack-watermark-select').addEventListener('change', function () {
     if (this.value != 'no-watermark') {
-        var selectedWatermark = localStorage.key(this.id)
+        var selectedWatermark = localStorage.key(this.value)
         var watermarkObj = JSON.parse(localStorage[selectedWatermark])
         // TODO: Validate input
         globalWatermark = watermarkObj

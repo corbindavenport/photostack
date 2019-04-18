@@ -21,8 +21,6 @@ function updateGlobalWatermark() {
     globalWatermark.veritcalInset = parseInt(document.getElementById('photostack-watermark-vertical-inset').value)
     // Anchor position
     globalWatermark.anchorPosition = parseInt(document.querySelector('.photostack-anchor-btn.btn-primary').id.replace('photostack-watermark-pos-', ''))
-    // Display new settings in console
-    console.log('Current watermark:', globalWatermark)
 }
 
 // Save current settings as watermark
@@ -53,8 +51,6 @@ function loadWatermark(id) {
     console.log('Loading watermark:', watermarkObj)
     // TODO: Validate input
     globalWatermark = watermarkObj
-    // Generate preview
-    renderPreviewCanvas()
     // Set size in UI
     document.getElementById('photostack-watermark-size').value = globalWatermark.size
     // Set opacity in UI
@@ -71,6 +67,8 @@ function loadWatermark(id) {
     var newAnchor = document.getElementById('photostack-watermark-pos-' + globalWatermark.anchorPosition)
     newAnchor.classList.remove('btn-secondary')
     newAnchor.classList.add('btn-primary')
+    // Generate preview
+    renderPreviewCanvas()
 }
 
 // Add image from local file
