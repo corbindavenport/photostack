@@ -35,6 +35,17 @@ function saveWatermark() {
     }
 }
 
+// Delete selected watermark
+function deleteWatermark(id) {
+    var selectedWatermark = localStorage.key(id)
+    var watermarkName = selectedWatermark.replace('Watermark: ', '')
+    var watermarkObj = JSON.parse(localStorage[selectedWatermark])
+    if (confirm('Are you sure you want to delete the watermark "' + watermarkName + '"? This cannot be undone.')) {
+        localStorage.removeItem(selectedWatermark)
+        alert('Watermark deleted.')
+    }
+}
+
 // Load selected watermark from localStorage
 function loadWatermark(id) {
     var selectedWatermark = localStorage.key(id)
@@ -229,9 +240,15 @@ for (var i = 0; i < localStorage.length; i++) {
     }
 }
 
-// Load watermark from storage
+// Watermark dropdown menu and buttons
 document.getElementById('photostack-watermark-select').addEventListener('change', function () {
     loadWatermark(this.value)
+})
+document.getElementById('photostack-save-watermark').addEventListener('click', function () {
+    saveWatermark()
+})
+document.getElementById('photostack-delete-watermark').addEventListener('click', function () {
+    deleteWatermark(document.getElementById('photostack-watermark-select').value)
 })
 
 // Local image picker
@@ -275,14 +292,6 @@ document.querySelectorAll('.photostack-anchor-btn').forEach(function (button) {
         updateGlobalWatermark()
         renderPreviewCanvas()
     })
-})
-
-// Watermark selector
-document.getElementById('photostack-save-watermark').addEventListener('click', function () {
-    saveWatermark()
-})
-document.getElementById('photostack-delete-watermark').addEventListener('click', function () {
-    alert('Not implemented yet!')
 })
 
 // Prevent unload
