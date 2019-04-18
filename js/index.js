@@ -1,3 +1,5 @@
+var globalWatermark = {}
+
 // Increase image count after imports
 function increaseImageCount(number) {
     var currentCount = parseInt(document.getElementById('photostack-image-count').textContent)
@@ -20,9 +22,7 @@ function applyCanvasSettings(canvas, originalImage) {
         canvas.getContext('2d').drawImage(originalImage, 0, 0, canvas.width, canvas.height)
     }
     // Apply watermark
-    if (document.getElementById('photostack-watermark-select').value != 'no-watermark') {
-        var selectedWatermark = localStorage.key(document.getElementById('photostack-watermark-select').value)
-        var globalWatermark = JSON.parse(localStorage[selectedWatermark])
+    if (!(Object.keys(globalWatermark).length === 0)) {
         var watermark = new Image()
         watermark.src = globalWatermark.image
         // Calculate new size of watermark
@@ -195,33 +195,6 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
     addImageToCanvas(url)
 })
 
-// Load selected watermark from localStorage
-function loadWatermark(id) {
-    var selectedWatermark = localStorage.key(id)
-    var watermarkObj = JSON.parse(localStorage[selectedWatermark])
-    console.log('Loading watermark:', watermarkObj)
-    // TODO: Validate input
-    globalWatermark = watermarkObj
-    // Generate preview
-    renderPreviewCanvas()
-    // Set size in UI
-    document.getElementById('photostack-watermark-size').value = globalWatermark.size
-    // Set opacity in UI
-    document.getElementById('photostack-watermark-opacity').value = globalWatermark.opacity
-    // Set horizontal inset in UI
-    document.getElementById('photostack-watermark-horizontal-inset').value = parseInt(globalWatermark.horizontalInset)
-    // Set vertical inset in UI
-    document.getElementById('photostack-watermark-vertical-inset').value = parseInt(globalWatermark.veritcalInset)
-    // Clear .btn-primary style from the currently-active anchor position
-    var oldAnchor = document.querySelector('.photostack-anchor-btn.btn-primary')
-    oldAnchor.classList.remove('btn-primary')
-    oldAnchor.classList.add('btn-secondary')
-    // Add .btn-primary style to the correct value
-    var newAnchor = document.getElementById('photostack-watermark-pos-' + globalWatermark.anchorPosition)
-    newAnchor.classList.remove('btn-secondary')
-    newAnchor.classList.add('btn-primary')
-}
-
 // Export images
 document.getElementById('photostack-export-button').addEventListener('click', function () {
     var zip = new JSZip()
@@ -266,7 +239,19 @@ for (var i = 0; i < localStorage.length; i++) {
 
 // Load watermark from storage
 document.getElementById('photostack-watermark-select').addEventListener('change', function () {
-    renderPreviewCanvas()
+    if (this.value != 'no-watermark') {
+        var selectedWatermark = localStorage.key(this.id)
+        var watermarkObj = JSON.parse(localStorage[selectedWatermark])
+        // TODO: Validate input
+        globalWatermark = watermarkObj
+        // Generate preview
+        renderPreviewCanvas()
+    } else {
+        // Reset watermark
+        globalWatermark = {}
+        // Generate preview
+        renderPreviewCanvas()
+    }
 })
 
 // Prevent unload
