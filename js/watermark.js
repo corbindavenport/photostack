@@ -36,9 +36,8 @@ function saveWatermark() {
 }
 
 // Load selected watermark from localStorage
-function loadWatermark() {
-    var select = document.getElementById('photostack-watermark-select').value
-    var selectedWatermark = localStorage.key(selectedWatermark)
+function loadWatermark(id) {
+    var selectedWatermark = localStorage.key(id)
     var watermarkObj = JSON.parse(localStorage[selectedWatermark])
     console.log('Loading watermark:', watermarkObj)
     // TODO: Validate input
@@ -161,7 +160,6 @@ function applyWatermarkSettings(canvas, testImage) {
     // Set horiztonal and vertical insets
     var horizontalInset = canvas.width * (globalWatermark.horizontalInset / 100)
     var veritcalInset = canvas.height * (globalWatermark.veritcalInset / 100)
-    console.log("horiz: " + horizontalInset + ", vertical: " + veritcalInset)
     // Set anchor position
     if (globalWatermark.anchorPosition === 1) {
         // Top-left alignment
@@ -233,7 +231,7 @@ for (var i = 0; i < localStorage.length; i++) {
 
 // Load watermark from storage
 document.getElementById('photostack-watermark-select').addEventListener('change', function () {
-    loadWatermark()
+    loadWatermark(this.value)
 })
 
 // Local image picker
