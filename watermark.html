@@ -66,11 +66,12 @@
                 <div class="card">
                     <div class="input-group input-group-lg">
                         <select class="custom-select" id="photostack-watermark-select" autocomplete="off">
-                            <option selected disabled>Select watermark...</option>
+                            <option disabled selected>Select a watermark...</option>
                         </select>
                         <div class="input-group-append">
-                            <button class="btn btn-secondary" type="button" id="photostack-import-url-button">Save</button>
-                            <button class="btn btn-secondary" id="photostack-delete-watermark" type="button">Delete</button>
+                            <button class="btn btn-secondary" type="button" id="photostack-save-watermark">Save</button>
+                            <button class="btn btn-secondary" id="photostack-delete-watermark"
+                                type="button">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -79,14 +80,14 @@
         <div class="row">
             <!-- Settings panel container -->
             <div class="col-md-4">
-                <!-- Image options -->
+                <!-- Image selector -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Image</h5>
-                        <p class="card-text">This will replace whatever watermark is currently being used.</p>
+                        <p class="card-text">This will replace whatever watermark is currently being used. <b>Maximum file size is 1MB.</b></p>
                         <p>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="photostack-import-file" multiple
+                                <input type="file" class="custom-file-input" id="photostack-import-file"
                                     accept="image/*">
                                 <label class="custom-file-label" for="photostack-import-file">Choose image
                                     file</label>
@@ -105,6 +106,99 @@
                         </p>
                     </div>
                 </div>
+                <!-- Anchor -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Anchor position</h5>
+                        <p>
+                            <!-- First row -->
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-1">1</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-2">2</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-3">3</button>
+                                </div>
+                            </div>
+                            <!-- Second row -->
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-4">4</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-block btn-primary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-5">5</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-6">6</button>
+                                </div>
+                            </div>
+                            <!-- Third row -->
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-7">7</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-8">8</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-9">9</button>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+                <!-- Effects -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Effects</h5>
+                        <p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"
+                                        aria-describedby="photostack-watermark-size">Size</span>
+                                </div>
+                                <input type="number" class="form-control" min="0" max="100" aria-label="Size"
+                                    id="photostack-watermark-size" value="30" autocomplete="off">
+                            </div>
+                        </p>
+                        <p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"
+                                        aria-describedby="photostack-watermark-opacity">Opacity</span>
+                                </div>
+                                <input type="number" class="form-control" min="0" max="100" aria-label="Size"
+                                    id="photostack-watermark-opacity" value="50" autocomplete="off">
+                            </div>
+                        </p>
+                        <p>
+                            <div class="form-group">
+                                <label for="photostack-watermark-horizontal-inset">Horizontal inset</label>
+                                <input type="range" class="form-control-range" autocomplete="off"
+                                    id="photostack-watermark-horizontal-inset" min="-10" max="10" value="0">
+                            </div>
+                        </p>
+                        <p>
+                            <div class="form-group">
+                                <label for="photostack-watermark-vertical-inset">Vertical inset</label>
+                                <input type="range" class="form-control-range" autocomplete="off"
+                                    id="photostack-watermark-vertical-inset" min="-10" max="10" value="0">
+                            </div>
+                        </p>
+                    </div>
+                </div>
             </div>
             <!-- Preview container -->
             <div class="col-md">
@@ -113,11 +207,7 @@
                     <div class="card-header">
                         Watermark preview
                     </div>
-                    <div class="card-body">
-                        <div class="text-center" id="photostack-preview">
-
-                        </div>
-                    </div>
+                    <img id="photostack-watermark-preview" src="img/watermark-test.jpg">
                 </div>
             </div>
             <!-- Desktop ad container -->
@@ -135,6 +225,8 @@
     <img src="img/watermark-test.jpg" id="photostack-watermark-sample">
     <!-- Container where the watermark preview is generated -->
     <div id="photostack-canvas-container"></div>
+    <!-- Container where the current watermark image is saved -->
+    <div id="photostack-watermark-original"></div>
     <!-- Scripts -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/FileSaver.min.js"></script>

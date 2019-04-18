@@ -2,9 +2,10 @@
     margin-top: 90px;
 }
 
-#photostack-preview img {
+#photostack-watermark-preview, #photostack-editor-preview img {
     max-width: 100%;
-    margin: -1.25rem;
+    border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
 }
 
 #photostack-original-container, #photostack-canvas-container, #photostack-watermark-sample {

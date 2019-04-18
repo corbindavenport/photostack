@@ -116,6 +116,16 @@
                         </p>
                     </div>
                 </div>
+                <!-- Watermarks card-->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Add Watermark</h5>
+                        <p>Create and edit watermarks from <a href="watermark.html">the watermarks page</a>.</p>
+                        <p><select class="custom-select" id="photostack-watermark-select" autocomplete="off">
+                            <option selected value="no-watermark">No watermark</option>
+                        </select></p>
+                    </div>
+                </div>
             </div>
             <!-- Preview container -->
             <div class="col-md">
@@ -125,7 +135,7 @@
                         Image preview
                     </div>
                     <div class="card-body">
-                        <div class="text-center" id="photostack-preview">
+                        <div class="text-center" id="photostack-editor-preview">
                             <p><i>An image preview will appear here once you start editing, or you can <a
                                         href="javascript:renderPreviewCanvas()">see one now</a>.</i></p>
                         </div>
@@ -153,7 +163,7 @@
     <script src="js/canvas-toBlob.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/photostack.js"></script>
+    <script src="js/index.js"></script>
 </body>
 
 </html>

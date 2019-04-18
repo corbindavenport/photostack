@@ -19,6 +19,64 @@ function applyCanvasSettings(canvas, originalImage) {
         // Resizing the canvas wipes its contents, so we need to re-draw the image
         canvas.getContext('2d').drawImage(originalImage, 0, 0, canvas.width, canvas.height)
     }
+    // Apply watermark
+    if (document.getElementById('photostack-watermark-select').value != 'no-watermark') {
+        var selectedWatermark = localStorage.key(document.getElementById('photostack-watermark-select').value)
+        var globalWatermark = JSON.parse(localStorage[selectedWatermark])
+        var watermark = new Image()
+        watermark.src = globalWatermark.image
+        // Calculate new size of watermark
+        var resizeRatio = watermark.height / watermark.width
+        var userSize = parseInt(globalWatermark.size)
+        watermark.width = canvas.width * (userSize / 100)
+        watermark.height = watermark.width * resizeRatio
+        // Create temporary canvas for the watermark
+        var watermarkCanvas = document.createElement('canvas')
+        watermarkCanvas.width = watermark.width
+        watermarkCanvas.height = watermark.height
+        // Set opacity
+        var opacity = parseInt(globalWatermark.opacity) / 100
+        watermarkCanvas.getContext('2d').globalAlpha = opacity
+        // Set horiztonal and vertical insets
+        var horizontalInset = canvas.width * (globalWatermark.horizontalInset / 100)
+        var veritcalInset = canvas.height * (globalWatermark.veritcalInset / 100)
+        // Set anchor position
+        if (globalWatermark.anchorPosition === 1) {
+            // Top-left alignment
+            // Because the X and Y values start from the top-left, nothing happens here
+        } else if (globalWatermark.anchorPosition === 2) {
+            // Top-center alignment (Ignore: Horizontal)
+            horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
+        } else if (globalWatermark.anchorPosition === 3) {
+            // Top-right alignment
+            horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
+        } else if (globalWatermark.anchorPosition === 4) {
+            // Middle-left alignment (Ignore: Vertical)
+            veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
+        } else if (globalWatermark.anchorPosition === 5) {
+            // Middle-center alignment (Ignore: Vertical & Horizontal)
+            horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
+            veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
+        } else if (globalWatermark.anchorPosition === 6) {
+            // Middle-right alignment (Ignore: Vertical)
+            horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
+            veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
+        } else if (globalWatermark.anchorPosition === 7) {
+            // Bottom-left alignment
+            veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
+        } else if (globalWatermark.anchorPosition === 8) {
+            // Bottom-center alignment (Ignore: Horizontal)
+            veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
+            horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
+        } else if (globalWatermark.anchorPosition === 9) {
+            // Bottom-right alignment
+            veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
+            horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
+        }
+        // Draw completed image to temporary canvas
+        watermarkCanvas.getContext('2d').drawImage(watermark, 0, 0, watermark.width, watermark.height)
+        canvas.getContext('2d').drawImage(watermarkCanvas, horizontalInset, veritcalInset)
+    }
 }
 
 // Render canvas of first image, apply settings, and show a preview
@@ -29,11 +87,9 @@ function renderPreviewCanvas() {
         return
     }
     // Find elements
-    var previewContainer = document.getElementById('photostack-preview')
+    var previewContainer = document.getElementById('photostack-editor-preview')
     var originalsContainer = document.getElementById('photostack-original-container')
     var canvasContainer = document.getElementById('photostack-canvas-container')
-    // Create loading icon
-    previewContainer.innerHTML = '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>'
     // Create canvas element for first imported image
     var canvas = document.createElement('canvas')
     var originalImage = originalsContainer.firstChild
@@ -45,10 +101,14 @@ function renderPreviewCanvas() {
     // Apply settings
     applyCanvasSettings(canvas, originalImage)
     // Create image element
-    var previewImage = document.createElement('img')
-    previewImage.setAttribute('src', canvas.toDataURL())
-    previewContainer.innerHTML = ''
-    previewContainer.appendChild(previewImage)
+    if (previewContainer.querySelector('img')) {
+        previewContainer.querySelector('img').setAttribute('src', canvas.toDataURL())
+    } else {
+        var previewImage = document.createElement('img')
+        previewImage.setAttribute('src', canvas.toDataURL())
+        previewContainer.innerHTML = ''
+        previewContainer.appendChild(previewImage)
+    }
 }
 
 // Render canvases of all images (for exporting)
@@ -135,6 +195,33 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
     addImageToCanvas(url)
 })
 
+// Load selected watermark from localStorage
+function loadWatermark(id) {
+    var selectedWatermark = localStorage.key(id)
+    var watermarkObj = JSON.parse(localStorage[selectedWatermark])
+    console.log('Loading watermark:', watermarkObj)
+    // TODO: Validate input
+    globalWatermark = watermarkObj
+    // Generate preview
+    renderPreviewCanvas()
+    // Set size in UI
+    document.getElementById('photostack-watermark-size').value = globalWatermark.size
+    // Set opacity in UI
+    document.getElementById('photostack-watermark-opacity').value = globalWatermark.opacity
+    // Set horizontal inset in UI
+    document.getElementById('photostack-watermark-horizontal-inset').value = parseInt(globalWatermark.horizontalInset)
+    // Set vertical inset in UI
+    document.getElementById('photostack-watermark-vertical-inset').value = parseInt(globalWatermark.veritcalInset)
+    // Clear .btn-primary style from the currently-active anchor position
+    var oldAnchor = document.querySelector('.photostack-anchor-btn.btn-primary')
+    oldAnchor.classList.remove('btn-primary')
+    oldAnchor.classList.add('btn-secondary')
+    // Add .btn-primary style to the correct value
+    var newAnchor = document.getElementById('photostack-watermark-pos-' + globalWatermark.anchorPosition)
+    newAnchor.classList.remove('btn-secondary')
+    newAnchor.classList.add('btn-primary')
+}
+
 // Export images
 document.getElementById('photostack-export-button').addEventListener('click', function () {
     var zip = new JSZip()
@@ -158,10 +245,31 @@ document.getElementById('photostack-export-button').addEventListener('click', fu
 })
 
 // Scale image panel
-document.getElementById('photostack-image-width-button').addEventListener('click', function() {
+document.getElementById('photostack-image-width-button').addEventListener('click', function () {
     renderPreviewCanvas()
 })
-document.getElementById('photostack-reset-image-width-button').addEventListener('click', function() {
+document.getElementById('photostack-reset-image-width-button').addEventListener('click', function () {
     document.getElementById('photostack-image-width').value = ''
     renderPreviewCanvas()
 })
+
+// Read watermarks from localStorage
+for (var i = 0; i < localStorage.length; i++) {
+    if (localStorage.key(i).includes('Watermark')) {
+        // Add watermark to select menu
+        var option = document.createElement('option')
+        option.innerText = localStorage.key(i).replace('Watermark: ', '') // Remove "Watermark: " from the key name
+        option.value = i
+        document.getElementById('photostack-watermark-select').appendChild(option)
+    }
+}
+
+// Load watermark from storage
+document.getElementById('photostack-watermark-select').addEventListener('change', function () {
+    renderPreviewCanvas()
+})
+
+// Prevent unload
+window.onbeforeunload = function () {
+    return 'Are you sure you want to navigate away?'
+}
