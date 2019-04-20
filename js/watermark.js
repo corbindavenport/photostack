@@ -26,10 +26,12 @@ function updateGlobalWatermark() {
 // Save current settings as watermark
 function saveWatermark() {
     var watermarkName = prompt('Enter name for watermark:')
-    if (watermarkName != null || watermarkName != '') {
+    if (watermarkName != null && watermarkName != '') {
         // Save to localStorage
         localStorage['Watermark: ' + watermarkName] = JSON.stringify(globalWatermark)
         alert('Saved!')
+    } else {
+        alert('Watermark name cannot be blank!')
     }
 }
 
