@@ -64,8 +64,8 @@
             <!-- Settings panel container -->
             <div class="col-md-4">
                 <!-- Export card -->
-                <button class="btn btn-block btn-primary mb-3" id="photostack-export-button"
-                    type="button">Export images (PNG)</button>
+                <button class="btn btn-block btn-primary mb-3" type="button" data-toggle="modal"
+                    data-target="#photostack-export-modal">Export images</button>
                 <!-- Import photos card -->
                 <div class="card">
                     <div class="card-body">
@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                         </p>
-                        <p><span id="photostack-image-count">0</span> photos currently imported</p>
+                        <p><span class="photostack-image-count">0</span> photos currently imported</p>
                     </div>
                 </div>
                 <!-- Resize card -->
@@ -122,8 +122,8 @@
                         <h5 class="card-title">Add Watermark</h5>
                         <p>Create and edit watermarks from <a href="watermark.html">the watermarks page</a>.</p>
                         <p><select class="custom-select" id="photostack-watermark-select" autocomplete="off">
-                            <option selected value="no-watermark">No watermark</option>
-                        </select></p>
+                                <option selected value="no-watermark">No watermark</option>
+                            </select></p>
                     </div>
                 </div>
             </div>
@@ -153,6 +153,49 @@
             </div>
         </div>
     </div>
+    <!-- Export modal -->
+    <div class="modal fade" id="photostack-export-modal" tabindex="-1" role="dialog"
+        aria-labelledby="photostack-export-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><b>You are exporting <span class="photostack-image-count">0</span> images.</b></p>
+                    <div class="form-group">
+                        <label for="photostack-export-format">File format</label>
+                        <select class="form-control" id="photostack-export-format" autocomplete="on">
+                            <option value="jpg">JPEG (.jpg)</option>
+                            <option value="png">Portable Network Graphics (.png)</option>
+                            <option value="webp">WebP (.webp)</option>
+                        </select>
+                        <small class="form-text text-muted">Image format support varies by browser.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="photostack-export-quality">Image quality</label>
+                        <input type="number" class="form-control" id="photostack-export-quality" value="92" min="1"
+                            max="100" autocomplete="on">
+                        <small class="form-text text-muted">Choose a value from 1-100.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="photostack-export-quality">Name pattern</label>
+                        <input type="text" class="form-control" id="photostack-name-pattern" autocomplete="on">
+                        <small class="form-text text-muted">Name to append to the start of each image. Example: <span
+                                class="photostack-name-pattern-demo">vacation</span>-1.jpg, <span
+                                class="photostack-name-pattern-demo">vacation</span>-2.jpg, etc.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save to Dropbox</button>
+                    <button type="button" class="btn btn-primary">Save as ZIP</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Container where original photos are kept as <img> elements -->
     <div id="photostack-original-container"></div>
     <!-- Container where canvas elements for each image are kept -->
@@ -163,7 +206,9 @@
     <script src="js/canvas-toBlob.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL type support -->
     <script src="js/index.js"></script>
+    <script src="js/export.js"></script>
 </body>
 
 </html>

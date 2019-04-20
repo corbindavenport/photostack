@@ -2,9 +2,11 @@ var globalWatermark = {}
 
 // Increase image count after imports
 function increaseImageCount(number) {
-    var currentCount = parseInt(document.getElementById('photostack-image-count').textContent)
+    var currentCount = parseInt(document.querySelector('.photostack-image-count').textContent)
     var newCount = currentCount + number
-    document.getElementById('photostack-image-count').textContent = newCount
+    document.querySelectorAll('.photostack-image-count').forEach(function (el) {
+        el.textContent = newCount
+    })
 }
 
 // Apply settings to a canvas
@@ -196,6 +198,7 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
 })
 
 // Export images
+/*
 document.getElementById('photostack-export-button').addEventListener('click', function () {
     var zip = new JSZip()
     // Create data URL for each canvas element and add it to zip
@@ -216,6 +219,7 @@ document.getElementById('photostack-export-button').addEventListener('click', fu
             saveAs(content, 'images.zip');
         })
 })
+*/
 
 // Scale image panel
 document.getElementById('photostack-image-width-button').addEventListener('click', function () {
