@@ -113,26 +113,6 @@ function renderPreviewCanvas() {
     }
 }
 
-// Render canvases of all images (for exporting)
-function renderAllCanvas() {
-    var originals = document.querySelectorAll('#photostack-original-container img')
-    var canvasContainer = document.getElementById('photostack-canvas-container')
-    // Clear current canvas elements
-    canvasContainer.innerHTML = ''
-    // Creat canvas for each original image
-    originals.forEach(function (original, i) {
-        // Create canvas element
-        var canvas = document.createElement('canvas')
-        // Add canvas element to canvas container
-        canvasContainer.appendChild(canvas)
-        canvas.width = original.naturalWidth
-        canvas.height = original.naturalHeight
-        canvas.getContext('2d').drawImage(original, 0, 0)
-        // Apply settings
-        applyCanvasSettings(canvas, original)
-    })
-}
-
 // Add image from local file
 document.getElementById('photostack-import-file').addEventListener('change', function () {
     // Disable file picker while import is in progress

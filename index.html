@@ -33,7 +33,7 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <a class="navbar-brand" href="#">PhotoStack ALPHA</a>
+        <a class="navbar-brand" href="#">PhotoStack BETA</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -65,7 +65,8 @@
             <div class="col-md-4">
                 <!-- Export card -->
                 <button class="btn btn-block btn-primary mb-3" type="button" data-toggle="modal"
-                    data-target="#photostack-export-modal">Export images</button>
+                    data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false">Export
+                    images</button>
                 <!-- Import photos card -->
                 <div class="card">
                     <div class="card-body">
@@ -157,7 +158,8 @@
     <div class="modal fade" id="photostack-export-modal" tabindex="-1" role="dialog"
         aria-labelledby="photostack-export-modal-label" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <!-- Initial UI -->
+            <div class="modal-content photostack-export-modal-initial">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -169,9 +171,9 @@
                     <div class="form-group">
                         <label for="photostack-export-format">File format</label>
                         <select class="form-control" id="photostack-export-format" autocomplete="on">
-                            <option value="jpg">JPEG (.jpg)</option>
-                            <option value="png">Portable Network Graphics (.png)</option>
-                            <option value="webp">WebP (.webp)</option>
+                            <option value="image/jpeg">JPEG (.jpg)</option>
+                            <option value="image/png">Portable Network Graphics (.png)</option>
+                            <option value="image/webp">WebP (.webp)</option>
                         </select>
                         <small class="form-text text-muted">Image format support varies by browser.</small>
                     </div>
@@ -191,7 +193,31 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary">Save to Dropbox</button>
-                    <button type="button" class="btn btn-primary">Save as ZIP</button>
+                    <button type="button" id="photostack-export-zip-btn" class="btn btn-primary">Save as ZIP</button>
+                </div>
+            </div>
+            <!-- Export in progress modal -->
+            <div class="modal-content photostack-export-modal-loading" style="display:none">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Rendering canvases...</p>
+                    <p>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                id="photostack-canvas-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                style="width: 0%"></div>
+                        </div>
+                    </p>
+                    <p>Adding images to ZIP file...</p>
+                    <p>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                id="photostack-zip-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                style="width: 0%"></div>
+                        </div>
+                    </p>
                 </div>
             </div>
         </div>
