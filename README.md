@@ -2,7 +2,7 @@
 
 PhotoStack aims to be a Progressive Web App capable of editing multiple photos at once. It's still in the early stages of development. You can see some of the planned features [here](https://github.com/corbindavenport/photostack/issues).
 
-PhotoStack uses components from [jQuery](https://jquery.com/), [Bootstrap](https://getbootstrap.com), [FileSaver.js](https://github.com/eligrey/FileSaver.js/), [canvas-toBlob.js](https://github.com/eligrey/canvas-toBlob.js), and [JSZip](https://stuk.github.io/jszip/).
+PhotoStack uses components from [jQuery](https://jquery.com/), [Bootstrap](https://getbootstrap.com), [FileSaver.js](https://github.com/eligrey/FileSaver.js/), [canvas-toBlob.js](https://github.com/eligrey/canvas-toBlob.js), [JSZip](https://stuk.github.io/jszip/), and [Modernizr](https://modernizr.com/).
 
 ---------------------------------------------------------
 
