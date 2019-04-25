@@ -60,6 +60,7 @@ function createZip() {
         dropboxOptions.files.push(file)
         // Add image to ZIP
         zip.file(fileName, zipData, { base64: true });
+        console.log(canvasData)
         // Update progress bar
         var width = progressStep * (i + 1)
         document.getElementById('photostack-zip-progress').style.width = width + '%'
