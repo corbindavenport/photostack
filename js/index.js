@@ -2,9 +2,11 @@ var globalWatermark = {}
 
 // Increase image count after imports
 function increaseImageCount(number) {
-    var currentCount = parseInt(document.getElementById('photostack-image-count').textContent)
+    var currentCount = parseInt(document.querySelector('.photostack-image-count').textContent)
     var newCount = currentCount + number
-    document.getElementById('photostack-image-count').textContent = newCount
+    document.querySelectorAll('.photostack-image-count').forEach(function (el) {
+        el.textContent = newCount
+    })
 }
 
 // Apply settings to a canvas
@@ -111,26 +113,6 @@ function renderPreviewCanvas() {
     }
 }
 
-// Render canvases of all images (for exporting)
-function renderAllCanvas() {
-    var originals = document.querySelectorAll('#photostack-original-container img')
-    var canvasContainer = document.getElementById('photostack-canvas-container')
-    // Clear current canvas elements
-    canvasContainer.innerHTML = ''
-    // Creat canvas for each original image
-    originals.forEach(function (original, i) {
-        // Create canvas element
-        var canvas = document.createElement('canvas')
-        // Add canvas element to canvas container
-        canvasContainer.appendChild(canvas)
-        canvas.width = original.naturalWidth
-        canvas.height = original.naturalHeight
-        canvas.getContext('2d').drawImage(original, 0, 0)
-        // Apply settings
-        applyCanvasSettings(canvas, original)
-    })
-}
-
 // Add image from local file
 document.getElementById('photostack-import-file').addEventListener('change', function () {
     // Disable file picker while import is in progress
@@ -196,6 +178,7 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
 })
 
 // Export images
+/*
 document.getElementById('photostack-export-button').addEventListener('click', function () {
     var zip = new JSZip()
     // Create data URL for each canvas element and add it to zip
@@ -216,6 +199,7 @@ document.getElementById('photostack-export-button').addEventListener('click', fu
             saveAs(content, 'images.zip');
         })
 })
+*/
 
 // Scale image panel
 document.getElementById('photostack-image-width-button').addEventListener('click', function () {

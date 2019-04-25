@@ -16,6 +16,14 @@
     margin-bottom: 15px;
 }
 
+.btn-dropbox {
+    background: #0061fe;
+}
+
+.btn-dropbox:hover {
+    background: #004cc7;
+}
+
 /* Hide side ad unit on small screens */
 
 @media (max-width: 767.98px) {
