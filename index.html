@@ -57,9 +57,10 @@
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <button class="btn btn-outline-success btn-block my-2 my-sm-0" type="button" data-toggle="modal"
-                data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false">Export images</button>
-              </form>
+                <button id="photostack-export-button" class="btn btn-outline-success btn-block my-2 my-sm-0"
+                    type="button" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static"
+                    data-keyboard="false" disabled>Export images</button>
+            </form>
         </div>
     </nav>
     <!-- Main container -->
@@ -220,12 +221,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Export completed! You can save the ZIP file to your computer, or upload it to various cloud services.</p>
+                    <p>Export completed! You can save the ZIP file to your computer, or upload it to various cloud
+                        services.</p>
                     <p>
-                        <button type="button" id="photostack-export-download-zip-button" class="btn btn-block btn-success">Download</button>
+                        <button type="button" id="photostack-export-download-zip-button"
+                            class="btn btn-block btn-success">Download</button>
                     </p>
                     <p>
-                        <button type="button" id="photostack-export-download-dropbox-button" class="btn btn-block btn-dropbox">Save to Dropbox</button>
+                        <button type="button" id="photostack-export-download-dropbox-button"
+                            class="btn btn-block btn-dropbox">Save to Dropbox</button>
                     </p>
                 </div>
             </div>
@@ -236,7 +240,8 @@
     <!-- Container where canvas elements for each image are kept -->
     <div id="photostack-canvas-container"></div>
     <!-- Scripts -->
-    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="sblxtzuush1cfzz"></script>
+    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
+        data-app-key="sblxtzuush1cfzz"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/FileSaver.min.js"></script>
     <script src="js/canvas-toBlob.js"></script>

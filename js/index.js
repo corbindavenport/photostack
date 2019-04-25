@@ -1,12 +1,17 @@
 var globalWatermark = {}
 
+var globalFilesCount = 0
+
 // Increase image count after imports
 function increaseImageCount(number) {
-    var currentCount = parseInt(document.querySelector('.photostack-image-count').textContent)
-    var newCount = currentCount + number
+    globalFilesCount += number
     document.querySelectorAll('.photostack-image-count').forEach(function (el) {
-        el.textContent = newCount
+        el.textContent = globalFilesCount
     })
+    var exportButton = document.getElementById('photostack-export-button')
+    if ((globalFilesCount > 0) && (exportButton.disabled)) {
+        exportButton.disabled = false
+    }
 }
 
 // Apply settings to a canvas
@@ -177,30 +182,6 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
     addImageToCanvas(url)
 })
 
-// Export images
-/*
-document.getElementById('photostack-export-button').addEventListener('click', function () {
-    var zip = new JSZip()
-    // Create data URL for each canvas element and add it to zip
-    renderAllCanvas()
-    var canvases = document.querySelectorAll('#photostack-canvas-container canvas')
-    canvases.forEach(function (canvas, i) {
-        var canvasData = canvas.toDataURL('image/png')
-        // JSZip requires the base64 part of the string to be removed
-        canvasData = canvasData.replace('data:image/png;base64,', '')
-        var fileName = 'image' + i + '.png'
-        zip.file(fileName, canvasData, { base64: true });
-        console.log('Added ' + fileName + ' to zip')
-    })
-    // Generate zip
-    console.log('Generating zip...')
-    zip.generateAsync({ type: 'blob' })
-        .then(function (content) {
-            saveAs(content, 'images.zip');
-        })
-})
-*/
-
 // Scale image panel
 document.getElementById('photostack-image-width-button').addEventListener('click', function () {
     renderPreviewCanvas()
@@ -240,5 +221,8 @@ document.getElementById('photostack-watermark-select').addEventListener('change'
 
 // Prevent unload
 window.onbeforeunload = function () {
-    return 'Are you sure you want to navigate away?'
+    // Warn before navigating away if there are any files imported
+    if (globalFilesCount > 0) {
+        return 'Are you sure you want to navigate away?'
+    }
 }
