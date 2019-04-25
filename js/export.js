@@ -99,7 +99,7 @@ function createZip() {
                 newButton.textContent = 'Confirm save to Dropbox'
                 newButton.addEventListener('click', function() {
                     var url = 'data:application/zip;base64,' + encodeURIComponent(content)
-                    Dropbox.save('data:application/zip;base64,' + encodeURIComponent(content), 'images.zip', dropboxOptions)
+                    Dropbox.save(dropboxOptions)
                 })
                 // Replace old button with new button
                 var oldButton = document.getElementById('photostack-export-download-dropbox-button')
