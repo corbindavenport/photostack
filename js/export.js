@@ -90,7 +90,7 @@ function createZip() {
                     }
                     var fileName = imgNamePattern + ' ' + i + fileEnding
                     // Add image to dropboxOptions
-                    var file = JSON.parse('{"' + fileName + '": "' + canvasData + '"}')
+                    var file = JSON.parse('{"filename": "' + fileName + '", "url": "' + canvasData + '"}')
                     dropboxOptions.files.push(file)
                 })
                 // Create a new button because the popup won't work after the data URL is generated
@@ -98,7 +98,6 @@ function createZip() {
                 newButton.classList.add('btn', 'btn-block', 'btn-dropbox')
                 newButton.textContent = 'Confirm save to Dropbox'
                 newButton.addEventListener('click', function() {
-                    var url = 'data:application/zip;base64,' + encodeURIComponent(content)
                     Dropbox.save(dropboxOptions)
                 })
                 // Replace old button with new button
