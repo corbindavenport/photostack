@@ -192,8 +192,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save to Dropbox</button>
-                    <button type="button" id="photostack-export-zip-btn" class="btn btn-primary">Save as ZIP</button>
+                    <button type="button" id="photostack-export-zip-btn" class="btn btn-primary">Export</button>
                 </div>
             </div>
             <!-- Export in progress modal -->
@@ -202,14 +201,6 @@
                     <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
                 </div>
                 <div class="modal-body">
-                    <p>Rendering canvases...</p>
-                    <p>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                id="photostack-canvas-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-                                style="width: 0%"></div>
-                        </div>
-                    </p>
                     <p>Adding images to ZIP file...</p>
                     <p>
                         <div class="progress">
@@ -217,6 +208,21 @@
                                 id="photostack-zip-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
                                 style="width: 0%"></div>
                         </div>
+                    </p>
+                </div>
+            </div>
+            <!-- Completed export modal -->
+            <div class="modal-content photostack-export-modal-finished" style="display:none">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Export completed! You can save the ZIP file to your computer, or upload it to various cloud services.</p>
+                    <p>
+                        <button type="button" id="photostack-export-download-zip-button" class="btn btn-block btn-primary">Download</button>
                     </p>
                 </div>
             </div>

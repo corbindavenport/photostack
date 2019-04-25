@@ -28,9 +28,6 @@ function createZip() {
         canvas.getContext('2d').drawImage(original, 0, 0)
         // Apply settings
         applyCanvasSettings(canvas, original)
-        // Update progress bar
-        var width = progressStep * (i + 1)
-        document.getElementById('photostack-canvas-progress').style.width = width + '%'
     })
     // Add canvases to ZIP
     var zip = new JSZip()
@@ -57,8 +54,13 @@ function createZip() {
     console.log('Generating zip...')
     zip.generateAsync({ type: 'blob' })
         .then(function (content) {
-            return content
-            saveAs(content, 'images.zip');
+            // Switch modal content to finished result
+            document.querySelector('.photostack-export-modal-loading').style.display = 'none'
+            document.querySelector('.photostack-export-modal-finished').style.display = 'block'
+            // Download file when Download button is clicked
+            document.getElementById('photostack-export-download-zip-button').addEventListener('click', function() {
+                saveAs(content, 'images.zip')
+            })
         })
 }
 
@@ -82,7 +84,15 @@ document.getElementById('photostack-name-pattern').addEventListener('keyup', fun
     })
 })
 
-// Save as ZIP button
+// Export button in modal
 document.getElementById('photostack-export-zip-btn').addEventListener('click', function () {
     createZip()
+})
+
+// Reset modal content when the close button is clicked
+$('#photostack-export-modal').on('hidden.bs.modal', function (e) {
+    document.querySelector('.photostack-export-modal-loading').style.display = 'none'
+    document.querySelector('.photostack-export-modal-finished').style.display = 'none'
+    document.querySelector('.photostack-export-modal-initial').style.display = 'block'
+    document.getElementById('photostack-zip-progress').style.width = '0%'
 })
