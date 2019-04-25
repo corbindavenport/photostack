@@ -43,9 +43,9 @@ function createZip() {
     var zip = new JSZip()
     var canvases = document.querySelectorAll('#photostack-canvas-container canvas')
     canvases.forEach(function (canvas, i) {
-        var canvasData = canvas.toDataURL(imgFormat)
+        var canvasData = canvas.toDataURL(imgFormat, imgQuality)
         // JSZip requires the base64 part of the string to be removed
-        canvasData = canvasData.replace('data:' + imgFormat + ';base64,', '')
+        zipData = canvasData.replace('data:' + imgFormat + ';base64,', '')
         // Give name to file
         if (imgFormat === 'image/jpeg') {
             var fileEnding = '.jpg'
@@ -59,7 +59,7 @@ function createZip() {
         var file = JSON.parse('{"filename": "' + fileName + '", "url": "' + canvasData + '"}')
         dropboxOptions.files.push(file)
         // Add image to ZIP
-        zip.file(fileName, canvasData, { base64: true });
+        zip.file(fileName, zipData, { base64: true });
         // Update progress bar
         var width = progressStep * (i + 1)
         document.getElementById('photostack-zip-progress').style.width = width + '%'
