@@ -29,7 +29,17 @@ function createZip() {
         // Apply settings
         applyCanvasSettings(canvas, original)
     })
-    // Add canvases to ZIP
+    // Create Dropbox object
+    var dropboxOptions = {
+        files: [],
+        success: function () {
+            alert("Success! Files saved to your Dropbox.");
+        },
+        progress: function (progress) {},
+        cancel: function () {},
+        error: function (errorMessage) {}
+    }
+    // Add canvases to ZIP and Dropbox object
     var zip = new JSZip()
     var canvases = document.querySelectorAll('#photostack-canvas-container canvas')
     canvases.forEach(function (canvas, i) {
@@ -45,6 +55,10 @@ function createZip() {
             var fileEnding = '.webp'
         }
         var fileName = imgNamePattern + ' ' + i + fileEnding
+        // Add image to dropboxOptions
+        var file = JSON.parse('{"filename": "' + fileName + '", "url": "' + canvasData + '"}')
+        dropboxOptions.files.push(file)
+        // Add image to ZIP
         zip.file(fileName, canvasData, { base64: true });
         // Update progress bar
         var width = progressStep * (i + 1)
@@ -61,48 +75,9 @@ function createZip() {
             document.getElementById('photostack-export-download-zip-button').addEventListener('click', function() {
                 saveAs(content, 'images.zip')
             })
-            // Save file to Dropbox
+            // Save file to Dropbox when Dropbox button is clicked
             document.getElementById('photostack-export-download-dropbox-button').addEventListener('click', function() {
-                // Change button text
-                this.disabled = true
-                this.textContent = 'Please wait...'
-                // Generate data URL for Dropbox API
-                var dropboxOptions = {
-                    files: [],
-                    success: function () {
-                        alert("Success! Files saved to your Dropbox.");
-                    },
-                    progress: function (progress) {},
-                    cancel: function () {},
-                    error: function (errorMessage) {}
-                }
-                // Add each image to the list of files
-                var canvases = document.querySelectorAll('#photostack-canvas-container canvas')
-                canvases.forEach(function (canvas, i) {
-                    var canvasData = canvas.toDataURL(imgFormat)
-                    // Give name to file
-                    if (imgFormat === 'image/jpeg') {
-                        var fileEnding = '.jpg'
-                    } else if (imgFormat === 'image/png') {
-                        var fileEnding = '.png'
-                    } else if (imgFormat === 'image/webp') {
-                        var fileEnding = '.webp'
-                    }
-                    var fileName = imgNamePattern + ' ' + i + fileEnding
-                    // Add image to dropboxOptions
-                    var file = JSON.parse('{"filename": "' + fileName + '", "url": "' + canvasData + '"}')
-                    dropboxOptions.files.push(file)
-                })
-                // Create a new button because the popup won't work after the data URL is generated
-                var newButton = document.createElement('button')
-                newButton.classList.add('btn', 'btn-block', 'btn-dropbox')
-                newButton.textContent = 'Confirm save to Dropbox'
-                newButton.addEventListener('click', function() {
-                    Dropbox.save(dropboxOptions)
-                })
-                // Replace old button with new button
-                var oldButton = document.getElementById('photostack-export-download-dropbox-button')
-                oldButton.parentNode.replaceChild(newButton, oldButton)
+                Dropbox.save(dropboxOptions)
             })
         })
 }
