@@ -4,6 +4,8 @@ PhotoStack aims to be a Progressive Web App capable of editing multiple photos a
 
 PhotoStack uses components from [jQuery](https://jquery.com/), [Bootstrap](https://getbootstrap.com), [FileSaver.js](https://github.com/eligrey/FileSaver.js/), [canvas-toBlob.js](https://github.com/eligrey/canvas-toBlob.js), [JSZip](https://stuk.github.io/jszip/), and [Modernizr](https://modernizr.com/).
 
+Icon is from the [Oranchelo icon theme](https://github.com/OrancheloTeam/oranchelo-icon-theme).
+
 ---------------------------------------------------------
 
 This program is free software: you can redistribute it and/or modify
