@@ -60,7 +60,6 @@ function createZip() {
         dropboxOptions.files.push(file)
         // Add image to ZIP
         zip.file(fileName, zipData, { base64: true });
-        console.log(canvasData)
         // Update progress bar
         var width = progressStep * (i + 1)
         document.getElementById('photostack-zip-progress').style.width = width + '%'
@@ -78,7 +77,15 @@ function createZip() {
             })
             // Save file to Dropbox when Dropbox button is clicked
             document.getElementById('photostack-export-download-dropbox-button').addEventListener('click', function() {
-                Dropbox.save(dropboxOptions)
+                if (navigator.onLine) {
+                    if (typeof Dropbox == 'undefined') {
+                        alert('The Dropbox API has not been properly loaded. Please refresh or re-open PhotoStack and try again.')
+                    } else {
+                        Dropbox.save(dropboxOptions)
+                    }
+                } else {
+                    alert('An internet connection is required to save files to Dropbox.')
+                }
             })
         })
 }
