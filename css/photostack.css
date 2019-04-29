@@ -24,6 +24,14 @@
     background: #004cc7;
 }
 
+#photostack-error-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    color: #000;
+    z-index: 100;
+}
+
 /* Hide side ad unit on small screens */
 
 @media (max-width: 767.98px) {

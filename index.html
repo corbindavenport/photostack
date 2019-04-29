@@ -119,10 +119,11 @@
                         </p>
                         <p>
                             <button class="btn btn-primary btn-block" type="button"
-                                id="photostack-reset-image-width-button">Reset image scale</button>
+                                id="photostack-reset-image-width-button">Reset
+                                image scale</button>
                         </p>
                         <p class="card-text">
-                            Only resizing to a maxiumum width is supported right now.
+                            Only resizing to a maximum width is supported right now.
                         </p>
                     </div>
                 </div>
@@ -210,7 +211,7 @@
                     <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
                 </div>
                 <div class="modal-body">
-                    <p>Adding images to ZIP file...</p>
+                    <p>Processing images...</p>
                     <p>
                         <div class="progress">
                             <div class="progress-bar progress-bar-striped progress-bar-animated"
@@ -229,17 +230,26 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Export completed! You can download the images to your computer in a ZIP file, or you can save them to Dropbox.</p>
+                    <p>Export completed! You can download the images to your computer in a ZIP file, or you can save
+                        them to Dropbox.</p>
                     <p>
                         <button type="button" id="photostack-export-download-zip-button"
                             class="btn btn-block btn-success">Download</button>
                     </p>
                     <p>
                         <button type="button" id="photostack-export-download-dropbox-button"
-                            class="btn btn-block btn-dropbox">Save to Dropbox</button>
+                            class="btn btn-block btn-dropbox">Save
+                            to Dropbox</button>
                     </p>
                 </div>
             </div>
+        </div>
+    </div>
+    <!-- Error toast -->
+    <div id="photostack-error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+        data-delay="5000">
+        <div class="toast-body">
+            There was an error, please try that again.
         </div>
     </div>
     <!-- Container where original photos are kept as <img> elements -->

@@ -298,3 +298,8 @@ document.querySelectorAll('.photostack-anchor-btn').forEach(function (button) {
 window.onbeforeunload = function () {
     return 'Are you sure you want to navigate away?'
 }
+
+// Show errors in UI
+window.onerror = function () {
+    $('#photostack-error-toast').toast('show')
+}
