@@ -18,6 +18,13 @@ function increaseImageCount(number) {
 function applyCanvasSettings(canvas, originalImage) {
     // Resize image
     if (document.getElementById('photostack-image-width').value != '') {
+        // Use high-quality image scaling where possible
+        canvas.getContext('2d').mozImageSmoothingEnabled = true
+        canvas.getContext('2d').imageSmoothingQuality = "high"
+        canvas.getContext('2d').webkitImageSmoothingEnabled = true
+        canvas.getContext('2d').msImageSmoothingEnabled = true
+        canvas.getContext('2d').imageSmoothingEnabled = true
+        // Get width
         var userWidth = parseInt(document.getElementById('photostack-image-width').value)
         // Create aspect ratio from original canvas size
         var ratio = (canvas.width / canvas.height)

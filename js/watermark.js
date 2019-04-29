@@ -296,7 +296,9 @@ document.querySelectorAll('.photostack-anchor-btn').forEach(function (button) {
 
 // Prevent unload
 window.onbeforeunload = function () {
-    return 'Are you sure you want to navigate away?'
+    if (globalWatermark.image != '') {
+        return 'Are you sure you want to navigate away?'
+    }
 }
 
 // Show errors in UI
