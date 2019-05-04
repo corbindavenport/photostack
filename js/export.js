@@ -90,6 +90,16 @@ function createZip() {
         })
 }
 
+function updateSampleFileNames() {
+    var text = document.getElementById('photostack-name-pattern').value
+    if (text === '') {
+        text = 'vacation'
+    }
+    document.querySelectorAll('.photostack-name-pattern-demo').forEach(function (el) {
+        el.textContent = text
+    })
+}
+
 // Remove image formats from export dialog that aren't supported
 if (!Modernizr.todataurljpeg) {
     var option = document.querySelector('#photostack-export-format option[value="image/jpeg"]')
@@ -99,15 +109,10 @@ if (!Modernizr.todataurlwebp) {
     var option = document.querySelector('#photostack-export-format option[value="image/webp"]')
     option.setAttribute('disabled', true)
 }
+
 // Show name pattern example in real-time
 document.getElementById('photostack-name-pattern').addEventListener('keyup', function () {
-    var text = document.getElementById('photostack-name-pattern').value
-    if (text === '') {
-        text = 'vacation'
-    }
-    document.querySelectorAll('.photostack-name-pattern-demo').forEach(function (el) {
-        el.textContent = text
-    })
+    updateSampleFileNames()
 })
 
 // Export button in modal
@@ -122,3 +127,6 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
     document.querySelector('.photostack-export-modal-initial').style.display = 'block'
     document.getElementById('photostack-zip-progress').style.width = '0%'
 })
+
+// Update sample file names when the page is loaded
+updateSampleFileNames()
