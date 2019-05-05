@@ -4,6 +4,9 @@
 
 #photostack-watermark-preview, #photostack-editor-preview img {
     max-width: 100%;
+}
+
+#photostack-watermark-preview {
     border-bottom-right-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem;
 }

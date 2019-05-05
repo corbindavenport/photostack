@@ -108,9 +108,11 @@ function renderPreviewCanvas() {
     var originalImage = originalsContainer.firstChild
     // Add canvas element to canvas container
     canvasContainer.appendChild(canvas)
-    canvas.width = originalImage.naturalWidth
-    canvas.height = originalImage.naturalHeight
-    canvas.getContext('2d').drawImage(originalImage, 0, 0)
+    // Resize canvas to a maximum of 800 pixels wide for faster processing
+    var resizeRatio = originalImage.naturalHeight / originalImage.naturalWidth
+    canvas.width = 800
+    canvas.height = canvas.width * resizeRatio
+    canvas.getContext('2d').drawImage(originalImage, 0, 0, canvas.width, canvas.height)
     // Apply settings
     applyCanvasSettings(canvas, originalImage)
     // Create image element
@@ -134,12 +136,15 @@ document.getElementById('photostack-import-file').addEventListener('change', fun
     console.log('Number of files selected: ' + files.length)
     var filesImported = 0
     // Add each image to originals container
-    Array.prototype.forEach.call(files, function (file) {
+    Array.prototype.forEach.call(files, function (file, index) {
         var image = document.createElement('img')
         var reader = new FileReader()
         // Set the image source to the reader result, once the reader is done
         reader.onload = function () {
             image.src = reader.result
+            if (index === 0) {
+                renderPreviewCanvas()
+            }
         }
         reader.onerror = function () {
             alert('Could not import this image: ' + file.name)
