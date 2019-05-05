@@ -180,6 +180,8 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
             document.getElementById('photostack-original-container').appendChild(image)
             // Increase image counter
             increaseImageCount(1)
+            // Generate preview
+            renderPreviewCanvas()
         }
         image.onerror = function () {
             if (!url.includes('https://cors-anywhere.herokuapp.com/')) {
