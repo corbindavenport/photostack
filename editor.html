@@ -59,6 +59,8 @@
     </nav>
     <!-- Main container -->
     <div class="container">
+        <div class="alert alert-success pwa-refresh" role="alert" style="display:none">A new version of PhotoStack is
+            available! Click or tap here to refresh.</div>
         <div class="row">
             <!-- Settings panel container -->
             <div class="col-md-4">
@@ -243,6 +245,9 @@
     <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL type support -->
     <script src="js/editor.js"></script>
     <script src="js/export.js"></script>
+    <!--[if !IE]><!-->
+    <script src="js/register-sw.js"></script>
+    <!--<![endif]-->
 </body>
 
 </html>

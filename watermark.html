@@ -54,6 +54,8 @@
     </nav>
     <!-- Main container -->
     <div class="container">
+        <div class="alert alert-success pwa-refresh" role="alert" style="display:none">A new version of PhotoStack is
+            available! Click or tap here to refresh.</div>
         <div class="row photostack-watermark-row">
             <!-- Watermark select/save/delete -->
             <div class="col">
@@ -225,6 +227,9 @@
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/watermark.js"></script>
+    <!--[if !IE]><!-->
+    <script src="js/register-sw.js"></script>
+    <!--<![endif]-->
 </body>
 
 </html>
