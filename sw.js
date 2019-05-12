@@ -1,13 +1,13 @@
 //This is the "Offline copy of pages" service worker
-var cacheVersion = "1";
+var cacheVersion = "2";
 
 //Install stage sets up the index page (home page) in the cahche and opens a new cache
 self.addEventListener('install', function(event) {
-  var indexPage = new Request('index.html');
+  var indexPage = new Request('editor.html');
   event.waitUntil(
     fetch(indexPage).then(function(response) {
       return caches.open('pwabuilder-offline').then(function(cache) {
-        console.log('Cached index page during Install'+ response.url);
+        console.log('Cached page during Install: ' + response.url);
         return cache.put(indexPage, response);
       });
   }));
