@@ -11,6 +11,7 @@ function increaseImageCount(number) {
     var exportButton = document.getElementById('photostack-export-button')
     if ((globalFilesCount > 0) && (exportButton.disabled)) {
         exportButton.disabled = false
+        console.log('h')
     }
 }
 

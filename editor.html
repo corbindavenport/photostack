@@ -156,7 +156,7 @@
     <!-- Export modal -->
     <div class="modal fade" id="photostack-export-modal" tabindex="-1" role="dialog"
         aria-labelledby="photostack-export-modal-label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <!-- Initial UI -->
             <div class="modal-content photostack-export-modal-initial">
                 <div class="modal-header">
@@ -219,18 +219,22 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Export completed! You can download the images to your computer in a ZIP file, or you can save
-                        them to Dropbox.</p>
                     <p>
-                        <button type="button" id="photostack-export-download-zip-button"
-                            class="btn btn-block btn-success">Download</button>
+                        <button type="button" id="photostack-export-separate-button"
+                            class="btn btn-block btn-success">Download as separate files</button>
+                    </p>
+                    <p class="text-muted" style="text-align:center">Downloading as separate files is blocked in some
+                        browsers.</p>
+                    <p>
+                        <button type="button" id="photostack-export-zip-button"
+                            class="btn btn-block btn-success">Download as ZIP</button>
                     </p>
                     <p>
-                        <button type="button" id="photostack-export-download-dropbox-button"
+                        <button type="button" id="photostack-export-dropbox-button"
                             class="btn btn-block btn-dropbox">Save
                             to Dropbox</button>
                     </p>
-                    <p>If you found PhotoStack useful, please <a href="donate.html">donate</a> to help support the
+                    <p style="text-align: center">If you found PhotoStack useful, please <a href="donate.html">donate</a> to help support the
                         project!</p>
                 </div>
             </div>

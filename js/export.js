@@ -71,12 +71,19 @@ function createZip() {
             // Switch modal content to finished result
             document.querySelector('.photostack-export-modal-loading').style.display = 'none'
             document.querySelector('.photostack-export-modal-finished').style.display = 'block'
-            // Download file when Download button is clicked
-            document.getElementById('photostack-export-download-zip-button').addEventListener('click', function() {
+            // Download files separately
+            document.getElementById('photostack-export-separate-button').addEventListener('click', function() {
+                // Grab files from the Dropbox object because it's easy
+                dropboxOptions.files.forEach(function (file) {
+                    saveAs(file.url, file.filename)
+                })
+            })
+            // Download as ZIP
+            document.getElementById('photostack-export-zip-button').addEventListener('click', function() {
                 saveAs(content, 'images.zip')
             })
-            // Save file to Dropbox when Dropbox button is clicked
-            document.getElementById('photostack-export-download-dropbox-button').addEventListener('click', function() {
+            // Save file to Dropbox
+            document.getElementById('photostack-export-dropbox-button').addEventListener('click', function() {
                 if (navigator.onLine) {
                     if (typeof Dropbox == 'undefined') {
                         alert('The Dropbox API has not been properly loaded. Please refresh or re-open PhotoStack and try again.')
