@@ -1,41 +1,16 @@
-// Register service worker
+// This is the "Offline copy of pages" service worker from PWA Builder
 
-if (navigator.serviceWorker) {
-
-	var newWorker;
-
-	$(document).on("click", ".pwa-refresh", function() {
-		newWorker.postMessage({ action: 'skipWaiting' });
-	});
-
-	navigator.serviceWorker.register("/sw.js").then(reg => {
-		reg.addEventListener("updatefound", () => {
-			// A wild service worker has appeared in reg.installing!
-			newWorker = reg.installing;
-			newWorker.addEventListener("statechange", () => {
-				// Has network.state changed?
-				switch (newWorker.state) {
-					case "installed":
-						if (navigator.serviceWorker.controller) {
-							// new update available
-							document.querySelector('.pwa-refresh').style.display = "block"
-						} else {
-							// no update available
-							console.log("No service worker update available.");
-						}
-						break;
-				}
+if ("serviceWorker" in navigator) {
+	if (navigator.serviceWorker.controller) {
+		console.log("Active service worker found, no need to register");
+	} else {
+		// Register the service worker
+		navigator.serviceWorker
+			.register("sw.js", {
+				scope: "./"
+			})
+			.then(function (reg) {
+				console.log("Service worker has been registered for scope: " + reg.scope);
 			});
-		});
-	});
-
-	var refreshing;
-	
-	navigator.serviceWorker.addEventListener("controllerchange", function () {
-		console.log("controllerchange");
-		if (refreshing) return;
-		window.location.reload();
-		refreshing = true;
-	});
-
+	}
 }
