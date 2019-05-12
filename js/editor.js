@@ -142,9 +142,6 @@ document.getElementById('photostack-import-file').addEventListener('change', fun
         // Set the image source to the reader result, once the reader is done
         reader.onload = function () {
             image.src = reader.result
-            if (index === 0) {
-                renderPreviewCanvas()
-            }
         }
         reader.onerror = function () {
             alert('Could not import this image: ' + file.name)
@@ -155,6 +152,9 @@ document.getElementById('photostack-import-file').addEventListener('change', fun
             document.getElementById('photostack-original-container').appendChild(image)
             // Increase image counter
             increaseImageCount(1)
+            if (index === 0) {
+                renderPreviewCanvas()
+            }
         }
         reader.readAsDataURL(file)
     })

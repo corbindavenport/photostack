@@ -51,8 +51,8 @@
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <button id="photostack-export-button" class="btn btn-outline-success btn-block my-2 my-sm-0"
-                    type="button" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static"
+                <button id="photostack-export-button" class="btn btn-success btn-block my-2 my-sm-0" type="button"
+                    data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static"
                     data-keyboard="false" disabled>Export images</button>
             </form>
         </div>
@@ -98,13 +98,13 @@
                                     aria-label="Enter image URL" aria-describedby="photostack-import-url"
                                     id="photostack-image-width" autocomplete="off">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button"
+                                    <button class="btn btn-secondary" type="button"
                                         id="photostack-image-width-button">Resize</button>
                                 </div>
                             </div>
                         </p>
                         <p>
-                            <button class="btn btn-primary btn-block" type="button"
+                            <button class="btn btn-secondary btn-block" type="button"
                                 id="photostack-reset-image-width-button">Reset
                                 image scale</button>
                         </p>
@@ -121,6 +121,16 @@
                         <p><select class="custom-select" id="photostack-watermark-select" autocomplete="off">
                                 <option selected value="no-watermark">No watermark</option>
                             </select></p>
+                    </div>
+                </div>
+                <!-- Other options card-->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Miscellaneous Settings</h5>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="photostack-exif" checked disabled>
+                            <label class="form-check-label" for="photostack-exif">Remove EXIF data</label>
+                        </div>
                     </div>
                 </div>
             </div>
