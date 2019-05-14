@@ -61,12 +61,19 @@
                     your web browser, complete with watermarking support and compatibility with the latest web
                     standards.</p>
                 <p>
-                    <a href="editor.html" class="btn btn-primary btn-lg">Open PhotoStack</a>
+                    <!--[if IE]>
+                        <div class="alert alert-danger" role="alert">
+                            <b>PhotoStack does not work on Internet Explorer 9 and older.</b> Please upgrade to Internet Explorer 10, or download <a href="https://www.mozilla.org/en-US/firefox/" target="_blank">Mozilla Firefox</a> or <a href="https://www.google.com/chrome/" target="_blank">Google Chrome</a>.
+                        </div>
+                        <style>.photostack-open-button { display: none }</style>
+                    <![endif]-->
+                    <a href="editor.html" class="btn btn-primary btn-lg photostack-open-button">Open PhotoStack</a>
                 </p>
             </div>
         </section>
 
         <div class="container">
+
 
             <div class="row">
                 <div class="col-sm">
@@ -122,7 +129,8 @@
                     <p>
                         <h3>Works on mobile</h3>
                     </p>
-                    <p>PhotoStack works best on a desktop or laptop computer, but if you're on the go, it also functions well on mobile devices like phones and tablets.</p>
+                    <p>PhotoStack works best on a desktop or laptop computer, but if you're on the go, it also functions
+                        well on mobile devices like phones and tablets.</p>
                 </div>
             </div>
 
