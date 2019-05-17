@@ -69,8 +69,25 @@ function loadWatermark(id) {
     var newAnchor = document.getElementById('photostack-watermark-pos-' + globalWatermark.anchorPosition)
     newAnchor.classList.remove('btn-secondary')
     newAnchor.classList.add('btn-primary')
+    // Make Delete button visible and delete right border radius from select
+    $('.photostack-watermark-delete').show()
+    document.getElementById('photostack-watermark-select').removeAttribute('style')
     // Generate preview
     renderPreviewCanvas()
+}
+
+// Export watermark to JSON file
+function exportWatermarkSettings() {
+    var watermarkName = prompt('Enter name for exported watermark:')
+    if (watermarkName != null && watermarkName != '') {
+        // Save settings to JSON file
+        var watermarkText = JSON.stringify(globalWatermark)
+        var fileName = watermarkName + ".json"
+        var blob = new Blob([watermarkText], { type: "application/json;charset=utf-8" })
+        saveAs(blob, fileName)
+    } else {
+        alert('Watermark name cannot be blank!')
+    }
 }
 
 // Add image from local file
@@ -154,7 +171,7 @@ function applyWatermarkSettings(canvas) {
     } else {
         console.log('Applying watermark settings to preview...')
     }
-    
+
 }
 
 // Render canvas of preview image
@@ -229,13 +246,25 @@ function renderPreviewCanvas() {
 }
 
 // Read watermarks from localStorage
-for (var i = 0; i < localStorage.length; i++) {
-    if (localStorage.key(i).includes('Watermark')) {
-        // Add watermark to select menu
-        var option = document.createElement('option')
-        option.innerText = localStorage.key(i).replace('Watermark: ', '') // Remove "Watermark: " from the key name
-        option.value = i
-        document.getElementById('photostack-watermark-select').appendChild(option)
+function loadWatermarkList() {
+    var select = document.getElementById('photostack-watermark-select')
+    // Delete current content
+    select.innerHTML = ''
+    // Add disabled options
+    var disabledOption = document.createElement('option')
+    disabledOption.innerText = 'Select a watermark...'
+    disabledOption.disabled = true
+    disabledOption.selected = true
+    select.appendChild(disabledOption)
+    // Populate rest of select with stored watermarks
+    for (var i = 0; i < localStorage.length; i++) {
+        if (localStorage.key(i).includes('Watermark')) {
+            // Add watermark to select menu
+            var option = document.createElement('option')
+            option.innerText = localStorage.key(i).replace('Watermark: ', '') // Remove "Watermark: " from the key name
+            option.value = i
+            select.appendChild(option)
+        }
     }
 }
 
@@ -243,11 +272,16 @@ for (var i = 0; i < localStorage.length; i++) {
 document.getElementById('photostack-watermark-select').addEventListener('change', function () {
     loadWatermark(this.value)
 })
-document.getElementById('photostack-save-watermark').addEventListener('click', function () {
+document.querySelector('.photostack-watermark-save').addEventListener('click', function () {
     saveWatermark()
+    loadWatermarkList()
 })
-document.getElementById('photostack-delete-watermark').addEventListener('click', function () {
+document.querySelector('.photostack-watermark-delete').addEventListener('click', function () {
     deleteWatermark(document.getElementById('photostack-watermark-select').value)
+    loadWatermarkList()
+})
+document.querySelector('.photostack-watermark-export').addEventListener('click', function () {
+    exportWatermarkSettings()
 })
 
 // Local image picker
@@ -306,3 +340,4 @@ window.onerror = function () {
 }
 
 renderPreviewCanvas()
+loadWatermarkList()
