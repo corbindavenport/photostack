@@ -62,9 +62,7 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="photostack-watermark-dropdown-btn">
                     <a class="dropdown-item photostack-watermark-save" href="#">Save settings as new watermark</a>
                     <a class="dropdown-item photostack-watermark-export" href="#">Export settings to file</a>
-                    <!--
                     <a class="dropdown-item photostack-watermark-import" href="#">Import settings from file</a>
-                    -->
                 </div>
             </div>
         </form>
@@ -235,6 +233,8 @@
     <div id="photostack-canvas-container"></div>
     <!-- Container where the current watermark image is saved -->
     <div id="photostack-watermark-original"></div>
+    <!-- File picker for watermark imports -->
+    <input type="file" id="photostack-watermark-file-import" accept=".json" style="display: none">
     <!-- Scripts -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/polyfills.js"></script>

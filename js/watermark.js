@@ -44,6 +44,9 @@ function deleteWatermark(id) {
         localStorage.removeItem(selectedWatermark)
         alert('Watermark deleted.')
     }
+    // Hide Delete button and a right border radius from select
+    $('.photostack-watermark-delete').hide()
+    document.getElementById('photostack-watermark-select').setAttribute('style', 'border-radius: 0.3rem')
 }
 
 // Load selected watermark from localStorage
@@ -90,6 +93,36 @@ function exportWatermarkSettings() {
     }
 }
 
+// Import watermark from JSON file
+function importWatermarkSettings(file) {
+    // Make sure image file is less than 1.5MB
+    if (file.size > 1572864) {
+        alert('Watermark must be under 1.5MB!')
+        return
+    }
+    // Read the file
+    var reader = new FileReader()
+    reader.onload = function () {
+        // Make sure file is valid JSON
+        try {
+            var watermarkObj = JSON.parse(reader.result)
+        } catch (error) {
+            alert('Error: ' + error)
+        }
+        // Add watermark to localStorage
+        var watermarkName = file.name.replace('.json', '')
+        localStorage['Watermark: ' + watermarkName] = reader.result
+        alert('Watermark saved to list as "' + watermarkName + '".')
+        loadWatermarkList()
+    }
+    reader.onerror = function (event) {
+        alert('Error: ' + event)
+    }
+    reader.readAsText(file)
+    // Clear file select
+    document.getElementById('photostack-import-file').value = ''
+}
+
 // Add image from local file
 function importLocalImage(file) {
     // Make sure image file is less than 1MB
@@ -106,8 +139,8 @@ function importLocalImage(file) {
     reader.onload = function () {
         image.src = reader.result
     }
-    reader.onerror = function () {
-        alert('Could not import this image: ' + file.name)
+    reader.onerror = function (event) {
+        alert('Error: ' + event)
     }
     // Once both the reader and image is done, we can safely add it to the originals container and clean up
     image.onload = function () {
@@ -171,7 +204,6 @@ function applyWatermarkSettings(canvas) {
     } else {
         console.log('Applying watermark settings to preview...')
     }
-
 }
 
 // Render canvas of preview image
@@ -282,6 +314,12 @@ document.querySelector('.photostack-watermark-delete').addEventListener('click',
 })
 document.querySelector('.photostack-watermark-export').addEventListener('click', function () {
     exportWatermarkSettings()
+})
+document.querySelector('.photostack-watermark-import').addEventListener('click', function () {
+    $('#photostack-watermark-file-import').click()
+})
+document.getElementById('photostack-watermark-file-import').addEventListener('change', function () {
+    importWatermarkSettings(this.files[0])
 })
 
 // Local image picker
