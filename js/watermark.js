@@ -300,6 +300,16 @@ function loadWatermarkList() {
     }
 }
 
+// Fix for dropdown menu being cut off on mobile devices
+function fixDropdownMenu(element) {
+    var width = document.body.clientWidth
+    if (width >= '991.98') {
+        element.classList.add('dropdown-menu-right')
+    } else {
+        element.classList.remove('dropdown-menu-right')
+    }
+}
+
 // Watermark dropdown menu and buttons
 document.getElementById('photostack-watermark-select').addEventListener('change', function () {
     loadWatermark(this.value)
@@ -372,6 +382,11 @@ window.onbeforeunload = function () {
     }
 }
 
+// Fix dropdown menu
+window.addEventListener("resize", function() {
+    fixDropdownMenu(document.querySelector('.dropdown-menu'))
+})
+
 // Show errors in UI
 window.onerror = function () {
     $('#photostack-error-toast').toast('show')
@@ -379,3 +394,4 @@ window.onerror = function () {
 
 renderPreviewCanvas()
 loadWatermarkList()
+fixDropdownMenu(document.querySelector('.dropdown-menu'))
