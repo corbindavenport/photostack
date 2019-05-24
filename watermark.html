@@ -99,12 +99,8 @@
                         <p class="card-text">This will replace whatever watermark is currently being used. <b>Maximum
                                 file size is 1MB.</b></p>
                         <p>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="photostack-import-file"
-                                    accept="image/*">
-                                <label class="custom-file-label" for="photostack-import-file">Choose image
-                                    file</label>
-                            </div>
+                            <button class="btn btn-secondary btn-block" type="button"
+                                id="photostack-import-file-btn">Import local file</button>
                         </p>
                         <p>
                             <div class="input-group mb-3">
@@ -232,6 +228,8 @@
             There was an error, please try that again in a few seconds.
         </div>
     </div>
+    <!-- File picker -->
+    <input type="file" class="custom-file-input" id="photostack-import-file" accept="image/*">
     <!-- Container where the watermark preview is generated -->
     <div id="photostack-canvas-container"></div>
     <!-- Container where the current watermark image is saved -->

@@ -130,9 +130,7 @@ function importLocalImage(file) {
         alert('Watermark must be under 1MB!')
         return
     }
-    // Disable file picker while import is in progress
-    document.getElementById('photostack-import-file').disabled = true
-    document.querySelector('label[for="photostack-import-file"]').textContent = 'Importing images...'
+    // Create file reader
     var image = document.createElement('img')
     var reader = new FileReader()
     // Set the image source to the reader result, once the reader is done
@@ -150,11 +148,8 @@ function importLocalImage(file) {
         renderPreviewCanvas()
     }
     reader.readAsDataURL(file)
-    // Clear file select
+    // Clear file picker
     document.getElementById('photostack-import-file').value = ''
-    // Re-enable file picker
-    document.getElementById('photostack-import-file').disabled = false
-    document.querySelector('label[for="photostack-import-file"]').textContent = 'Choose image file'
 }
 
 // Add image from URL
@@ -325,8 +320,11 @@ document.querySelector('.photostack-watermark-delete').addEventListener('click',
 document.querySelector('.photostack-watermark-export').addEventListener('click', function () {
     exportWatermarkSettings()
 })
-document.querySelector('.photostack-watermark-import').addEventListener('click', function () {
-    $('#photostack-watermark-file-import').click()
+document.getElementById('photostack-import-file-btn').addEventListener('click', function () {
+    $('#photostack-import-file').click()
+})
+document.getElementById('photostack-import-file-btn').addEventListener('click', function() {
+    $('#photostack-import-file-btn').click()
 })
 document.getElementById('photostack-watermark-file-import').addEventListener('change', function () {
     importWatermarkSettings(this.files[0])
