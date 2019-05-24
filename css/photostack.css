@@ -3,8 +3,7 @@
 }
 
 #photostack-watermark-preview, #photostack-editor-preview img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
 }
 
 #photostack-watermark-preview {
@@ -35,3 +34,11 @@
     color: #000;
     z-index: 100;
 }
+
+/* Fix for Internet Explorer stretching preview windows */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    #photostack-watermark-preview, #photostack-editor-preview img {
+        width: 100% !important;
+        height: 100% !important;
+    }
+ }

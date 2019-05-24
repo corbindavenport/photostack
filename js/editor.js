@@ -127,10 +127,15 @@ function renderPreviewCanvas() {
 }
 
 // Add image from local file
+document.getElementById('photostack-import-file-btn').addEventListener('click', function() {
+    $('#photostack-import-file').click()
+})
 document.getElementById('photostack-import-file').addEventListener('change', function () {
-    // Disable file picker while import is in progress
-    document.getElementById('photostack-import-file').disabled = true
-    document.querySelector('label[for="photostack-import-file"]').textContent = 'Importing images...'
+    var btn = document.getElementById('photostack-import-file-btn')
+    var originalBtnText = document.getElementById('photostack-import-file-btn').innerText
+    // Disable button while import is in progress
+    btn.disabled = true
+    btn.textContent = 'Importing images...'
     // Get files
     var files = document.getElementById('photostack-import-file').files
     console.log('Number of files selected: ' + files.length)
@@ -160,9 +165,9 @@ document.getElementById('photostack-import-file').addEventListener('change', fun
     })
     // Clear file select
     document.getElementById('photostack-import-file').value = ''
-    // Re-enable file picker
-    document.getElementById('photostack-import-file').disabled = false
-    document.querySelector('label[for="photostack-import-file"]').textContent = 'Choose image file'
+    // Re-enable button
+    btn.disabled = false
+    btn.textContent = originalBtnText
 })
 
 // Add image from URL

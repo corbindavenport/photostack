@@ -11,90 +11,95 @@ function createZip() {
     var progressStep = 100 / imgCount
     // Switch modal content to progress indicator
     document.querySelector('.photostack-export-modal-initial').style.display = 'none'
-    document.querySelector('.photostack-export-modal-loading').style.display = 'block'
-    // Start rendering canvases
-    var originals = document.querySelectorAll('#photostack-original-container img')
-    var canvasContainer = document.getElementById('photostack-canvas-container')
-    // Clear current canvas elements
-    canvasContainer.innerHTML = ''
-    // Render canvas for each original image
-    originals.forEach(function (original, i) {
-        // Create canvas element
-        var canvas = document.createElement('canvas')
-        // Add canvas element to canvas container
-        canvasContainer.appendChild(canvas)
-        canvas.width = original.naturalWidth
-        canvas.height = original.naturalHeight
-        canvas.getContext('2d').drawImage(original, 0, 0)
-        // Apply settings
-        applyCanvasSettings(canvas, original)
-    })
-    // Create Dropbox object
-    var dropboxOptions = {
-        files: [],
-        success: function () {
-            alert("Success! Files saved to your Dropbox.");
-        },
-        progress: function (progress) {},
-        cancel: function () {},
-        error: function (errorMessage) {}
-    }
-    // Add canvases to ZIP and Dropbox object
-    var zip = new JSZip()
-    var canvases = document.querySelectorAll('#photostack-canvas-container canvas')
-    canvases.forEach(function (canvas, i) {
-        var canvasData = canvas.toDataURL(imgFormat, imgQuality)
-        // JSZip requires the base64 part of the string to be removed
-        zipData = canvasData.replace('data:' + imgFormat + ';base64,', '')
-        // Give name to file
-        if (imgFormat === 'image/jpeg') {
-            var fileEnding = '.jpg'
-        } else if (imgFormat === 'image/png') {
-            var fileEnding = '.png'
-        } else if (imgFormat === 'image/webp') {
-            var fileEnding = '.webp'
+    // Use jQuery's show() so the progress bar is fully displayed before the image processing begins
+    $('.photostack-export-modal-loading').show('fast', function() {
+        // Set title
+        document.title = 'Photostack (0%)'
+        // Start rendering canvases
+        var originals = document.querySelectorAll('#photostack-original-container img')
+        var canvasContainer = document.getElementById('photostack-canvas-container')
+        // Clear current canvas elements
+        canvasContainer.innerHTML = ''
+        // Render canvas for each original image
+        originals.forEach(function (original, i) {
+            // Create canvas element
+            var canvas = document.createElement('canvas')
+            // Add canvas element to canvas container
+            canvasContainer.appendChild(canvas)
+            canvas.width = original.naturalWidth
+            canvas.height = original.naturalHeight
+            canvas.getContext('2d').drawImage(original, 0, 0)
+            // Apply settings
+            applyCanvasSettings(canvas, original)
+        })
+        // Create Dropbox object
+        var dropboxOptions = {
+            files: [],
+            success: function () {
+                alert("Success! Files saved to your Dropbox.");
+            },
+            progress: function (progress) { },
+            cancel: function () { },
+            error: function (errorMessage) { }
         }
-        var fileName = imgNamePattern + ' ' + i + fileEnding
-        // Add image to dropboxOptions
-        var file = JSON.parse('{"filename": "' + fileName + '", "url": "' + canvasData + '"}')
-        dropboxOptions.files.push(file)
-        // Add image to ZIP
-        zip.file(fileName, zipData, { base64: true });
-        // Update progress bar
-        var width = progressStep * (i + 1)
-        document.getElementById('photostack-zip-progress').style.width = width + '%'
-    })
-    // Generate zip
-    console.log('Generating zip...')
-    zip.generateAsync({ type: 'blob' })
-        .then(function (content) {
-            // Switch modal content to finished result
-            document.querySelector('.photostack-export-modal-loading').style.display = 'none'
-            document.querySelector('.photostack-export-modal-finished').style.display = 'block'
-            // Download files separately
-            document.getElementById('photostack-export-separate-button').addEventListener('click', function() {
-                // Grab files from the Dropbox object because it's easy
-                dropboxOptions.files.forEach(function (file) {
-                    saveAs(file.url, file.filename)
+        // Add canvases to ZIP and Dropbox object
+        var zip = new JSZip()
+        var canvases = document.querySelectorAll('#photostack-canvas-container canvas')
+        canvases.forEach(function (canvas, i) {
+            var canvasData = canvas.toDataURL(imgFormat, imgQuality)
+            // JSZip requires the base64 part of the string to be removed
+            zipData = canvasData.replace('data:' + imgFormat + ';base64,', '')
+            // Give name to file
+            if (imgFormat === 'image/jpeg') {
+                var fileEnding = '.jpg'
+            } else if (imgFormat === 'image/png') {
+                var fileEnding = '.png'
+            } else if (imgFormat === 'image/webp') {
+                var fileEnding = '.webp'
+            }
+            var fileName = imgNamePattern + ' ' + i + fileEnding
+            // Add image to dropboxOptions
+            var file = JSON.parse('{"filename": "' + fileName + '", "url": "' + canvasData + '"}')
+            dropboxOptions.files.push(file)
+            // Add image to ZIP
+            zip.file(fileName, zipData, { base64: true });
+            // Update progress bar and app title
+            var progress = Math.ceil(progressStep * (i + 1))
+            document.title = 'PhotoStack (' + progress + '%)'
+            document.getElementById('photostack-zip-progress').style.width = progress + '%'
+        })
+        // Generate zip
+        console.log('Generating zip...')
+        zip.generateAsync({ type: 'blob' })
+            .then(function (content) {
+                // Switch modal content to finished result
+                document.querySelector('.photostack-export-modal-loading').style.display = 'none'
+                document.querySelector('.photostack-export-modal-finished').style.display = 'block'
+                // Download files separately
+                document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
+                    // Grab files from the Dropbox object because it's easy
+                    dropboxOptions.files.forEach(function (file) {
+                        saveAs(file.url, file.filename)
+                    })
+                })
+                // Download as ZIP
+                document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
+                    saveAs(content, 'images.zip')
+                })
+                // Save file to Dropbox
+                document.getElementById('photostack-export-dropbox-button').addEventListener('click', function () {
+                    if (navigator.onLine) {
+                        if (typeof Dropbox == 'undefined') {
+                            alert('The Dropbox API has not been properly loaded. Please refresh or re-open PhotoStack and try again.')
+                        } else {
+                            Dropbox.save(dropboxOptions)
+                        }
+                    } else {
+                        alert('An internet connection is required to save files to Dropbox.')
+                    }
                 })
             })
-            // Download as ZIP
-            document.getElementById('photostack-export-zip-button').addEventListener('click', function() {
-                saveAs(content, 'images.zip')
-            })
-            // Save file to Dropbox
-            document.getElementById('photostack-export-dropbox-button').addEventListener('click', function() {
-                if (navigator.onLine) {
-                    if (typeof Dropbox == 'undefined') {
-                        alert('The Dropbox API has not been properly loaded. Please refresh or re-open PhotoStack and try again.')
-                    } else {
-                        Dropbox.save(dropboxOptions)
-                    }
-                } else {
-                    alert('An internet connection is required to save files to Dropbox.')
-                }
-            })
-        })
+    })
 }
 
 function updateSampleFileNames() {
@@ -133,6 +138,8 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
     document.querySelector('.photostack-export-modal-finished').style.display = 'none'
     document.querySelector('.photostack-export-modal-initial').style.display = 'block'
     document.getElementById('photostack-zip-progress').style.width = '0%'
+    // Reset title
+    document.title = 'PhotoStack'
 })
 
 // Update sample file names when the page is loaded

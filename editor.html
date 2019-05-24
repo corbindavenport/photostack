@@ -71,11 +71,8 @@
                         <h5 class="card-title">Import images</h5>
                         <p class="card-text">Select photos from your computer or the web to get started.</p>
                         <p>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="photostack-import-file" multiple
-                                    accept="image/*">
-                                <label class="custom-file-label" for="photostack-import-file">Choose image file</label>
-                            </div>
+                            <button class="btn btn-secondary btn-block" type="button"
+                                id="photostack-import-file-btn">Import local files</button>
                         </p>
                         <p>
                             <div class="input-group mb-3">
@@ -244,6 +241,8 @@
             </div>
         </div>
     </div>
+    <!-- File picker -->
+    <input type="file" class="custom-file-input" id="photostack-import-file" multiple accept="image/*">
     <!-- Container where original photos are kept as <img> elements -->
     <div id="photostack-original-container"></div>
     <!-- Container where canvas elements for each image are kept -->
