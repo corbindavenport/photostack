@@ -321,7 +321,7 @@ document.querySelector('.photostack-watermark-export').addEventListener('click',
     exportWatermarkSettings()
 })
 document.getElementById('photostack-import-file-btn').addEventListener('click', function() {
-    $('#photostack-import-file-btn').click()
+    $('#photostack-import-file').click()
 })
 document.getElementById('photostack-watermark-file-import').addEventListener('change', function () {
     importWatermarkSettings(this.files[0])
