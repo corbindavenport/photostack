@@ -320,9 +320,6 @@ document.querySelector('.photostack-watermark-delete').addEventListener('click',
 document.querySelector('.photostack-watermark-export').addEventListener('click', function () {
     exportWatermarkSettings()
 })
-document.getElementById('photostack-import-file-btn').addEventListener('click', function () {
-    $('#photostack-import-file').click()
-})
 document.getElementById('photostack-import-file-btn').addEventListener('click', function() {
     $('#photostack-import-file-btn').click()
 })
