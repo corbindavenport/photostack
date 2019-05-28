@@ -11,7 +11,7 @@
     border-bottom-left-radius: 0.25rem;
 }
 
-#photostack-original-container, #photostack-canvas-container, #photostack-watermark-sample, #photostack-watermark-img, #photostack-import-file {
+#photostack-original-container, #photostack-canvas-container, #photostack-watermark-sample, #photostack-watermark-img, #photostack-import-file, #photostack-watermark-file-import {
     display: none;
 }
 
