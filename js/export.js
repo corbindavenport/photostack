@@ -1,13 +1,3 @@
-// Hide native share button if unsupported by browser
-if (!navigator.canShare || !navigator.canShare(data)) {
-    document.getElementById('photostack-export-web-share-button').style.display = 'none'
-} else {
-    // Change the button name on Android to be more descriptive
-    if (navigator.userAgent.includes('Android')) {
-        document.getElementById('photostack-export-web-share-button').textContent = 'Share to Android app'
-    }
-}
-
 // Main export function
 function createZip() {
     // Set variables
@@ -87,15 +77,6 @@ function createZip() {
                 // Download as ZIP
                 document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
                     saveAs(content, 'images.zip')
-                })
-                // Share to native app
-                document.getElementById('photostack-export-web-share-button').addEventListener('click', function () {
-                    navigator.share({
-                        title: 'Made with PhotoStack',
-                        text: '',
-                        url: 'https://photostack.app',
-                        files: files
-                    })
                 })
             })
     })
