@@ -328,6 +328,9 @@ document.getElementById('photostack-watermark-file-import').addEventListener('ch
 })
 
 // Local image picker
+document.getElementById('photostack-import-file-btn').addEventListener('click', function() {
+    $('#photostack-import-file').click()
+})
 document.getElementById('photostack-import-file').addEventListener('change', function () {
     importLocalImage(this.files[0])
 })
