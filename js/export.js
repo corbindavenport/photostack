@@ -1,3 +1,13 @@
+// Hide native share button if unsupported by browser
+if (!navigator.canShare || !navigator.canShare(data)) {
+    document.getElementById('photostack-export-web-share-button').style.display = 'none'
+} else {
+    // Change the button name on Android to be more descriptive
+    if (navigator.userAgent.includes('Android')) {
+        document.getElementById('photostack-export-web-share-button').textContent = 'Share to Android app'
+    }
+}
+
 // Main export function
 function createZip() {
     // Set variables
@@ -12,7 +22,7 @@ function createZip() {
     // Switch modal content to progress indicator
     document.querySelector('.photostack-export-modal-initial').style.display = 'none'
     // Use jQuery's show() so the progress bar is fully displayed before the image processing begins
-    $('.photostack-export-modal-loading').show('fast', function() {
+    $('.photostack-export-modal-loading').show('fast', function () {
         // Set title
         document.title = 'Photostack (0%)'
         // Start rendering canvases
@@ -32,16 +42,8 @@ function createZip() {
             // Apply settings
             applyCanvasSettings(canvas, original)
         })
-        // Create Dropbox object
-        var dropboxOptions = {
-            files: [],
-            success: function () {
-                alert("Success! Files saved to your Dropbox.");
-            },
-            progress: function (progress) { },
-            cancel: function () { },
-            error: function (errorMessage) { }
-        }
+        // Create files object
+        var files = []
         // Add canvases to ZIP and Dropbox object
         var zip = new JSZip()
         var canvases = document.querySelectorAll('#photostack-canvas-container canvas')
@@ -60,7 +62,7 @@ function createZip() {
             var fileName = imgNamePattern + ' ' + i + fileEnding
             // Add image to dropboxOptions
             var file = JSON.parse('{"filename": "' + fileName + '", "url": "' + canvasData + '"}')
-            dropboxOptions.files.push(file)
+            files.push(file)
             // Add image to ZIP
             zip.file(fileName, zipData, { base64: true });
             // Update progress bar and app title
@@ -78,7 +80,7 @@ function createZip() {
                 // Download files separately
                 document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
                     // Grab files from the Dropbox object because it's easy
-                    dropboxOptions.files.forEach(function (file) {
+                    files.forEach(function (file) {
                         saveAs(file.url, file.filename)
                     })
                 })
@@ -86,17 +88,14 @@ function createZip() {
                 document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
                     saveAs(content, 'images.zip')
                 })
-                // Save file to Dropbox
-                document.getElementById('photostack-export-dropbox-button').addEventListener('click', function () {
-                    if (navigator.onLine) {
-                        if (typeof Dropbox == 'undefined') {
-                            alert('The Dropbox API has not been properly loaded. Please refresh or re-open PhotoStack and try again.')
-                        } else {
-                            Dropbox.save(dropboxOptions)
-                        }
-                    } else {
-                        alert('An internet connection is required to save files to Dropbox.')
-                    }
+                // Share to native app
+                document.getElementById('photostack-export-web-share-button').addEventListener('click', function () {
+                    navigator.share({
+                        title: 'Made with PhotoStack',
+                        text: '',
+                        url: 'https://photostack.app',
+                        files: files
+                    })
                 })
             })
     })
