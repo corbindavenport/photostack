@@ -49,7 +49,8 @@ function createZip() {
             } else if (imgFormat === 'image/webp') {
                 var fileEnding = '.webp'
             }
-            var fileName = imgNamePattern + ' ' + i + fileEnding
+            var num = i + 1
+            var fileName = imgNamePattern + ' ' + num + fileEnding
             // Add image to dropboxOptions
             var file = JSON.parse('{"filename": "' + fileName + '", "url": "' + canvasData + '"}')
             files.push(file)
