@@ -35,6 +35,18 @@
     z-index: 100;
 }
 
+/* Hide warning about Promises and progress bar on browsers that support Promises */
+
+.promises #photostack-promises-alert, .promises .photostack-export-modal-loading .progress {
+    display: none;
+}
+
+/* Don't show spinner on browsers that don't support Promises */
+
+.no-promises .photostack-export-modal-loading .export-spinner {
+    display: none;
+}
+
 /* Fix for Internet Explorer stretching preview windows */
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
     #photostack-watermark-preview, #photostack-editor-preview img {
