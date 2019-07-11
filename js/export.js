@@ -1,5 +1,7 @@
 // Legacy export function for older browsers
 function legacyExport() {
+    // Start timer
+    console.time('Legacy export')
     // Set variables
     var imgFormat = document.getElementById('photostack-export-format').value
     var imgQuality = parseInt(document.getElementById('photostack-export-quality').value) / 100
@@ -51,11 +53,10 @@ function legacyExport() {
             }
             var num = i + 1
             var fileName = imgNamePattern + ' ' + num + fileEnding
-            // Add image to dropboxOptions
-            var file = JSON.parse('{"filename": "' + fileName + '", "url": "' + canvasData + '"}')
-            files.push(file)
+            // Add file to array
+            files.push([fileName, canvasData])
             // Add image to ZIP
-            zip.file(fileName, zipData, { base64: true });
+            zip.file(fileName, zipData, { base64: true })
             // Update progress bar and app title
             var progress = Math.ceil(progressStep * (i + 1))
             document.title = 'PhotoStack (' + progress + '%)'
@@ -70,21 +71,25 @@ function legacyExport() {
                 document.querySelector('.photostack-export-modal-finished').style.display = 'block'
                 // Download files separately
                 document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
-                    // Grab files from the Dropbox object because it's easy
                     files.forEach(function (file) {
-                        saveAs(file.url, file.filename)
+                        // First array item is file name, second item is the data URL
+                        saveAs(file[1], file[0])
                     })
                 })
                 // Download as ZIP
                 document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
                     saveAs(content, 'images.zip')
                 })
+                // End timer
+                console.timeEnd('Legacy export')
             })
     })
 }
 
 // Async export with Promises
 function asyncExport() {
+    // Start timer
+    console.time('Async export')
     // Set variables
     var imgFormat = document.getElementById('photostack-export-format').value
     var imgQuality = parseInt(document.getElementById('photostack-export-quality').value) / 100
@@ -125,10 +130,10 @@ function asyncExport() {
             })
         })
         // When all promises have resolved
-        Promise.all(promises).then(function(blobs) {
+        Promise.all(promises).then(function (blobs) {
             // Create final array of blobs with file names
             var exportedFiles = []
-            blobs.forEach(function(blob, i) {
+            blobs.forEach(function (blob, i) {
                 if (imgFormat === 'image/jpeg') {
                     var fileEnding = '.jpg'
                 } else if (imgFormat === 'image/png') {
@@ -138,10 +143,32 @@ function asyncExport() {
                 }
                 var num = i + 1
                 var fileName = imgNamePattern + ' ' + num + fileEnding
-                // Add to array
+                // Add to files array
                 exportedFiles.push([fileName, blob])
+                // Add to ZIP file
+                zip.file(fileName, blob, { blob: true })
             })
-            console.log(exportedFiles)
+            // Generate zip file
+            console.log('Generating zip...')
+            zip.generateAsync({ type: 'blob' })
+                .then(function (content) {
+                    // Switch modal content to finished result
+                    document.querySelector('.photostack-export-modal-loading').style.display = 'none'
+                    document.querySelector('.photostack-export-modal-finished').style.display = 'block'
+                    // Download files separately
+                    document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
+                        // Grab files from the Dropbox object because it's easy
+                        files.forEach(function (file) {
+                            saveAs(file.url, file.filename)
+                        })
+                    })
+                    // Download as ZIP
+                    document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
+                        saveAs(content, 'images.zip')
+                    })
+                    // Stop time
+                    console.timeEnd('Async export')
+                })
         })
     })
 }
