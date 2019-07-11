@@ -109,66 +109,72 @@ function asyncExport() {
         // Clear current canvas elements
         canvasContainer.innerHTML = ''
         // Render canvas for each original image
-        originals.forEach(function (original, i) {
-            // Create canvas element
-            var canvas = document.createElement('canvas')
-            // Add canvas element to canvas container
-            canvasContainer.appendChild(canvas)
-            canvas.width = original.naturalWidth
-            canvas.height = original.naturalHeight
-            canvas.getContext('2d').drawImage(original, 0, 0)
-            // Apply settings
-            applyCanvasSettings(canvas, original)
-        })
-        // Add canvases to ZIP object
-        var zip = new JSZip()
-        var canvases = document.querySelectorAll('#photostack-canvas-container canvas')
-        // Map the array of images to an array of promises
-        var promises = $.map(canvases, function (canvas) {
+        var canvasPromises = $.map(originals, function (original) {
             return new Promise(function (resolve) {
-                canvas.toBlob(resolve, imgFormat, imgQuality)
+                // Create canvas element
+                var canvas = document.createElement('canvas')
+                // Add canvas element to canvas container
+                canvasContainer.appendChild(canvas)
+                canvas.width = original.naturalWidth
+                canvas.height = original.naturalHeight
+                canvas.getContext('2d').drawImage(original, 0, 0)
+                // Apply settings
+                applyCanvasSettings(canvas, original)
+                resolve(canvas)
             })
         })
-        // When all promises have resolved
-        Promise.all(promises).then(function (blobs) {
-            // Create final array of blobs with file names
-            var exportedFiles = []
-            blobs.forEach(function (blob, i) {
-                if (imgFormat === 'image/jpeg') {
-                    var fileEnding = '.jpg'
-                } else if (imgFormat === 'image/png') {
-                    var fileEnding = '.png'
-                } else if (imgFormat === 'image/webp') {
-                    var fileEnding = '.webp'
-                }
-                var num = i + 1
-                var fileName = imgNamePattern + ' ' + num + fileEnding
-                // Add to files array
-                exportedFiles.push([fileName, blob])
-                // Add to ZIP file
-                zip.file(fileName, blob, { blob: true })
-            })
-            // Generate zip file
-            console.log('Generating zip...')
-            zip.generateAsync({ type: 'blob' })
-                .then(function (content) {
-                    // Switch modal content to finished result
-                    document.querySelector('.photostack-export-modal-loading').style.display = 'none'
-                    document.querySelector('.photostack-export-modal-finished').style.display = 'block'
-                    // Download files separately
-                    document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
-                        // Grab files from the Dropbox object because it's easy
-                        files.forEach(function (file) {
-                            saveAs(file.url, file.filename)
-                        })
-                    })
-                    // Download as ZIP
-                    document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
-                        saveAs(content, 'images.zip')
-                    })
-                    // Stop time
-                    console.timeEnd('Async export')
+        // Continue once all canvases are rendered
+        Promise.all(canvasPromises).then(function (canvases) {
+            // Create a new ZIP object
+            var zip = new JSZip()
+            // Create promises for final render of each image
+            var promises = $.map(canvases, function (canvas) {
+                return new Promise(function (resolve) {
+                    canvas.toBlob(resolve, imgFormat, imgQuality)
                 })
+            })
+            // Show the final export screen when all renders are completed
+            Promise.all(promises).then(function (blobs) {
+                // Create final array of blobs with file names
+                var files = []
+                blobs.forEach(function (blob, i) {
+                    if (imgFormat === 'image/jpeg') {
+                        var fileEnding = '.jpg'
+                    } else if (imgFormat === 'image/png') {
+                        var fileEnding = '.png'
+                    } else if (imgFormat === 'image/webp') {
+                        var fileEnding = '.webp'
+                    }
+                    var num = i + 1
+                    var fileName = imgNamePattern + ' ' + num + fileEnding
+                    // Add to files array
+                    files.push([fileName, blob])
+                    // Add to ZIP file
+                    zip.file(fileName, blob, { blob: true })
+                })
+                // Generate zip file
+                console.log('Generating zip...')
+                zip.generateAsync({ type: 'blob' })
+                    .then(function (content) {
+                        // Switch modal content to finished result
+                        document.querySelector('.photostack-export-modal-loading').style.display = 'none'
+                        document.querySelector('.photostack-export-modal-finished').style.display = 'block'
+                        // Download files separately
+                        document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
+                            // Grab files from the Dropbox object because it's easy
+                            files.forEach(function (file) {
+                                // First array item is file name, second item is the data URL
+                                saveAs(file[1], file[0])
+                            })
+                        })
+                        // Download as ZIP
+                        document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
+                            saveAs(content, 'images.zip')
+                        })
+                        // Stop time
+                        console.timeEnd('Async export')
+                    })
+            })
         })
     })
 }
