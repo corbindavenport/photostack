@@ -67,7 +67,7 @@
     </nav>
     <!-- Main container -->
     <div class="container">
-        <div class="alert alert-success"><b>New:</b> File exports are now quicker on modern browsers!</div>
+        <div class="alert alert-success"><b>New:</b> File exports are now quicker on modern browsers, and images can now be imported directly from Dropbox!</div>
         <div class="row">
             <!-- Settings panel container -->
             <div class="col-md-4">
@@ -80,6 +80,16 @@
                             <button class="btn btn-secondary btn-block" type="button"
                                 id="photostack-import-file-btn">Import local files</button>
                         </p>
+                        <p>
+                            <button class="btn btn-secondary btn-block" type="button"
+                                id="photostack-import-dropbox-btn">Import from Dropbox</button>
+                        </p>
+                        <!--
+                        <p>
+                            <button class="btn btn-secondary btn-block" type="button"
+                                id="photostack-import-dropbox-btn">Import from OneDrive</button>
+                        </p>
+                        -->
                         <p>
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" placeholder="Enter image URL"
@@ -268,6 +278,8 @@
     <script src="js/canvas-toBlob.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
+        data-app-key="sblxtzuush1cfzz"></script>
     <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises support -->
     <script src="js/editor.js"></script>
     <script src="js/export.js"></script>
