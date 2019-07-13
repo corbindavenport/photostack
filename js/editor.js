@@ -126,20 +126,16 @@ function renderPreviewCanvas() {
     }
 }
 
-// Add image from local file
-document.getElementById('photostack-import-file-btn').addEventListener('click', function() {
-    $('#photostack-import-file').click()
-})
-document.getElementById('photostack-import-file').addEventListener('change', function () {
+// Import images from file picker
+function importLocalFiles(element) {
     var btn = document.getElementById('photostack-import-file-btn')
     var originalBtnText = document.getElementById('photostack-import-file-btn').innerText
     // Disable button while import is in progress
     btn.disabled = true
     btn.textContent = 'Importing images...'
     // Get files
-    var files = document.getElementById('photostack-import-file').files
+    var files = element.files
     console.log('Number of files selected: ' + files.length)
-    var filesImported = 0
     // Add each image to originals container
     Array.prototype.forEach.call(files, function (file, index) {
         var image = document.createElement('img')
@@ -168,12 +164,10 @@ document.getElementById('photostack-import-file').addEventListener('change', fun
     // Re-enable button
     btn.disabled = false
     btn.textContent = originalBtnText
-})
+}
 
 // Add image from URL
-document.getElementById('photostack-import-url-button').addEventListener('click', function () {
-    // Get image URL
-    var url = document.getElementById('photostack-import-url').value
+function importWebImage(url) {
     // Get image
     function addImageToCanvas(url) {
         var image = document.createElement('img')
@@ -198,16 +192,28 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
         }
     }
     addImageToCanvas(url)
-})
+}
 
-// Scale image panel
-document.getElementById('photostack-image-width-button').addEventListener('click', function () {
-    renderPreviewCanvas()
-})
-document.getElementById('photostack-reset-image-width-button').addEventListener('click', function () {
-    document.getElementById('photostack-image-width').value = ''
-    renderPreviewCanvas()
-})
+// Add image from Dropbox
+function importDropboxImage() {
+    // Set configuration for file picker
+    options = {
+        success: function(files) {
+            // Send each URL to importWebImage function
+            files.forEach(function(file) {
+                importWebImage(file.link)
+            })
+        },
+        cancel: function() {
+            alert('Could not access file from Dropbox.')
+        },
+        linkType: "direct",
+        multiselect: true,
+        extensions: ['images'],
+        folderselect: false
+    }
+    Dropbox.choose(options)
+}
 
 // Read watermarks from localStorage
 for (var i = 0; i < localStorage.length; i++) {
@@ -242,6 +248,33 @@ document.getElementById('photostack-watermark-select').addEventListener('change'
         // Generate preview
         renderPreviewCanvas()
     }
+})
+
+// Append event listeners to buttons and other elements
+document.getElementById('photostack-import-file-btn').addEventListener('click', function() {
+    $('#photostack-import-file').click()
+})
+document.getElementById('photostack-import-file').addEventListener('change', function () {
+    importLocalFiles(this)
+})
+document.getElementById('photostack-import-url-button').addEventListener('click', function () {
+    importWebImage(document.getElementById('photostack-import-url').value.trim())
+})
+document.getElementById('photostack-import-dropbox-btn').addEventListener('click', function() {
+    if (!Dropbox.isBrowserSupported()) {
+        alert('Sorry, Dropbox does not support your web browser.')
+    } else if (!navigator.onLine) {
+        alert('You are not connected to the internet. Connect to the internet and try again.')
+    } else {
+        importDropboxImage()
+    }
+})
+document.getElementById('photostack-image-width-button').addEventListener('click', function () {
+    renderPreviewCanvas()
+})
+document.getElementById('photostack-reset-image-width-button').addEventListener('click', function () {
+    document.getElementById('photostack-image-width').value = ''
+    renderPreviewCanvas()
 })
 
 // Prevent unload
