@@ -156,6 +156,10 @@ function asyncExport() {
                 console.log('Generating zip...')
                 zip.generateAsync({ type: 'blob' })
                     .then(function (content) {
+                        // Show badge on PWA icon
+                        if ('ExperimentalBadge' in window) {
+                            window.ExperimentalBadge.set()
+                        }
                         // Switch modal content to finished result
                         document.querySelector('.photostack-export-modal-loading').style.display = 'none'
                         document.querySelector('.photostack-export-modal-finished').style.display = 'block'
@@ -221,6 +225,10 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
     document.getElementById('photostack-zip-progress').style.width = '0%'
     // Reset title
     document.title = 'PhotoStack'
+    // Clear PWA icon
+    if ('ExperimentalBadge' in window) {
+        window.ExperimentalBadge.clear()
+    }
 })
 
 // Update sample file names when the page is loaded
