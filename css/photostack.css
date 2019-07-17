@@ -35,6 +35,16 @@
     z-index: 100;
 }
 
+/* Mobile toolbar */
+
+.photostack-mobile-toolbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #303030;
+}
+
 /* Hide warning about Promises and progress bar on browsers that support Promises */
 
 .promises #photostack-promises-alert, .promises .photostack-export-modal-loading .progress {
