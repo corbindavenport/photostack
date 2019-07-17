@@ -35,6 +35,12 @@
     z-index: 100;
 }
 
+.photostack-preview-card {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 90px;
+}
+
 /* Mobile toolbar */
 
 .photostack-mobile-toolbar {
@@ -43,6 +49,47 @@
     right: 0;
     bottom: 0;
     background-color: #303030;
+    z-index: 100;
+}
+
+/* Styles for large devices */
+
+@media (min-width: 992px) {
+
+    #photostack-editor-preview img {
+        max-height: calc(100vh - 160px);
+    }
+
+}
+
+/* Styles for medium/small/x-small devices */
+
+@media (max-width: 991.98px) {
+
+    #photostack-editor-preview img {
+        max-height: 60vh;
+    }
+    
+    nav button[data-target="#photostack-export-modal"] {
+        display: none;
+    }
+
+    /* Fix bottom of container being cut off by mobile toolbar */
+
+    .col-lg-3 {
+        padding-bottom: 45px;
+    }
+
+}
+
+/* Styles for small/x-small devices */
+
+@media (max-width: 767.98px) {
+
+    .photostack-preview-card {
+        position: initial;
+    }
+
 }
 
 /* Hide warning about Promises and progress bar on browsers that support Promises */
