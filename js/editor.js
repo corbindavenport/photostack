@@ -8,10 +8,12 @@ function increaseImageCount(number) {
     document.querySelectorAll('.photostack-image-count').forEach(function (el) {
         el.textContent = globalFilesCount
     })
-    var exportButton = document.getElementById('photostack-export-button')
-    if ((globalFilesCount > 0) && (exportButton.disabled)) {
-        exportButton.disabled = false
-    }
+    var exportBtns = document.querySelectorAll('*[data-target="#photostack-export-modal"]')
+    exportBtns.forEach(function(el) {
+        if ((globalFilesCount > 0) && (el.disabled)) {
+            el.disabled = false
+        }
+    })
 }
 
 // Apply settings to a canvas
