@@ -258,6 +258,27 @@ document.getElementById('photostack-watermark-select').addEventListener('change'
     }
 })
 
+// Update sample file names when text is entered in the name pattern field
+function updateSampleFileNames() {
+    var text = document.getElementById('photostack-file-pattern').value
+    if (text === '') {
+        text = 'vacation'
+    }
+    document.querySelectorAll('.photostack-file-pattern-demo').forEach(function (el) {
+        el.textContent = text
+    })
+}
+
+// Remove image formats from Exporting card that aren't supported
+if (!Modernizr.todataurljpeg) {
+    var option = document.querySelector('#photostack-file-format option[value="image/jpeg"]')
+    option.setAttribute('disabled', true)
+}
+if (!Modernizr.todataurlwebp) {
+    var option = document.querySelector('#photostack-file-format option[value="image/webp"]')
+    option.setAttribute('disabled', true)
+}
+
 // Append event listeners to buttons and other elements
 
 document.querySelectorAll('.photostack-import-file-btn').forEach(function(el) {
@@ -301,6 +322,14 @@ document.getElementById('photostack-reset-image-width-button').addEventListener(
     document.getElementById('photostack-image-width').value = ''
     renderPreviewCanvas()
 })
+
+// Show name pattern example in real-time
+document.getElementById('photostack-file-pattern').addEventListener('keyup', function () {
+    updateSampleFileNames()
+})
+
+// Update sample file names when the page is loaded
+updateSampleFileNames()
 
 // Prevent unload
 window.onbeforeunload = function () {

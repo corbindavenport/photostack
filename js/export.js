@@ -160,6 +160,19 @@ function asyncExport() {
                         if ('ExperimentalBadge' in window) {
                             window.ExperimentalBadge.set()
                         }
+                        // Send notification (if permission is granted)
+                        if ('Notification' in window) {
+                            if (Notification.permission === 'granted') {
+                                var notification = new Notification('PhotoStack', {
+                                    body: 'Your image export is complete.',
+                                    icon: 'img/android-chrome-192x192.png'
+                                })
+                                // Clear the notification when the export dialog is closed, if the notification hasn't already been cleared
+                                $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
+                                    notification.close.bind(notification)
+                                })
+                            }
+                        }
                         // Switch modal content to finished result
                         document.querySelector('.photostack-export-modal-loading').style.display = 'none'
                         document.querySelector('.photostack-export-modal-finished').style.display = 'block'
@@ -183,30 +196,21 @@ function asyncExport() {
     })
 }
 
-function updateSampleFileNames() {
-    var text = document.getElementById('photostack-file-pattern').value
-    if (text === '') {
-        text = 'vacation'
+// Request permission to send notifications
+function getNofificationPermission() {
+    if (Notification.permission === 'granted') {
+        document.getElementById('photostack-enable-notifications-btn').style.display = 'none'
+        document.getElementById('photostack-notification-confirmation').style.display = 'block'
+    } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission(function (permission) {
+            // If the user accepts, let's create a notification
+            if (permission === 'granted') {
+                document.getElementById('photostack-enable-notifications-btn').style.display = 'none'
+                document.getElementById('photostack-notification-confirmation').style.display = 'block'
+            }
+        })
     }
-    document.querySelectorAll('.photostack-file-pattern-demo').forEach(function (el) {
-        el.textContent = text
-    })
 }
-
-// Remove image formats from export dialog that aren't supported
-if (!Modernizr.todataurljpeg) {
-    var option = document.querySelector('#photostack-file-format option[value="image/jpeg"]')
-    option.setAttribute('disabled', true)
-}
-if (!Modernizr.todataurlwebp) {
-    var option = document.querySelector('#photostack-file-format option[value="image/webp"]')
-    option.setAttribute('disabled', true)
-}
-
-// Show name pattern example in real-time
-document.getElementById('photostack-file-pattern').addEventListener('keyup', function () {
-    updateSampleFileNames()
-})
 
 // Export button in modal
 document.getElementById('photostack-export-zip-btn').addEventListener('click', function () {
@@ -216,6 +220,25 @@ document.getElementById('photostack-export-zip-btn').addEventListener('click', f
         legacyExport()
     }
 })
+
+// Notification support
+if ('Notification' in window) {
+    // Check notification permission
+    if (Notification.permission === 'granted') {
+        // If permission is already granted, hide the button to request permission
+        document.getElementById('photostack-enable-notifications-btn').style.display = 'none'
+        document.getElementById('photostack-notification-confirmation').style.display = 'block'
+    } else if (Notification.permission !== 'denied') {
+        // If permission has not been granted, show the button to request permission
+        document.getElementById('photostack-enable-notifications-btn').addEventListener('click', function () {
+            getNofificationPermission()
+        })
+    }
+} else {
+    // Hide notification button and show a warning
+    document.getElementById('photostack-enable-notifications-btn').style.display = 'none'
+    document.getElementById('photostack-notifications-alert').style.display = 'block'
+}
 
 // Reset modal content when the close button is clicked
 $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
@@ -230,6 +253,3 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
         window.ExperimentalBadge.clear()
     }
 })
-
-// Update sample file names when the page is loaded
-updateSampleFileNames()

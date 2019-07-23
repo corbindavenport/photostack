@@ -205,12 +205,27 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p><b>You are about to export <span class="photostack-image-count">0 images</span>.</b></p>
-                    <!-- Show warning about slow exports for legacy browsers -->
-                    <div class="alert alert-warning" id="photostack-promises-alert">
-                        Your browser doesn't support JavaScript Promises, so exporting will take longer and may
-                        temporarily freeze your browser's interface. Update your browser for faster exporting.
-                    </div>
+                    <p>
+                        <b>You are about to export <span class="photostack-image-count">0 images</span>.</b>
+                    </p>
+                    <p>
+                        <!-- Show warning about slow exports for legacy browsers -->
+                        <div class="alert alert-warning" id="photostack-promises-alert">
+                            Your browser does not support JavaScript Promises, so exporting will take longer and may
+                            temporarily freeze your browser's interface. Update your browser for faster exporting.
+                        </div>
+                    </p>
+                    <p>
+                        <!-- Show warning for browsers that don't support notifications -->
+                        <div class="alert alert-warning" id="photostack-notifications-alert" style="display: none">
+                            Your browser does not support notifications, so PhotoStack cannot send a notification when exporting is complete. Update your browser if you want to get notifications.
+                        </div>
+                        <button type="button" class="btn btn-primary btn-block" id="photostack-enable-notifications-btn">Enable notifications for finished exports</button>
+                        <!-- Show confirmation message when notifications are allowed -->
+                        <div class="alert alert-success" id="photostack-notification-confirmation" style="display: none">
+                            Notifications are enabled. You will recieve a desktop notification when the export is complete.
+                        </div>
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="photostack-export-zip-btn" class="btn btn-primary">Export</button>
@@ -223,6 +238,9 @@
                 </div>
                 <div class="modal-body">
                     <p>Your images are being processed. Your browser or device might slow down.</p>
+                    <p>
+                        <b>Note:</b> Some browsers throttle background windows and tabs. To speed up exports, don't close PhotoStack or switch to another tab/window.
+                    </p>
                     <p>
                         <div class="progress">
                             <div class="progress-bar progress-bar-striped progress-bar-animated" id="photostack-zip-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
