@@ -3,9 +3,9 @@ function legacyExport() {
     // Start timer
     console.time('Legacy export')
     // Set variables
-    var imgFormat = document.getElementById('photostack-export-format').value
-    var imgQuality = parseInt(document.getElementById('photostack-export-quality').value) / 100
-    var imgNamePattern = document.getElementById('photostack-name-pattern').value
+    var imgFormat = document.getElementById('photostack-file-format').value
+    var imgQuality = parseInt(document.getElementById('photostack-file-quality').value) / 100
+    var imgNamePattern = document.getElementById('photostack-file-pattern').value
     if (imgNamePattern === '') {
         imgNamePattern = 'image'
     }
@@ -91,9 +91,9 @@ function asyncExport() {
     // Start timer
     console.time('Async export')
     // Set variables
-    var imgFormat = document.getElementById('photostack-export-format').value
-    var imgQuality = parseInt(document.getElementById('photostack-export-quality').value) / 100
-    var imgNamePattern = document.getElementById('photostack-name-pattern').value
+    var imgFormat = document.getElementById('photostack-file-format').value
+    var imgQuality = parseInt(document.getElementById('photostack-file-quality').value) / 100
+    var imgNamePattern = document.getElementById('photostack-file-pattern').value
     if (imgNamePattern === '') {
         imgNamePattern = 'image'
     }
@@ -184,27 +184,27 @@ function asyncExport() {
 }
 
 function updateSampleFileNames() {
-    var text = document.getElementById('photostack-name-pattern').value
+    var text = document.getElementById('photostack-file-pattern').value
     if (text === '') {
         text = 'vacation'
     }
-    document.querySelectorAll('.photostack-name-pattern-demo').forEach(function (el) {
+    document.querySelectorAll('.photostack-file-pattern-demo').forEach(function (el) {
         el.textContent = text
     })
 }
 
 // Remove image formats from export dialog that aren't supported
 if (!Modernizr.todataurljpeg) {
-    var option = document.querySelector('#photostack-export-format option[value="image/jpeg"]')
+    var option = document.querySelector('#photostack-file-format option[value="image/jpeg"]')
     option.setAttribute('disabled', true)
 }
 if (!Modernizr.todataurlwebp) {
-    var option = document.querySelector('#photostack-export-format option[value="image/webp"]')
+    var option = document.querySelector('#photostack-file-format option[value="image/webp"]')
     option.setAttribute('disabled', true)
 }
 
 // Show name pattern example in real-time
-document.getElementById('photostack-name-pattern').addEventListener('keyup', function () {
+document.getElementById('photostack-file-pattern').addEventListener('keyup', function () {
     updateSampleFileNames()
 })
 

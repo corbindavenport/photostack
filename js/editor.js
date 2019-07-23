@@ -6,7 +6,11 @@ var globalFilesCount = 0
 function increaseImageCount(number) {
     globalFilesCount += number
     document.querySelectorAll('.photostack-image-count').forEach(function (el) {
-        el.textContent = globalFilesCount
+        if (globalFilesCount == 1) {
+            el.textContent = globalFilesCount.toString() + ' image'
+        } else {
+            el.textContent = globalFilesCount.toString() + ' images'
+        }
     })
     var exportBtns = document.querySelectorAll('*[data-target="#photostack-export-modal"]')
     exportBtns.forEach(function(el) {
