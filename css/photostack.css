@@ -1,4 +1,4 @@
-.container-fluid, .container {
+.container-fluid {
     margin-top: 90px;
 }
 
@@ -50,6 +50,7 @@
     bottom: 0;
     background-color: #303030;
     z-index: 100;
+    padding: 10px 0 10px 0;
 }
 
 /* Styles for large devices */

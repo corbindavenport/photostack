@@ -182,16 +182,22 @@
         </div>
     </div>
     <!-- Import toolbar for mobile only -->
-    <div class="btn-group btn-group-lg d-lg-none photostack-mobile-toolbar" role="group" aria-label="Mobile toolbar">
-        <div class="btn-group dropup btn-group-lg" role="group">
-            <button id="photostack-mobile-import-btn" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Import</button>
-            <div class="dropdown-menu" aria-labelledby="photostack-mobile-import-btn">
-                <a class="dropdown-item photostack-import-file-btn" href="#">Select from device</a>
-                <a class="dropdown-item photostack-import-url-mobile-btn" href="#">Select from URL</a>
-                <a class="dropdown-item photostack-import-dropbox-btn" href="#">Select from Dropbox</a>
+    <div class="photostack-mobile-toolbar d-lg-none">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 dropup">
+                    <button id="photostack-mobile-import-btn" type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Import</button>
+                    <div class="dropdown-menu" aria-labelledby="photostack-mobile-import-btn">
+                        <a class="dropdown-item photostack-import-file-btn" href="#">Select from device</a>
+                        <a class="dropdown-item photostack-import-url-mobile-btn" href="#">Select from URL</a>
+                        <a class="dropdown-item photostack-import-dropbox-btn" href="#">Select from Dropbox</a>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
+                </div>
             </div>
         </div>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
     </div>
     <!-- Export modal -->
     <div class="modal fade" id="photostack-export-modal" tabindex="-1" role="dialog" aria-labelledby="photostack-export-modal-label" aria-hidden="true">
@@ -220,10 +226,14 @@
                         <div class="alert alert-warning" id="photostack-notifications-alert" style="display: none">
                             Your browser does not support notifications, so PhotoStack cannot send a notification when exporting is complete. Update your browser if you want to get notifications.
                         </div>
-                        <button type="button" class="btn btn-primary btn-block" id="photostack-enable-notifications-btn">Enable notifications for finished exports</button>
+                        <!-- Button for enabling notifications -->
+                        <button type="button" class="btn btn-primary btn-block" id="photostack-enable-notifications-btn">
+                            Enable notifications for finished exports
+                            <span class="badge badge-secondary">New</span>
+                        </button>
                         <!-- Show confirmation message when notifications are allowed -->
                         <div class="alert alert-success" id="photostack-notification-confirmation" style="display: none">
-                            Notifications are enabled. You will recieve a desktop notification when the export is complete.
+                            Notifications are enabled. You will recieve a push notification when the export is complete.
                         </div>
                     </p>
                 </div>
@@ -239,7 +249,7 @@
                 <div class="modal-body">
                     <p>Your images are being processed. Your browser or device might slow down.</p>
                     <p>
-                        <b>Note:</b> Some browsers throttle background windows and tabs. To speed up exports, don't close PhotoStack or switch to another tab/window.
+                        <b>Note:</b> Some browsers throttle background windows and tabs. To speed up exports, don't minimize PhotoStack or switch to another tab/window.
                     </p>
                     <p>
                         <div class="progress">
