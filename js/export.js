@@ -79,7 +79,7 @@ function legacyExport() {
                                 notification.close.bind(notification)
                             })
                         } catch (error) {
-                            console.log('Error sending notification:', eror)
+                            console.log('Error sending notification:', error)
                         }
                     }
                 }
@@ -193,7 +193,7 @@ function asyncExport() {
                                         notification.close.bind(notification)
                                     })
                                 } catch (error) {
-                                    console.log('Error sending notification:', eror)
+                                    console.log('Error sending notification:', error)
                                 }
                             }
                         }
