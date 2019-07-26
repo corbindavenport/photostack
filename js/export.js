@@ -69,14 +69,18 @@ function legacyExport() {
                 // Send notification (if permission is granted)
                 if ('Notification' in window) {
                     if (Notification.permission === 'granted') {
-                        var notification = new Notification('PhotoStack', {
-                            body: 'Your image export is complete.',
-                            icon: 'img/android-chrome-192x192.png'
-                        })
-                        // Clear the notification when the export dialog is closed, if the notification hasn't already been cleared
-                        $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
-                            notification.close.bind(notification)
-                        })
+                        try {
+                            var notification = new Notification('PhotoStack', {
+                                body: 'Your image export is complete.',
+                                icon: 'img/android-chrome-192x192.png'
+                            })
+                            // Clear the notification when the export dialog is closed, if the notification hasn't already been cleared
+                            $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
+                                notification.close.bind(notification)
+                            })
+                        } catch (error) {
+                            console.log('Error sending notification:', eror)
+                        }
                     }
                 }
                 // Switch modal content to finished result
@@ -179,14 +183,18 @@ function asyncExport() {
                         // Send notification (if permission is granted)
                         if ('Notification' in window) {
                             if (Notification.permission === 'granted') {
-                                var notification = new Notification('PhotoStack', {
-                                    body: 'Your image export is complete.',
-                                    icon: 'img/android-chrome-192x192.png'
-                                })
-                                // Clear the notification when the export dialog is closed, if the notification hasn't already been cleared
-                                $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
-                                    notification.close.bind(notification)
-                                })
+                                try {
+                                    var notification = new Notification('PhotoStack', {
+                                        body: 'Your image export is complete.',
+                                        icon: 'img/android-chrome-192x192.png'
+                                    })
+                                    // Clear the notification when the export dialog is closed, if the notification hasn't already been cleared
+                                    $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
+                                        notification.close.bind(notification)
+                                    })
+                                } catch (error) {
+                                    console.log('Error sending notification:', eror)
+                                }
                             }
                         }
                         // Switch modal content to finished result
@@ -195,7 +203,7 @@ function asyncExport() {
                         // Web Share API
                         var shareData = { files: files }
                         if (navigator.canShare && navigator.canShare(shareData)) {
-                            document.getElementById('photostack-export-web-share-button').addEventListener('click', function() {
+                            document.getElementById('photostack-export-web-share-button').addEventListener('click', function () {
                                 navigator.share({
                                     files: files,
                                     title: 'PhotoStack export'
