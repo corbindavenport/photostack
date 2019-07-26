@@ -211,8 +211,8 @@ function asyncExport() {
                                     .then(function () {
                                         console.log('Share successful.')
                                     })
-                                    .catch(function (error) {
-                                        console.log('Sharing failed:', error)
+                                    .catch(function (e) {
+                                        console.error(e.stack)
                                     })
                             })
                         } else {
