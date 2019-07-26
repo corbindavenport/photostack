@@ -41,8 +41,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <a class="navbar-brand" href="index.html">PhotoStack</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -61,70 +60,72 @@
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <button id="photostack-export-button" class="btn btn-secondary btn-block my-2 my-sm-0" type="button"
-                    data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static"
-                    data-keyboard="false" disabled>Export images</button>
+                <button class="btn btn-secondary btn-block my-2 my-sm-0" type="button" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export images</button>
             </form>
         </div>
     </nav>
     <!-- Main container -->
-    <div class="container">
-        <div class="alert alert-success"><b>New:</b> File exports are now quicker on modern browsers, and images can now be imported directly from Dropbox!</div>
+    <div class="container-fluid" style="margin-top: 90px">
         <div class="row">
-            <!-- Settings panel container -->
-            <div class="col-md-4">
-                <!-- Import photos card -->
+            <!-- Import container -->
+            <div class="col-lg-3 d-none d-lg-block">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Import images</h5>
                         <p class="card-text">Select photos from your computer or the web to get started.</p>
                         <p>
-                            <button class="btn btn-secondary btn-block" type="button"
-                                id="photostack-import-file-btn">Import local files</button>
+                            <button class="btn btn-secondary btn-block photostack-import-file-btn" type="button">Import local files</button>
                         </p>
                         <p>
-                            <button class="btn btn-secondary btn-block" type="button"
-                                id="photostack-import-dropbox-btn">Import from Dropbox</button>
+                            <button class="btn btn-secondary btn-block photostack-import-dropbox-btn" type="button">Import from Dropbox</button>
                         </p>
                         <!--
                         <p>
-                            <button class="btn btn-secondary btn-block" type="button"
-                                id="photostack-import-dropbox-btn">Import from OneDrive</button>
+                            <button class="btn btn-secondary btn-block" type="button" id="photostack-import-dropbox-btn">Import from OneDrive</button>
                         </p>
                         -->
                         <p>
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Enter image URL"
-                                    aria-label="Enter image URL" aria-describedby="photostack-import-url"
-                                    id="photostack-import-url" autocomplete="off">
+                                <input type="text" class="form-control" placeholder="Enter image URL" aria-label="Enter image URL" aria-describedby="photostack-import-url" id="photostack-import-url" autocomplete="off">
                                 <div class="input-group-append">
-                                    <button class="btn btn-secondary" type="button"
-                                        id="photostack-import-url-button">Import</button>
+                                    <button class="btn btn-secondary" type="button" id="photostack-import-url-button">Import</button>
                                 </div>
                             </div>
                         </p>
-                        <p><span class="photostack-image-count">0</span> photos currently imported</p>
+                        <p><span class="photostack-image-count">0 images</span> currently imported</p>
                     </div>
                 </div>
+            </div>
+            <!-- Preview container -->
+            <div class="col-lg col-md-6">
+                <!-- Temporary text for when no photos are imported -->
+                <div class="card photostack-preview-card">
+                    <div class="card-header">
+                        Image preview
+                    </div>
+                    <div class="card-body" style="padding: 0">
+                        <div class="text-center" id="photostack-editor-preview">
+                            <p><br />A preview of your settings will appear here once you import some images.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Settings panel container -->
+            <div class="col-lg-3 col-md-6">
                 <!-- Resize card -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Scaling</h5>
                         <p>
                             <div class="input-group mb-3">
-                                <input type="number" class="form-control" placeholder="Image width (px)"
-                                    aria-label="Enter image URL" aria-describedby="photostack-import-url"
-                                    id="photostack-image-width" autocomplete="off">
+                                <input type="number" class="form-control" placeholder="Image width (px)" aria-label="Enter image URL" aria-describedby="photostack-import-url" id="photostack-image-width" autocomplete="off">
                                 <div class="input-group-append">
-                                    <button class="btn btn-secondary" type="button"
-                                        id="photostack-image-width-button">Resize</button>
+                                    <button class="btn btn-secondary" type="button" id="photostack-image-width-button">Resize</button>
                                 </div>
                             </div>
                         </p>
                         <p>
-                            <button class="btn btn-secondary btn-block" type="button"
-                                id="photostack-reset-image-width-button">Reset
-                                image scale</button>
+                            <button class="btn btn-secondary btn-block" type="button" id="photostack-reset-image-width-button">Reset image scale</button>
                         </p>
                         <p class="card-text">
                             Only resizing to a maximum width is supported right now.
@@ -138,7 +139,33 @@
                         <p>Create and edit watermarks from <a href="watermark.html">the watermarks page</a>.</p>
                         <p><select class="custom-select" id="photostack-watermark-select" autocomplete="off">
                                 <option selected value="no-watermark">No watermark</option>
-                            </select></p>
+                            </select>
+                        </p>
+                    </div>
+                </div>
+                <!-- File options -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Exporting</h5>
+                        <div class="form-group">
+                            <label for="photostack-file-format">File format</label>
+                            <select class="form-control" id="photostack-file-format" autocomplete="on">
+                                <option value="image/jpeg">JPEG (.jpg)</option>
+                                <option value="image/png">Portable Network Graphics (.png)</option>
+                                <option value="image/webp">WebP (.webp)</option>
+                            </select>
+                            <small class="form-text text-muted">Image format support varies by browser.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="photostack-file-quality">Image quality</label>
+                            <input type="number" class="form-control" id="photostack-file-quality" value="92" min="1" max="100" autocomplete="on">
+                            <small class="form-text text-muted">Choose a value from 1-100.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="photostack-file-quality">Name pattern</label>
+                            <input type="text" class="form-control" id="photostack-file-pattern" autocomplete="on">
+                            <small class="form-text text-muted">Name to append to the start of each image. Example: <span class="photostack-file-pattern-demo">vacation</span> 1.jpg, <span class="photostack-file-pattern-demo">vacation</span> 2.jpg, etc.</small>
+                        </div>
                     </div>
                 </div>
                 <!-- Other options card-->
@@ -152,28 +179,28 @@
                     </div>
                 </div>
             </div>
-            <!-- Preview container -->
-            <div class="col-md">
-                <!-- Temporary text for when no photos are imported -->
-                <div class="card">
-                    <div class="card-header">
-                        Image preview
+        </div>
+    </div>
+    <!-- Import toolbar for mobile only -->
+    <div class="photostack-mobile-toolbar d-lg-none">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 dropup">
+                    <button id="photostack-mobile-import-btn" type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Import</button>
+                    <div class="dropdown-menu" aria-labelledby="photostack-mobile-import-btn">
+                        <a class="dropdown-item photostack-import-file-btn" href="#">Select from device</a>
+                        <a class="dropdown-item photostack-import-url-mobile-btn" href="#">Select from URL</a>
+                        <a class="dropdown-item photostack-import-dropbox-btn" href="#">Select from Dropbox</a>
                     </div>
-                    <div class="card-body" style="padding: 0">
-                        <div class="text-center" id="photostack-editor-preview">
-                            <p><br /><i>An image preview will appear here once you start editing.</i></p>
-                        </div>
-                    </div>
-                    <div class="card-footer text-muted">
-                        Preview may be displayed at a lower resolution than the final result.
-                    </div>
+                </div>
+                <div class="col-6">
+                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- Export modal -->
-    <div class="modal fade" id="photostack-export-modal" tabindex="-1" role="dialog"
-        aria-labelledby="photostack-export-modal-label" aria-hidden="true">
+    <div class="modal fade" id="photostack-export-modal" tabindex="-1" role="dialog" aria-labelledby="photostack-export-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <!-- Initial UI -->
             <div class="modal-content photostack-export-modal-initial">
@@ -184,34 +211,31 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- Show warning about slow exports for legacy browsers -->
-                    <div class="alert alert-warning" id="photostack-promises-alert">
-                        Your browser doesn't support JavaScript Promises, so exporting will take longer and may
-                        temporarily freeze your browser's interface. Update your browser for faster exporting.
-                    </div>
-                    <p><b>You are exporting <span class="photostack-image-count">0</span> images.</b></p>
-                    <div class="form-group">
-                        <label for="photostack-export-format">File format</label>
-                        <select class="form-control" id="photostack-export-format" autocomplete="on">
-                            <option value="image/jpeg">JPEG (.jpg)</option>
-                            <option value="image/png">Portable Network Graphics (.png)</option>
-                            <option value="image/webp">WebP (.webp)</option>
-                        </select>
-                        <small class="form-text text-muted">Image format support varies by browser.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="photostack-export-quality">Image quality</label>
-                        <input type="number" class="form-control" id="photostack-export-quality" value="92" min="1"
-                            max="100" autocomplete="on">
-                        <small class="form-text text-muted">Choose a value from 1-100.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="photostack-export-quality">Name pattern</label>
-                        <input type="text" class="form-control" id="photostack-name-pattern" autocomplete="on">
-                        <small class="form-text text-muted">Name to append to the start of each image. Example: <span
-                                class="photostack-name-pattern-demo">vacation</span> 1.jpg, <span
-                                class="photostack-name-pattern-demo">vacation</span> 2.jpg, etc.</small>
-                    </div>
+                    <p>
+                        <b>You are about to export <span class="photostack-image-count">0 images</span>.</b>
+                    </p>
+                    <p>
+                        <!-- Show warning about slow exports for legacy browsers -->
+                        <div class="alert alert-warning" id="photostack-promises-alert">
+                            Your browser does not support JavaScript Promises, so exporting will take longer and may
+                            temporarily freeze your browser's interface. Update your browser for faster exporting.
+                        </div>
+                    </p>
+                    <p>
+                        <!-- Show warning for browsers that don't support notifications -->
+                        <div class="alert alert-warning" id="photostack-notifications-alert" style="display: none">
+                            Your browser does not support notifications, so PhotoStack cannot send a notification when exporting is complete. Update your browser if you want to get notifications.
+                        </div>
+                        <!-- Button for enabling notifications -->
+                        <button type="button" class="btn btn-primary btn-block" id="photostack-enable-notifications-btn">
+                            Enable notification for finished export
+                            <span class="badge badge-secondary">New</span>
+                        </button>
+                        <!-- Show confirmation message when notifications are allowed -->
+                        <div class="alert alert-success" id="photostack-notification-confirmation" style="display: none">
+                            Notifications are enabled. You will recieve a push notification when the export is complete.
+                        </div>
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="photostack-export-zip-btn" class="btn btn-primary">Export</button>
@@ -225,10 +249,11 @@
                 <div class="modal-body">
                     <p>Your images are being processed. Your browser or device might slow down.</p>
                     <p>
+                        <b>Note:</b> Some browsers throttle background windows and tabs. To speed up exports, don't minimize PhotoStack or switch to another tab/window.
+                    </p>
+                    <p>
                         <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                id="photostack-zip-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-                                style="width: 0%"></div>
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" id="photostack-zip-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                         </div>
                         <div class="d-flex justify-content-center export-spinner">
                             <div class="spinner-border" role="status">
@@ -247,19 +272,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>
-                        <button type="button" id="photostack-export-separate-button"
-                            class="btn btn-block btn-success">Download as separate files</button>
+                    <p class="photostack-web-share-btn-container">
+                        <button type="button" id="photostack-export-web-share-button" class="btn btn-block btn-success">Share to installed application</button>
                     </p>
-                    <p class="text-muted" style="text-align:center">Downloading as separate files is blocked in some
-                        browsers.</p>
                     <p>
-                        <button type="button" id="photostack-export-zip-button"
-                            class="btn btn-block btn-success">Download as ZIP</button>
+                        <button type="button" id="photostack-export-separate-button" class="btn btn-block btn-success">Download as separate files</button>
                     </p>
-                    <p style="text-align: center">If you found PhotoStack useful, please <a
-                            href="donate.html">donate</a> to help support the
-                        project!</p>
+                    <p class="text-muted" style="text-align:center">Downloading as separate files is blocked in some browsers.</p>
+                    <p>
+                        <button type="button" id="photostack-export-zip-button" class="btn btn-block btn-success">Download as ZIP</button>
+                    </p>
+                    <p style="text-align: center">If you found PhotoStack useful, please <a href="donate.html">donate</a> to help support the project!</p>
                 </div>
             </div>
         </div>
@@ -280,8 +303,7 @@
     <script src="js/canvas-toBlob.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
-        data-app-key="sblxtzuush1cfzz"></script>
+    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="sblxtzuush1cfzz"></script>
     <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises support -->
     <script src="js/editor.js"></script>
     <script src="js/export.js"></script>

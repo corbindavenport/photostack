@@ -6,12 +6,18 @@ var globalFilesCount = 0
 function increaseImageCount(number) {
     globalFilesCount += number
     document.querySelectorAll('.photostack-image-count').forEach(function (el) {
-        el.textContent = globalFilesCount
+        if (globalFilesCount == 1) {
+            el.textContent = globalFilesCount.toString() + ' image'
+        } else {
+            el.textContent = globalFilesCount.toString() + ' images'
+        }
     })
-    var exportButton = document.getElementById('photostack-export-button')
-    if ((globalFilesCount > 0) && (exportButton.disabled)) {
-        exportButton.disabled = false
-    }
+    var exportBtns = document.querySelectorAll('*[data-target="#photostack-export-modal"]')
+    exportBtns.forEach(function(el) {
+        if ((globalFilesCount > 0) && (el.disabled)) {
+            el.disabled = false
+        }
+    })
 }
 
 // Apply settings to a canvas
@@ -128,11 +134,12 @@ function renderPreviewCanvas() {
 
 // Import images from file picker
 function importLocalFiles(element) {
-    var btn = document.getElementById('photostack-import-file-btn')
-    var originalBtnText = document.getElementById('photostack-import-file-btn').innerText
-    // Disable button while import is in progress
-    btn.disabled = true
-    btn.textContent = 'Importing images...'
+    // Disable buttons while import is in progress
+    var desktopBtn = document.querySelector('button.photostack-import-file-btn')
+    var mobileBtn = document.querySelector('#photostack-mobile-import-btn')
+    desktopBtn.disabled = true
+    desktopBtn.textContent = 'Importing images...'
+    mobileBtn.disabled = true
     // Get files
     var files = element.files
     console.log('Number of files selected: ' + files.length)
@@ -161,9 +168,10 @@ function importLocalFiles(element) {
     })
     // Clear file select
     document.getElementById('photostack-import-file').value = ''
-    // Re-enable button
-    btn.disabled = false
-    btn.textContent = originalBtnText
+    // Re-enable buttons
+    desktopBtn.disabled = false
+    desktopBtn.textContent = 'Import local files'
+    mobileBtn.disabled = false
 }
 
 // Add image from URL
@@ -250,32 +258,78 @@ document.getElementById('photostack-watermark-select').addEventListener('change'
     }
 })
 
+// Update sample file names when text is entered in the name pattern field
+function updateSampleFileNames() {
+    var text = document.getElementById('photostack-file-pattern').value
+    if (text === '') {
+        text = 'vacation'
+    }
+    document.querySelectorAll('.photostack-file-pattern-demo').forEach(function (el) {
+        el.textContent = text
+    })
+}
+
+// Remove image formats from Exporting card that aren't supported
+if (!Modernizr.todataurljpeg) {
+    var option = document.querySelector('#photostack-file-format option[value="image/jpeg"]')
+    option.setAttribute('disabled', true)
+}
+if (!Modernizr.todataurlwebp) {
+    var option = document.querySelector('#photostack-file-format option[value="image/webp"]')
+    option.setAttribute('disabled', true)
+}
+
 // Append event listeners to buttons and other elements
-document.getElementById('photostack-import-file-btn').addEventListener('click', function() {
-    $('#photostack-import-file').click()
+
+document.querySelectorAll('.photostack-import-file-btn').forEach(function(el) {
+    el.addEventListener('click', function() {
+        $('#photostack-import-file').click()
+    })
 })
+
 document.getElementById('photostack-import-file').addEventListener('change', function () {
     importLocalFiles(this)
 })
+
 document.getElementById('photostack-import-url-button').addEventListener('click', function () {
     importWebImage(document.getElementById('photostack-import-url').value.trim())
 })
-document.getElementById('photostack-import-dropbox-btn').addEventListener('click', function() {
-    if (!Dropbox.isBrowserSupported()) {
-        alert('Sorry, Dropbox does not support your web browser.')
-    } else if (!navigator.onLine) {
-        alert('You are not connected to the internet. Connect to the internet and try again.')
-    } else {
-        importDropboxImage()
+
+document.querySelector('.photostack-import-url-mobile-btn').addEventListener('click', function() {
+    var url = prompt('Enter URL:')
+    if (url) {
+        importWebImage(url.trim())
     }
 })
+
+document.querySelectorAll('.photostack-import-dropbox-btn').forEach(function(el) {
+    el.addEventListener('click', function() {
+        if (!Dropbox.isBrowserSupported()) {
+            alert('Sorry, Dropbox does not support your web browser.')
+        } else if (!navigator.onLine) {
+            alert('You are not connected to the internet. Connect to the internet and try again.')
+        } else {
+            importDropboxImage()
+        }
+    })
+})
+
 document.getElementById('photostack-image-width-button').addEventListener('click', function () {
     renderPreviewCanvas()
 })
+
 document.getElementById('photostack-reset-image-width-button').addEventListener('click', function () {
     document.getElementById('photostack-image-width').value = ''
     renderPreviewCanvas()
 })
+
+// Show name pattern example in real-time
+document.getElementById('photostack-file-pattern').addEventListener('keyup', function () {
+    updateSampleFileNames()
+})
+
+// Update sample file names when the page is loaded
+updateSampleFileNames()
 
 // Prevent unload
 window.onbeforeunload = function () {
