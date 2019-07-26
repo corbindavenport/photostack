@@ -66,9 +66,24 @@ function legacyExport() {
         console.log('Generating zip...')
         zip.generateAsync({ type: 'blob' })
             .then(function (content) {
+                // Send notification (if permission is granted)
+                if ('Notification' in window) {
+                    if (Notification.permission === 'granted') {
+                        var notification = new Notification('PhotoStack', {
+                            body: 'Your image export is complete.',
+                            icon: 'img/android-chrome-192x192.png'
+                        })
+                        // Clear the notification when the export dialog is closed, if the notification hasn't already been cleared
+                        $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
+                            notification.close.bind(notification)
+                        })
+                    }
+                }
                 // Switch modal content to finished result
                 document.querySelector('.photostack-export-modal-loading').style.display = 'none'
                 document.querySelector('.photostack-export-modal-finished').style.display = 'block'
+                // Hide native share button because it's not part of the legacy export function
+                document.querySelector('.photostack-web-share-btn-container').style.display = 'none'
                 // Download files separately
                 document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
                     files.forEach(function (file) {
@@ -148,9 +163,10 @@ function asyncExport() {
                     var num = i + 1
                     var fileName = imgNamePattern + ' ' + num + fileEnding
                     // Add to files array
-                    files.push([fileName, blob])
+                    var file = new File([blob], fileName, { lastModified: Date.now() })
+                    files.push(file)
                     // Add to ZIP file
-                    zip.file(fileName, blob, { blob: true })
+                    zip.file(fileName, file)
                 })
                 // Generate zip file
                 console.log('Generating zip...')
@@ -176,12 +192,29 @@ function asyncExport() {
                         // Switch modal content to finished result
                         document.querySelector('.photostack-export-modal-loading').style.display = 'none'
                         document.querySelector('.photostack-export-modal-finished').style.display = 'block'
+                        // Web Share API
+                        var shareData = { files: files }
+                        if (navigator.canShare && navigator.canShare(shareData)) {
+                            document.getElementById('photostack-export-web-share-button').addEventListener('click', function() {
+                                navigator.share({
+                                    files: files,
+                                    title: 'PhotoStack export'
+                                })
+                                    .then(function () {
+                                        console.log('Share successful.')
+                                    })
+                                    .catch(function (error) {
+                                        console.log('Sharing failed:', error)
+                                    })
+                            })
+                        } else {
+                            // Hide native app share button if the API isn't available
+                            document.querySelector('.photostack-web-share-btn-container').style.display = 'none'
+                        }
                         // Download files separately
                         document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
-                            // Grab files from the Dropbox object because it's easy
                             files.forEach(function (file) {
-                                // First array item is file name, second item is the data URL
-                                saveAs(file[1], file[0])
+                                saveAs(file)
                             })
                         })
                         // Download as ZIP
