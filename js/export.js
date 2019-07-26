@@ -212,7 +212,7 @@ function asyncExport() {
                                         console.log('Share successful.')
                                     })
                                     .catch(function (e) {
-                                        console.error(e.stack)
+                                        console.error(e)
                                     })
                             })
                         } else {
