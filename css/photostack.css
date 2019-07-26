@@ -1,7 +1,3 @@
-.container-fluid {
-    margin-top: 90px;
-}
-
 #photostack-watermark-preview, #photostack-editor-preview img {
     max-width: 100%;
 }
