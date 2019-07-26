@@ -117,7 +117,6 @@ function asyncExport() {
         imgNamePattern = 'image'
     }
     var imgCount = document.querySelectorAll('#photostack-original-container img').length
-    var progressStep = 100 / imgCount
     // Switch modal content to progress indicator
     document.querySelector('.photostack-export-modal-initial').style.display = 'none'
     // Use jQuery's show() so the progress bar is fully displayed before the image processing begins
@@ -167,7 +166,10 @@ function asyncExport() {
                     var num = i + 1
                     var fileName = imgNamePattern + ' ' + num + fileEnding
                     // Add to files array
-                    var file = new File([blob], fileName, { lastModified: Date.now() })
+                    var file = new File([blob], fileName, {
+                        lastModified: Date.now(),
+                        type: imgFormat
+                    })
                     files.push(file)
                     // Add to ZIP file
                     zip.file(fileName, file)
@@ -204,10 +206,7 @@ function asyncExport() {
                         var shareData = { files: files }
                         if (navigator.canShare && navigator.canShare(shareData)) {
                             document.getElementById('photostack-export-web-share-button').addEventListener('click', function () {
-                                navigator.share({
-                                    files: files,
-                                    title: 'PhotoStack export'
-                                })
+                                navigator.share(shareData)
                                     .then(function () {
                                         console.log('Share successful.')
                                     })
