@@ -94,33 +94,39 @@ function exportWatermarkSettings() {
 }
 
 // Import watermark from JSON file
-function importWatermarkSettings(file) {
-    // Make sure image file is less than 1.5MB
-    if (file.size > 1572864) {
-        alert('Watermark must be under 1.5MB!')
-        return
-    }
-    // Read the file
-    var reader = new FileReader()
-    reader.onload = function () {
-        // Make sure file is valid JSON
-        try {
-            var watermarkObj = JSON.parse(reader.result)
-        } catch (error) {
-            alert('Error: ' + error)
+function importWatermarkSettings(el) {
+    var files = el.files
+    Array.prototype.forEach.call(files, function (file) {
+        // Make sure image file is less than 1.5MB
+        if (file.size > 1572864) {
+            alert('Watermark must be under 1.5MB!')
+            return
         }
-        // Add watermark to localStorage
-        var watermarkName = file.name.replace('.json', '')
-        localStorage['Watermark: ' + watermarkName] = reader.result
-        alert('Watermark saved to list as "' + watermarkName + '".')
-        loadWatermarkList()
-    }
-    reader.onerror = function (event) {
-        alert('Error: ' + event)
-    }
-    reader.readAsText(file)
-    // Clear file select
-    document.getElementById('photostack-import-file').value = ''
+        // Read the file
+        var reader = new FileReader()
+        reader.onload = function () {
+            // Make sure file is valid JSON
+            try {
+                var watermarkObj = JSON.parse(reader.result)
+            } catch (error) {
+                alert('Error: ' + error)
+            }
+            // Add watermark to localStorage
+            var watermarkName = file.name.replace('.json', '')
+            localStorage['Watermark: ' + watermarkName] = reader.result
+            // Show toast message
+            console.log(watermarkName)
+            document.querySelector('#photostack-watermark-import-toast .toast-body').innerText = 'Watermark saved to local storage as "' + watermarkName + '".'
+            $('#photostack-watermark-import-toast').toast('show')
+            loadWatermarkList()
+        }
+        reader.onerror = function (event) {
+            alert('Error: ' + event)
+        }
+        reader.readAsText(file)
+        // Clear file select
+        document.getElementById('photostack-import-file').value = ''
+    })
 }
 
 // Add image from local file
@@ -153,7 +159,7 @@ function importLocalImage(file) {
 }
 
 // Add image from URL
-function importExternalImage(url) {
+function importWebImage(url) {
     // Get image
     function downloadExternalImage(url) {
         var image = document.createElement('img')
@@ -189,6 +195,25 @@ function importExternalImage(url) {
         }
     }
     downloadExternalImage(url)
+}
+
+// Add image from Dropbox
+function importDropboxImage() {
+    // Set configuration for file picker
+    options = {
+        success: function(file) {
+            console.log(file[0])
+            importWebImage(file[0].link)
+        },
+        cancel: function() {
+            alert('Could not access file from Dropbox.')
+        },
+        linkType: "direct",
+        multiselect: false,
+        extensions: ['images'],
+        folderselect: false
+    }
+    Dropbox.choose(options)
 }
 
 // Apply current settings to a canvas
@@ -305,60 +330,96 @@ function fixDropdownMenu(element) {
     }
 }
 
-// Watermark dropdown menu and buttons
-document.getElementById('photostack-watermark-select').addEventListener('change', function () {
-    loadWatermark(this.value)
+// Append event listeners to buttons and other elements
+
+document.querySelectorAll('.photostack-watermark-save').forEach(function (el) {
+    el.addEventListener('click', function () {
+        saveWatermark()
+        loadWatermarkList()
+    })
 })
-document.querySelector('.photostack-watermark-save').addEventListener('click', function () {
-    saveWatermark()
-    loadWatermarkList()
+
+document.querySelectorAll('.photostack-watermark-import').forEach(function (el) {
+    el.addEventListener('click', function () {
+        $('#photostack-watermark-file-import').click()
+    })
 })
+
+document.querySelectorAll('.photostack-watermark-export').forEach(function (el) {
+    el.addEventListener('click', function () {
+        exportWatermarkSettings()
+    })
+})
+
 document.querySelector('.photostack-watermark-delete').addEventListener('click', function () {
     deleteWatermark(document.getElementById('photostack-watermark-select').value)
     loadWatermarkList()
 })
-document.querySelector('.photostack-watermark-export').addEventListener('click', function () {
-    exportWatermarkSettings()
-})
-document.querySelector('.photostack-watermark-import').addEventListener('click', function() {
-    $('#photostack-watermark-file-import').click()
-})
-document.getElementById('photostack-watermark-file-import').addEventListener('change', function () {
-    importWatermarkSettings(this.files[0])
+
+document.querySelectorAll('.photostack-import-file-btn').forEach(function(el) {
+    el.addEventListener('click', function () {
+        $('#photostack-import-file').click()
+    })
 })
 
-// Local image picker
-document.getElementById('photostack-import-file-btn').addEventListener('click', function() {
-    $('#photostack-import-file').click()
+document.getElementById('photostack-import-url-button').addEventListener('click', function () {
+    var url = document.getElementById('photostack-import-url').value
+    importWebImage(url)
 })
+
+document.querySelector('.photostack-import-url-mobile-btn').addEventListener('click', function() {
+    var url = prompt('Enter URL:')
+    if (url) {
+        importWebImage(url.trim())
+    }
+})
+
+document.querySelectorAll('.photostack-import-dropbox-btn').forEach(function(el) {
+    el.addEventListener('click', function() {
+        if (!Dropbox.isBrowserSupported()) {
+            alert('Sorry, Dropbox does not support your web browser.')
+        } else if (!navigator.onLine) {
+            alert('You are not connected to the internet. Connect to the internet and try again.')
+        } else {
+            importDropboxImage()
+        }
+    })
+})
+
+document.getElementById('photostack-watermark-select').addEventListener('change', function () {
+    loadWatermark(this.value)
+})
+
 document.getElementById('photostack-import-file').addEventListener('change', function () {
     importLocalImage(this.files[0])
 })
 
-// URL image picker
-document.getElementById('photostack-import-url-button').addEventListener('click', function () {
-    var url = document.getElementById('photostack-import-url').value
-    importExternalImage(url)
+document.getElementById('photostack-watermark-file-import').addEventListener('change', function () {
+    importWatermarkSettings(this)
 })
 
-
 // Update globalWatemark when input changes
+
 document.getElementById('photostack-watermark-size').addEventListener('change', function () {
     updateGlobalWatermark()
     renderPreviewCanvas()
 })
+
 document.getElementById('photostack-watermark-opacity').addEventListener('change', function () {
     updateGlobalWatermark()
     renderPreviewCanvas()
 })
+
 document.getElementById('photostack-watermark-horizontal-inset').addEventListener('change', function () {
     updateGlobalWatermark()
     renderPreviewCanvas()
 })
+
 document.getElementById('photostack-watermark-vertical-inset').addEventListener('change', function () {
     updateGlobalWatermark()
     renderPreviewCanvas()
 })
+
 document.querySelectorAll('.photostack-anchor-btn').forEach(function (button) {
     button.addEventListener('click', function () {
         // Clear .btn-primary style from the currently-active button
@@ -381,7 +442,7 @@ window.onbeforeunload = function () {
 }
 
 // Fix dropdown menu
-window.addEventListener("resize", function() {
+window.addEventListener("resize", function () {
     fixDropdownMenu(document.querySelector('.dropdown-menu'))
 })
 

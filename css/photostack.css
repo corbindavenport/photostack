@@ -1,3 +1,9 @@
+nav, .photostack-mobile-toolbar {
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+}
+
 #photostack-watermark-preview, #photostack-editor-preview img {
     max-width: 100%;
 }
@@ -23,12 +29,16 @@
     background: #004cc7;
 }
 
-#photostack-error-toast {
+.toast {
     position: fixed;
     bottom: 20px;
     right: 20px;
     color: #000;
     z-index: 100;
+}
+
+.toast .close {
+    color: #000;
 }
 
 .photostack-preview-card {
@@ -47,13 +57,14 @@
     background-color: #303030;
     z-index: 100;
     padding: 10px 0 10px 0;
+    height: 58px;
 }
 
 /* Styles for large devices */
 
 @media (min-width: 992px) {
 
-    #photostack-editor-preview img {
+    .photostack-preview-card img {
         max-height: calc(100vh - 160px);
     }
 
@@ -63,12 +74,20 @@
 
 @media (max-width: 991.98px) {
 
-    #photostack-editor-preview img {
+    .photostack-preview-card img {
         max-height: 60vh;
     }
+
+    /* Hide in-nav buttons on mobile, in favor of floating toolbar */
     
-    nav button[data-target="#photostack-export-modal"] {
+    nav .form-inline {
         display: none;
+    }
+
+    /* Don't allow toasts to cover floating toolbar */
+
+    .toast {
+        bottom: 80px;
     }
 
     /* Fix bottom of container being cut off by mobile toolbar */
@@ -85,6 +104,16 @@
 
     .photostack-preview-card {
         position: initial;
+    }
+
+    .toast {
+        left: 0px;
+        right: 0px;
+        bottom: 58px;
+        max-width: none;
+        border: 0;
+        margin: 0 !important;
+        border-radius: 0;
     }
 
 }
