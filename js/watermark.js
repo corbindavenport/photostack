@@ -205,9 +205,6 @@ function importDropboxImage() {
             console.log(file[0])
             importWebImage(file[0].link)
         },
-        cancel: function() {
-            alert('Could not access file from Dropbox.')
-        },
         linkType: "direct",
         multiselect: false,
         extensions: ['images'],
