@@ -57,7 +57,6 @@ nav, .photostack-mobile-toolbar {
     background-color: #303030;
     z-index: 100;
     padding: 10px 0 10px 0;
-    height: 58px;
 }
 
 /* Styles for large devices */
@@ -66,6 +65,10 @@ nav, .photostack-mobile-toolbar {
 
     .photostack-preview-card img {
         max-height: calc(100vh - 160px);
+    }
+
+    .navbar .form-inline:last-of-type {
+        margin-left: 10px;
     }
 
 }
