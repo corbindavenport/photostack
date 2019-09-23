@@ -255,37 +255,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>
+                    <p style="text-align: center">
                         <b>You are about to export <span class="photostack-image-count">0</span> images.</b>
                     </p>
+                    <!-- Show warning about slow exports for legacy browsers -->
+                    <div class="alert alert-warning" id="photostack-promises-alert">
+                        Your browser does not support JavaScript Promises, so exporting will take longer and may
+                        temporarily freeze your browser's interface. Update your browser for faster exporting.
+                    </div>
                     <p>
-                        <!-- Show warning about slow exports for legacy browsers -->
-                        <div class="alert alert-warning" id="photostack-promises-alert">
-                            Your browser does not support JavaScript Promises, so exporting will take longer and may
-                            temporarily freeze your browser's interface. Update your browser for faster exporting.
-                        </div>
+                        <button type="button" id="photostack-export-zip-btn" class="btn btn-block btn-primary">Start export</button>
                     </p>
-                    <p>
-                        <!-- Show warning for browsers that don't support notifications -->
-                        <div class="alert alert-warning" id="photostack-notifications-alert" style="display: none">
-                            Your browser does not support notifications, so PhotoStack cannot send a notification when
-                            exporting is complete. Update your browser if you want to get notifications.
-                        </div>
-                        <!-- Button for enabling notifications -->
-                        <button type="button" class="btn btn-primary btn-block"
-                            id="photostack-enable-notifications-btn">
-                            Enable notification for finished export
-                            <span class="badge badge-secondary">New</span>
-                        </button>
-                        <!-- Show confirmation message when notifications are allowed -->
-                        <div class="alert alert-success" id="photostack-notification-confirmation"
-                            style="display: none">
-                            Notifications are enabled. You will recieve a push notification when the export is complete.
-                        </div>
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="photostack-export-zip-btn" class="btn btn-primary">Export</button>
                 </div>
             </div>
             <!-- Export in progress modal -->
@@ -375,7 +355,6 @@
         data-app-key="sblxtzuush1cfzz"></script>
     <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises support -->
     <script src="js/editor.js"></script>
-    <script src="js/export.js"></script>
     <!--[if !IE]><!-->
     <script src="js/register-sw.js"></script>
     <!-- Resources that aren't used by editor page but still need to be cached by the PWA -->

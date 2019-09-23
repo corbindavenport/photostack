@@ -123,13 +123,13 @@ nav, .photostack-mobile-toolbar {
 
 /* Hide warning about Promises and progress bar on browsers that support Promises */
 
-.promises #photostack-promises-alert, .promises .photostack-export-modal-loading .progress {
+html.promises #photostack-promises-alert, html.promises .photostack-export-modal-loading .progress {
     display: none !important;
 }
 
 /* Don't show spinner on browsers that don't support Promises */
 
-.no-promises .photostack-export-modal-loading .export-spinner {
+html.no-promises .photostack-export-modal-loading .export-spinner {
     display: none !important;
 }
 
