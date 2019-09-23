@@ -93,7 +93,7 @@ nav, .photostack-mobile-toolbar {
     /* Fix bottom of container being cut off by mobile toolbar */
 
     .col-lg-3 {
-        padding-bottom: 45px;
+        padding-bottom: 60px;
     }
 
 }
