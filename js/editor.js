@@ -6,11 +6,7 @@ var globalFilesCount = 0
 function increaseImageCount(number) {
     globalFilesCount += number
     document.querySelectorAll('.photostack-image-count').forEach(function (el) {
-        if (globalFilesCount == 1) {
-            el.textContent = globalFilesCount.toString() + ' image'
-        } else {
-            el.textContent = globalFilesCount.toString() + ' images'
-        }
+        el.textContent = globalFilesCount.toString()
     })
     var exportBtns = document.querySelectorAll('*[data-target="#photostack-export-modal"]')
     exportBtns.forEach(function(el) {
@@ -134,12 +130,6 @@ function renderPreviewCanvas() {
 
 // Import images from file picker
 function importLocalFiles(element) {
-    // Disable buttons while import is in progress
-    var desktopBtn = document.querySelector('button.photostack-import-file-btn')
-    var mobileBtn = document.querySelector('#photostack-mobile-import-btn')
-    desktopBtn.disabled = true
-    desktopBtn.textContent = 'Importing images...'
-    mobileBtn.disabled = true
     // Get files
     var files = element.files
     console.log('Number of files selected: ' + files.length)
@@ -168,10 +158,8 @@ function importLocalFiles(element) {
     })
     // Clear file select
     document.getElementById('photostack-import-file').value = ''
-    // Re-enable buttons
-    desktopBtn.disabled = false
-    desktopBtn.textContent = 'Import local files'
-    mobileBtn.disabled = false
+    // Close import modal if it's still open
+    $('#photostack-import-modal').modal('hide')
 }
 
 // Add image from URL
@@ -200,6 +188,8 @@ function importWebImage(url) {
         }
     }
     addImageToCanvas(url)
+    // Close import modal if it's still open
+    $('#photostack-import-modal').modal('hide')
 }
 
 // Add image from Dropbox
@@ -211,6 +201,12 @@ function importDropboxImage() {
             files.forEach(function(file) {
                 importWebImage(file.link)
             })
+            // Close import modal if it's still open
+            $('#photostack-import-modal').modal('hide')
+        },
+        cancel: function() {
+            // Close import modal if it's still open
+            $('#photostack-import-modal').modal('hide')
         },
         linkType: "direct",
         multiselect: true,
@@ -292,13 +288,6 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
     importWebImage(document.getElementById('photostack-import-url').value.trim())
 })
 
-document.querySelector('.photostack-import-url-mobile-btn').addEventListener('click', function() {
-    var url = prompt('Enter URL:')
-    if (url) {
-        importWebImage(url.trim())
-    }
-})
-
 document.querySelectorAll('.photostack-import-dropbox-btn').forEach(function(el) {
     el.addEventListener('click', function() {
         if (!Dropbox.isBrowserSupported()) {
@@ -327,6 +316,15 @@ document.getElementById('photostack-file-pattern').addEventListener('keyup', fun
 
 // Update sample file names when the page is loaded
 updateSampleFileNames()
+
+// Show welcome page on first run
+if (localStorage['welcome-editor'] != 'true') {
+    $('#photostack-welcome-modal').modal('show')
+    // Don't show welcome screen again after it is exited
+    document.querySelector('#photostack-welcome-modal .btn-block').addEventListener('click', function() {
+        localStorage['welcome-editor'] = 'true'
+    })
+}
 
 // Prevent unload
 window.onbeforeunload = function () {

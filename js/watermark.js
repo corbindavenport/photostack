@@ -156,6 +156,8 @@ function importLocalImage(file) {
     reader.readAsDataURL(file)
     // Clear file picker
     document.getElementById('photostack-import-file').value = ''
+    // Close import modal if it's still open
+    $('#photostack-import-modal').modal('hide')
 }
 
 // Add image from URL
@@ -195,6 +197,8 @@ function importWebImage(url) {
         }
     }
     downloadExternalImage(url)
+    // Close import modal if it's still open
+    $('#photostack-import-modal').modal('hide')
 }
 
 // Add image from Dropbox
@@ -204,6 +208,12 @@ function importDropboxImage() {
         success: function(file) {
             console.log(file[0])
             importWebImage(file[0].link)
+            // Close import modal if it's still open
+            $('#photostack-import-modal').modal('hide')
+        },
+        cancel: function() {
+            // Close import modal if it's still open
+            $('#photostack-import-modal').modal('hide')
         },
         linkType: "direct",
         multiselect: false,
@@ -364,13 +374,6 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
     importWebImage(url)
 })
 
-document.querySelector('.photostack-import-url-mobile-btn').addEventListener('click', function() {
-    var url = prompt('Enter URL:')
-    if (url) {
-        importWebImage(url.trim())
-    }
-})
-
 document.querySelectorAll('.photostack-import-dropbox-btn').forEach(function(el) {
     el.addEventListener('click', function() {
         if (!Dropbox.isBrowserSupported()) {
@@ -430,6 +433,15 @@ document.querySelectorAll('.photostack-anchor-btn').forEach(function (button) {
         renderPreviewCanvas()
     })
 })
+
+// Show welcome page on first run
+if (localStorage['welcome-watermark'] != 'true') {
+    $('#photostack-welcome-modal').modal('show')
+    // Don't show welcome screen again after it is exited
+    document.querySelector('#photostack-welcome-modal .btn-block').addEventListener('click', function() {
+        localStorage['welcome-watermark'] = 'true'
+    })
+}
 
 // Prevent unload
 window.onbeforeunload = function () {
