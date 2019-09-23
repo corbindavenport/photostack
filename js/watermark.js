@@ -434,6 +434,15 @@ document.querySelectorAll('.photostack-anchor-btn').forEach(function (button) {
     })
 })
 
+// Show welcome page on first run
+if (localStorage['welcome-watermark'] != 'true') {
+    $('#photostack-welcome-modal').modal('show')
+    // Don't show welcome screen again after it is exited
+    document.querySelector('#photostack-welcome-modal .btn-block').addEventListener('click', function() {
+        localStorage['welcome-watermark'] = 'true'
+    })
+}
+
 // Prevent unload
 window.onbeforeunload = function () {
     if (globalWatermark.image != '') {

@@ -39,7 +39,8 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <a class="navbar-brand" href="index.html">PhotoStack</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -59,7 +60,9 @@
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <div class="dropdown btn-block">
-                    <button id="photostack-watermark-dropdown-btn" class="btn btn-primary btn-block dropdown-toggle my-2 my-sm-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Watermark</button>
+                    <button id="photostack-watermark-dropdown-btn"
+                        class="btn btn-primary btn-block dropdown-toggle my-2 my-sm-0" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Watermark</button>
                     <div class="dropdown-menu" aria-labelledby="photostack-watermark-dropdown-btn">
                         <a class="dropdown-item photostack-watermark-save" href="#">Save settings as new watermark</a>
                         <div class="dropdown-divider"></div>
@@ -77,10 +80,12 @@
             <div class="col">
                 <div class="card">
                     <div class="input-group input-group-lg">
-                        <select class="custom-select" id="photostack-watermark-select" autocomplete="off" style="border-radius: 0.3rem">
+                        <select class="custom-select" id="photostack-watermark-select" autocomplete="off"
+                            style="border-radius: 0.3rem">
                         </select>
                         <div class="input-group-append">
-                            <button class="btn btn-secondary photostack-watermark-delete" type="button" style="display: none">Delete</button>
+                            <button class="btn btn-secondary photostack-watermark-delete" type="button"
+                                style="display: none">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -101,7 +106,8 @@
                 <!-- Watermark image -->
                 <p class="d-none d-lg-block">
                     <button class="btn btn-secondary btn-block" type="button" data-toggle="modal"
-                    data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Select watermark</button>
+                        data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Select
+                        watermark</button>
                 </p>
                 <!-- Anchor -->
                 <div class="card">
@@ -111,37 +117,46 @@
                             <!-- First row -->
                             <div class="row mb-3">
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-1">1</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-1">1</button>
                                 </div>
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-2">2</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-2">2</button>
                                 </div>
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-3">3</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-3">3</button>
                                 </div>
                             </div>
                             <!-- Second row -->
                             <div class="row mb-3">
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-4">4</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-4">4</button>
                                 </div>
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-primary photostack-anchor-btn" id="photostack-watermark-pos-5">5</button>
+                                    <button type="button" class="btn btn-block btn-primary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-5">5</button>
                                 </div>
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-6">6</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-6">6</button>
                                 </div>
                             </div>
                             <!-- Third row -->
                             <div class="row mb-3">
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-7">7</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-7">7</button>
                                 </div>
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-8">8</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-8">8</button>
                                 </div>
                                 <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-9">9</button>
+                                    <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn"
+                                        id="photostack-watermark-pos-9">9</button>
                                 </div>
                             </div>
                         </p>
@@ -154,29 +169,35 @@
                         <p>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" aria-describedby="photostack-watermark-size">Size</span>
+                                    <span class="input-group-text"
+                                        aria-describedby="photostack-watermark-size">Size</span>
                                 </div>
-                                <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-size" value="30" autocomplete="off">
+                                <input type="number" class="form-control" min="0" max="100" aria-label="Size"
+                                    id="photostack-watermark-size" value="30" autocomplete="off">
                             </div>
                         </p>
                         <p>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" aria-describedby="photostack-watermark-opacity">Opacity</span>
+                                    <span class="input-group-text"
+                                        aria-describedby="photostack-watermark-opacity">Opacity</span>
                                 </div>
-                                <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-opacity" value="50" autocomplete="off">
+                                <input type="number" class="form-control" min="0" max="100" aria-label="Size"
+                                    id="photostack-watermark-opacity" value="50" autocomplete="off">
                             </div>
                         </p>
                         <p>
                             <div class="form-group">
                                 <label for="photostack-watermark-horizontal-inset">Horizontal inset</label>
-                                <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-horizontal-inset" min="-10" max="10" value="0">
+                                <input type="range" class="form-control-range" autocomplete="off"
+                                    id="photostack-watermark-horizontal-inset" min="-10" max="10" value="0">
                             </div>
                         </p>
                         <p>
                             <div class="form-group">
                                 <label for="photostack-watermark-vertical-inset">Vertical inset</label>
-                                <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-vertical-inset" min="-10" max="10" value="0">
+                                <input type="range" class="form-control-range" autocomplete="off"
+                                    id="photostack-watermark-vertical-inset" min="-10" max="10" value="0">
                             </div>
                         </p>
                     </div>
@@ -190,63 +211,90 @@
             <div class="row">
                 <div class="col-6">
                     <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-toggle="modal"
-                    data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Select watermark</button>
+                        data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Select
+                        watermark</button>
                 </div>
                 <div class="col-6 dropup">
-                    <button id="photostack-mobile-watermark-btn" type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Watermark options</button>
+                    <button id="photostack-mobile-watermark-btn" type="button"
+                        class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">Watermark options</button>
                     <div class="dropdown-menu" aria-labelledby="photostack-mobile-watermark-btn">
-                            <a class="dropdown-item photostack-watermark-save" href="#">Save settings as new watermark</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item photostack-watermark-export" href="#">Export watermark to file</a>
-                            <a class="dropdown-item photostack-watermark-import" href="#">Import watermark from file</a>
+                        <a class="dropdown-item photostack-watermark-save" href="#">Save settings as new watermark</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item photostack-watermark-export" href="#">Export watermark to file</a>
+                        <a class="dropdown-item photostack-watermark-import" href="#">Import watermark from file</a>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Welcome modal -->
+    <div class="modal fade" id="photostack-welcome-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Welcome!</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Welcome to PhotoStack's watermark editor! Here, you can create watermark images that can be later selected from the main editor.</p>
+                    <p>To get started, click the 'Select watermark' button at the <span class="d-lg-none">bottom</span><span
+                            class="d-none d-lg-inline">right</span> of the window to pick an image to use for the watermark. Then you can change any of the options, including the positioning and opacity.</p>
+                    <p>
+                        When you're ready to save your watermark, click the <span class="d-lg-none">'Watermark' dropdown at the bottom</span><span
+                        class="d-none d-lg-inline">'Watermark options' dropdown at the top-right</span> and select 'Save settings'. You can find your saved watermarks anytime in the 'Select a watermark' dropdown menu.
+                    </p>
+                    <p>
+                        <button type="button" class="btn btn-primary btn-block" data-dismiss="modal"
+                            aria-label="Close">Let's go!</button>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
     <!-- Import modal -->
     <div class="modal fade" id="photostack-import-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="photostack-export-modal-label">Import image</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="card-text">This will replace whatever watermark is currently being used. <b>Maximum
-                                file size is 1MB.</b></p>
-                        <p>
-                            <button class="btn btn-primary btn-block photostack-import-file-btn" type="button">Import
-                                local file</button>
-                        </p>
-                        <p>
-                            <button class="btn btn-primary btn-block photostack-import-dropbox-btn" type="button">Import
-                                from Dropbox</button>
-                        </p>
-                        <!--
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Import image</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="card-text">This will replace whatever watermark is currently being used. <b>Maximum
+                            file size is 1MB.</b></p>
+                    <p>
+                        <button class="btn btn-primary btn-block photostack-import-file-btn" type="button">Import
+                            local file</button>
+                    </p>
+                    <p>
+                        <button class="btn btn-primary btn-block photostack-import-dropbox-btn" type="button">Import
+                            from Dropbox</button>
+                    </p>
+                    <!--
                         <p>
                             <button class="btn btn-secondary btn-block" type="button" id="photostack-import-dropbox-btn">Import from OneDrive</button>
                         </p>
                         -->
-                        <p>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Enter image URL"
-                                    aria-label="Enter image URL" aria-describedby="photostack-import-url"
-                                    id="photostack-import-url" autocomplete="off">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button"
-                                        id="photostack-import-url-button">Import</button>
-                                </div>
+                    <p>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Enter image URL"
+                                aria-label="Enter image URL" aria-describedby="photostack-import-url"
+                                id="photostack-import-url" autocomplete="off">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button"
+                                    id="photostack-import-url-button">Import</button>
                             </div>
-                        </p>
-                    </div>
+                        </div>
+                    </p>
                 </div>
             </div>
         </div>
+    </div>
     <!-- Watermark file import toast -->
-    <div id="photostack-watermark-import-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="8000">
+    <div id="photostack-watermark-import-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+        data-delay="8000">
         <div class="toast-header">
             <strong class="mr-auto">Import complete</strong>
             <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -258,7 +306,8 @@
         </div>
     </div>
     <!-- Error toast -->
-    <div id="photostack-error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="8000">
+    <div id="photostack-error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+        data-delay="8000">
         <div class="toast-header">
             <strong class="mr-auto">Error</strong>
             <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -285,7 +334,8 @@
     <script src="js/canvas-toBlob.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="sblxtzuush1cfzz"></script>
+    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
+        data-app-key="sblxtzuush1cfzz"></script>
     <script src="js/watermark.js"></script>
 </body>
 

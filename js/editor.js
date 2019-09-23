@@ -318,11 +318,11 @@ document.getElementById('photostack-file-pattern').addEventListener('keyup', fun
 updateSampleFileNames()
 
 // Show welcome page on first run
-if (localStorage['welcome'] != 'true') {
+if (localStorage['welcome-editor'] != 'true') {
     $('#photostack-welcome-modal').modal('show')
     // Don't show welcome screen again after it is exited
     document.querySelector('#photostack-welcome-modal .btn-block').addEventListener('click', function() {
-        localStorage['welcome'] = 'true'
+        localStorage['welcome-editor'] = 'true'
     })
 }
 
