@@ -61,19 +61,20 @@
             <form class="form-inline my-2 my-lg-0">
                 <div class="dropdown btn-block">
                     <button id="photostack-watermark-dropdown-btn"
-                        class="btn btn-secondary btn-block dropdown-toggle my-2 my-sm-0" type="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">File options</button>
+                        class="btn btn-primary btn-block dropdown-toggle my-2 my-sm-0" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Watermark</button>
                     <div class="dropdown-menu" aria-labelledby="photostack-watermark-dropdown-btn">
                         <a class="dropdown-item photostack-watermark-save" href="#">Save settings as new watermark</a>
-                        <a class="dropdown-item photostack-watermark-export" href="#">Export settings to file</a>
-                        <a class="dropdown-item photostack-watermark-import" href="#">Import settings from file</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item photostack-watermark-export" href="#">Export watermark to file</a>
+                        <a class="dropdown-item photostack-watermark-import" href="#">Import watermark from file</a>
                     </div>
                 </div>
             </form>
         </div>
     </nav>
     <!-- Main container -->
-    <div class="container" style="margin-top: 90px">
+    <div class="container-fluid" style="margin-top: 90px">
         <div class="row photostack-watermark-row">
             <!-- Watermark select/save/delete -->
             <div class="col">
@@ -90,33 +91,24 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
-            <!-- Settings panel container -->
-            <div class="col-md-4">
-                <!-- Image selector -->
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Image</h5>
-                        <p class="card-text">This will replace whatever watermark is currently being used. <b>Maximum
-                                file size is 1MB.</b></p>
-                        <p>
-                            <button class="btn btn-secondary btn-block" type="button"
-                                id="photostack-import-file-btn">Import local file</button>
-                        </p>
-                        <p>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Enter image URL"
-                                    aria-label="Enter image URL" aria-describedby="photostack-import-url"
-                                    id="photostack-import-url" autocomplete="off">
-                                <div class="input-group-append">
-                                    <button class="btn btn-secondary" type="button"
-                                        id="photostack-import-url-button">Import</button>
-                                </div>
-                            </div>
-                        </p>
+            <!-- Preview container -->
+            <div class="col-lg col-md-6">
+                <div class="card photostack-preview-card">
+                    <div class="card-header">
+                        Watermark preview
                     </div>
+                    <img id="photostack-watermark-preview" src="">
                 </div>
+            </div>
+            <!-- Settings panel container -->
+            <div class="col-lg-4 col-md-6">
+                <!-- Watermark image -->
+                <p class="d-none d-lg-block">
+                    <button class="btn btn-secondary btn-block" type="button" data-toggle="modal"
+                        data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Select
+                        watermark</button>
+                </p>
                 <!-- Anchor -->
                 <div class="card">
                     <div class="card-body">
@@ -211,23 +203,119 @@
                     </div>
                 </div>
             </div>
-            <!-- Preview container -->
-            <div class="col-md-8">
-                <!-- Temporary text for when no photos are imported -->
-                <div class="card">
-                    <div class="card-header">
-                        Watermark preview
+        </div>
+    </div>
+    <!-- Toolbar for mobile only -->
+    <div class="photostack-mobile-toolbar d-lg-none">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <button class="btn btn-primary btn-block" type="button" data-toggle="modal"
+                        data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Select
+                        watermark</button>
+                </div>
+                <div class="col-6 dropup">
+                    <button id="photostack-mobile-watermark-btn" type="button"
+                        class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">Watermark options</button>
+                    <div class="dropdown-menu" aria-labelledby="photostack-mobile-watermark-btn">
+                        <a class="dropdown-item photostack-watermark-save" href="#">Save settings as new watermark</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item photostack-watermark-export" href="#">Export watermark to file</a>
+                        <a class="dropdown-item photostack-watermark-import" href="#">Import watermark from file</a>
                     </div>
-                    <img id="photostack-watermark-preview" src="">
                 </div>
             </div>
         </div>
     </div>
+    <!-- Welcome modal -->
+    <div class="modal fade" id="photostack-welcome-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Welcome!</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Welcome to PhotoStack's watermark editor! Here, you can create watermark images that can be later selected from the main editor.</p>
+                    <p>To get started, click the 'Select watermark' button at the <span class="d-lg-none">bottom</span><span
+                            class="d-none d-lg-inline">right</span> of the window to pick an image to use for the watermark. Then you can change any of the options, including the positioning and opacity.</p>
+                    <p>
+                        When you're ready to save your watermark, click the <span class="d-lg-none">'Watermark' dropdown at the bottom</span><span
+                        class="d-none d-lg-inline">'Watermark options' dropdown at the top-right</span> and select 'Save settings'. You can find your saved watermarks anytime in the 'Select a watermark' dropdown menu.
+                    </p>
+                    <p>
+                        <button type="button" class="btn btn-primary btn-block" data-dismiss="modal"
+                            aria-label="Close">Let's go!</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Import modal -->
+    <div class="modal fade" id="photostack-import-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Import image</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="card-text">This will replace whatever watermark is currently being used. <b>Maximum
+                            file size is 1MB.</b></p>
+                    <p>
+                        <button class="btn btn-primary btn-block photostack-import-file-btn" type="button">Import
+                            local file</button>
+                    </p>
+                    <p>
+                        <button class="btn btn-primary btn-block photostack-import-dropbox-btn" type="button">Import
+                            from Dropbox</button>
+                    </p>
+                    <!--
+                        <p>
+                            <button class="btn btn-secondary btn-block" type="button" id="photostack-import-dropbox-btn">Import from OneDrive</button>
+                        </p>
+                        -->
+                    <p>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Enter image URL"
+                                aria-label="Enter image URL" aria-describedby="photostack-import-url"
+                                id="photostack-import-url" autocomplete="off">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button"
+                                    id="photostack-import-url-button">Import</button>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Watermark file import toast -->
+    <div id="photostack-watermark-import-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+        data-delay="8000">
+        <div class="toast-header">
+            <strong class="mr-auto">Import complete</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Watermark saved to local storage.
+        </div>
+    </div>
     <!-- Error toast -->
     <div id="photostack-error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
-        data-delay="5000">
+        data-delay="8000">
+        <div class="toast-header">
+            <strong class="mr-auto">Error</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         <div class="toast-body">
-            There was an error, please try that again in a few seconds.
+            There was an error, please try that again in a few seconds or reload PhotoStack.
         </div>
     </div>
     <!-- File picker -->
@@ -237,7 +325,7 @@
     <!-- Container where the current watermark image is saved -->
     <div id="photostack-watermark-original"></div>
     <!-- File picker for watermark file imports -->
-    <input type="file" id="photostack-watermark-file-import" accept=".json">
+    <input type="file" id="photostack-watermark-file-import" multiple accept=".json">
     <!-- Scripts -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/polyfills.js"></script>
@@ -246,6 +334,8 @@
     <script src="js/canvas-toBlob.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
+        data-app-key="sblxtzuush1cfzz"></script>
     <script src="js/watermark.js"></script>
 </body>
 
