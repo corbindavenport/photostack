@@ -59,11 +59,12 @@
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <div class="dropdown btn-block">
-                    <button id="photostack-watermark-dropdown-btn" class="btn btn-secondary btn-block dropdown-toggle my-2 my-sm-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">File options</button>
+                    <button id="photostack-watermark-dropdown-btn" class="btn btn-primary btn-block dropdown-toggle my-2 my-sm-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Watermark</button>
                     <div class="dropdown-menu" aria-labelledby="photostack-watermark-dropdown-btn">
                         <a class="dropdown-item photostack-watermark-save" href="#">Save settings as new watermark</a>
-                        <a class="dropdown-item photostack-watermark-export" href="#">Export settings to file</a>
-                        <a class="dropdown-item photostack-watermark-import" href="#">Import settings from file</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item photostack-watermark-export" href="#">Export watermark to file</a>
+                        <a class="dropdown-item photostack-watermark-import" href="#">Import watermark from file</a>
                     </div>
                 </div>
             </form>
@@ -86,36 +87,6 @@
             </div>
         </div>
         <div class="row">
-            <!-- Settings panel container -->
-            <div class="col-lg-3 d-none d-lg-block">
-                <!-- Image selector -->
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Image</h5>
-                        <p class="card-text">This will replace whatever watermark is currently being used. <b>Maximum
-                                file size is 1MB.</b></p>
-                        <p>
-                            <button class="btn btn-secondary btn-block photostack-import-file-btn" type="button">Import local file</button>
-                        </p>
-                        <p>
-                            <button class="btn btn-secondary btn-block photostack-import-dropbox-btn" type="button">Import from Dropbox</button>
-                        </p>
-                        <!--
-                        <p>
-                            <button class="btn btn-secondary btn-block" type="button" id="photostack-import-dropbox-btn">Import from OneDrive</button>
-                        </p>
-                        -->
-                        <p>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Enter image URL" aria-label="Enter image URL" aria-describedby="photostack-import-url" id="photostack-import-url" autocomplete="off">
-                                <div class="input-group-append">
-                                    <button class="btn btn-secondary" type="button" id="photostack-import-url-button">Import</button>
-                                </div>
-                            </div>
-                        </p>
-                    </div>
-                </div>
-            </div>
             <!-- Preview container -->
             <div class="col-lg col-md-6">
                 <div class="card photostack-preview-card">
@@ -126,7 +97,12 @@
                 </div>
             </div>
             <!-- Settings panel container -->
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
+                <!-- Watermark image -->
+                <p class="d-none d-lg-block">
+                    <button class="btn btn-secondary btn-block" type="button" data-toggle="modal"
+                    data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Select watermark</button>
+                </p>
                 <!-- Anchor -->
                 <div class="card">
                     <div class="card-body">
@@ -210,27 +186,65 @@
     </div>
     <!-- Toolbar for mobile only -->
     <div class="photostack-mobile-toolbar d-lg-none">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-6 dropup">
-                    <button id="photostack-mobile-import-btn" type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Image</button>
-                    <div class="dropdown-menu" aria-labelledby="photostack-mobile-import-btn">
-                        <a class="dropdown-item photostack-import-file-btn" href="#">Select from device</a>
-                        <a class="dropdown-item photostack-import-url-mobile-btn" href="#">Select from URL</a>
-                        <a class="dropdown-item photostack-import-dropbox-btn" href="#">Select from Dropbox</a>
-                    </div>
+                <div class="col-6">
+                    <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-toggle="modal"
+                    data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Select watermark</button>
                 </div>
                 <div class="col-6 dropup">
-                    <button id="photostack-mobile-watermark-btn" type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">File options</button>
+                    <button id="photostack-mobile-watermark-btn" type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Watermark options</button>
                     <div class="dropdown-menu" aria-labelledby="photostack-mobile-watermark-btn">
-                        <a class="dropdown-item photostack-watermark-save" href="#">Save settings as new watermark</a>
-                        <a class="dropdown-item photostack-watermark-export" href="#">Export settings to file</a>
-                        <a class="dropdown-item photostack-watermark-import" href="#">Import settings from file</a>
+                            <a class="dropdown-item photostack-watermark-save" href="#">Save settings as new watermark</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item photostack-watermark-export" href="#">Export watermark to file</a>
+                            <a class="dropdown-item photostack-watermark-import" href="#">Import watermark from file</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Import modal -->
+    <div class="modal fade" id="photostack-import-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="photostack-export-modal-label">Import image</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="card-text">This will replace whatever watermark is currently being used. <b>Maximum
+                                file size is 1MB.</b></p>
+                        <p>
+                            <button class="btn btn-primary btn-block photostack-import-file-btn" type="button">Import
+                                local file</button>
+                        </p>
+                        <p>
+                            <button class="btn btn-primary btn-block photostack-import-dropbox-btn" type="button">Import
+                                from Dropbox</button>
+                        </p>
+                        <!--
+                        <p>
+                            <button class="btn btn-secondary btn-block" type="button" id="photostack-import-dropbox-btn">Import from OneDrive</button>
+                        </p>
+                        -->
+                        <p>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Enter image URL"
+                                    aria-label="Enter image URL" aria-describedby="photostack-import-url"
+                                    id="photostack-import-url" autocomplete="off">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button"
+                                        id="photostack-import-url-button">Import</button>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     <!-- Watermark file import toast -->
     <div id="photostack-watermark-import-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="8000">
         <div class="toast-header">
