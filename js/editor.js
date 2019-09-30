@@ -515,16 +515,14 @@ document.getElementById('photostack-import-url-button').addEventListener('click'
     importWebImage(document.getElementById('photostack-import-url').value.trim())
 })
 
-document.querySelectorAll('.photostack-import-dropbox-btn').forEach(function (el) {
-    el.addEventListener('click', function () {
-        if (!Dropbox.isBrowserSupported()) {
-            alert('Sorry, Dropbox does not support your web browser.')
-        } else if (!navigator.onLine) {
-            alert('You are not connected to the internet. Connect to the internet and try again.')
-        } else {
-            importDropboxImage()
-        }
-    })
+document.querySelector('.photostack-import-dropbox-btn').addEventListener('click', function () {
+    if (!Dropbox.isBrowserSupported()) {
+        alert('Sorry, Dropbox does not support your web browser.')
+    } else if (!navigator.onLine) {
+        alert('You are not connected to the internet. Connect to the internet and try again.')
+    } else {
+        importDropboxImage()
+    }
 })
 
 document.getElementById('photostack-image-width-button').addEventListener('click', function () {

@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>PhotoStack</title>
-    <meta name="description" content="PhotoStack is a free and open-source batch photo editor that runs entirely on
-    the web, with watermarking support and compatibility with all major browsers.">
+    <meta name="description" content="Convert, resize, and add watermarks to images all in your web browser.">
     <meta name="robots" content="noindex">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -41,8 +40,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <a class="navbar-brand" href="index.html">PhotoStack</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -61,15 +59,12 @@
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-toggle="modal"
-                    data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
+                <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-toggle="modal" data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
                     <span class="badge badge-light photostack-image-count">0</span>
                 </button>
             </form>
             <form class="form-inline my-2 my-lg-0">
-                <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-toggle="modal"
-                    data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false"
-                    disabled>Export</button>
+                <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
             </form>
         </div>
     </nav>
@@ -98,18 +93,14 @@
                         <h5 class="card-title">Scaling</h5>
                         <p>
                             <div class="input-group mb-3">
-                                <input type="number" class="form-control" placeholder="Image width (px)"
-                                    aria-label="Enter image URL" aria-describedby="photostack-import-url"
-                                    id="photostack-image-width" autocomplete="off">
+                                <input type="number" class="form-control" placeholder="Image width (px)" aria-label="Enter image URL" aria-describedby="photostack-import-url" id="photostack-image-width" autocomplete="off">
                                 <div class="input-group-append">
-                                    <button class="btn btn-secondary" type="button"
-                                        id="photostack-image-width-button">Resize</button>
+                                    <button class="btn btn-secondary" type="button" id="photostack-image-width-button">Resize</button>
                                 </div>
                             </div>
                         </p>
                         <p>
-                            <button class="btn btn-secondary btn-block" type="button"
-                                id="photostack-reset-image-width-button">Reset image scale</button>
+                            <button class="btn btn-secondary btn-block" type="button" id="photostack-reset-image-width-button">Reset image scale</button>
                         </p>
                         <p class="card-text">
                             Only resizing to a maximum width is supported right now.
@@ -142,16 +133,14 @@
                         </div>
                         <div class="form-group">
                             <label for="photostack-file-quality">Image quality</label>
-                            <input type="number" class="form-control" id="photostack-file-quality" value="92" min="1"
-                                max="100" autocomplete="on">
+                            <input type="number" class="form-control" id="photostack-file-quality" value="92" min="1" max="100" autocomplete="on">
                             <small class="form-text text-muted">Choose a value from 1-100.</small>
                         </div>
                         <div class="form-group">
                             <label for="photostack-file-quality">Name pattern</label>
                             <input type="text" class="form-control" id="photostack-file-pattern" autocomplete="on">
                             <small class="form-text text-muted">Name to append to the start of each image. Example:
-                                <span class="photostack-file-pattern-demo">vacation</span> 1.jpg, <span
-                                    class="photostack-file-pattern-demo">vacation</span> 2.jpg, etc.</small>
+                                <span class="photostack-file-pattern-demo">vacation</span> 1.jpg, <span class="photostack-file-pattern-demo">vacation</span> 2.jpg, etc.</small>
                         </div>
                     </div>
                 </div>
@@ -173,15 +162,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-6">
-                    <button class="btn btn-primary btn-block" type="button" data-toggle="modal"
-                        data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
+                    <button class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
                         <span class="badge badge-light photostack-image-count">0</span>
                     </button>
                 </div>
                 <div class="col-6">
-                    <button class="btn btn-primary btn-block" type="button" data-toggle="modal"
-                        data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false"
-                        disabled>Export</button>
+                    <button class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
                 </div>
             </div>
         </div>
@@ -216,26 +202,16 @@
                 <div class="modal-body">
                     <p class="card-text">Select photos from your computer or the web to get started.</p>
                     <p>
-                        <button class="btn btn-primary btn-block photostack-import-file-btn" type="button">Import
-                            local files</button>
+                        <button class="btn btn-primary btn-block photostack-import-file-btn" type="button">Import local files</button>
                     </p>
                     <p>
-                        <button class="btn btn-primary btn-block photostack-import-dropbox-btn" type="button">Import
-                            from Dropbox</button>
+                        <button class="btn btn-primary btn-block photostack-import-dropbox-btn" type="button">Import from Dropbox</button>
                     </p>
-                    <!--
-                    <p>
-                        <button class="btn btn-secondary btn-block" type="button" id="photostack-import-dropbox-btn">Import from OneDrive</button>
-                    </p>
-                    -->
                     <p>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Enter image URL"
-                                aria-label="Enter image URL" aria-describedby="photostack-import-url"
-                                id="photostack-import-url" autocomplete="off">
+                            <input type="text" class="form-control" placeholder="Enter image URL" aria-label="Enter image URL" aria-describedby="photostack-import-url" id="photostack-import-url" autocomplete="off">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button"
-                                    id="photostack-import-url-button">Import</button>
+                                <button class="btn btn-primary" type="button" id="photostack-import-url-button">Import</button>
                             </div>
                         </div>
                     </p>
@@ -281,9 +257,7 @@
                     </p>
                     <p>
                         <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                id="photostack-zip-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-                                style="width: 0%"></div>
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" id="photostack-zip-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                         </div>
                         <div class="d-flex justify-content-center export-spinner">
                             <div class="spinner-border" role="status">
@@ -303,28 +277,23 @@
                 </div>
                 <div class="modal-body">
                     <p class="photostack-web-share-btn-container">
-                        <button type="button" id="photostack-export-web-share-button"
-                            class="btn btn-block btn-success">Share to installed application</button>
+                        <button type="button" id="photostack-export-web-share-button" class="btn btn-block btn-success">Share to installed application</button>
                     </p>
                     <p>
-                        <button type="button" id="photostack-export-separate-button"
-                            class="btn btn-block btn-success">Download as separate files</button>
+                        <button type="button" id="photostack-export-separate-button" class="btn btn-block btn-success">Download as separate files</button>
                     </p>
                     <p class="text-muted" style="text-align:center">Downloading as separate files is blocked in some
                         browsers.</p>
                     <p>
-                        <button type="button" id="photostack-export-zip-button"
-                            class="btn btn-block btn-success">Download as ZIP</button>
+                        <button type="button" id="photostack-export-zip-button" class="btn btn-block btn-success">Download as ZIP</button>
                     </p>
-                    <p style="text-align: center">If you found PhotoStack useful, please <a
-                            href="donate.html">donate</a> to help support the project!</p>
+                    <p style="text-align: center">If you found PhotoStack useful, please <a href="donate.html">donate</a> to help support the project!</p>
                 </div>
             </div>
         </div>
     </div>
     <!-- Error toast -->
-    <div id="photostack-error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
-        data-delay="8000">
+    <div id="photostack-error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="8000">
         <div class="toast-header">
             <strong class="mr-auto">Error</strong>
             <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -351,8 +320,7 @@
     <script src="js/canvas-toBlob.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
-        data-app-key="sblxtzuush1cfzz"></script>
+    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="sblxtzuush1cfzz"></script>
     <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises support -->
     <script src="js/editor.js"></script>
     <!--[if !IE]><!-->
