@@ -2,6 +2,19 @@ var globalWatermark = {}
 
 var globalFilesCount = 0
 
+// Prevent unload
+window.onbeforeunload = function () {
+    // Warn before navigating away if there are any files imported
+    if (globalFilesCount > 0) {
+        return 'Are you sure you want to navigate away?'
+    }
+}
+
+// Show errors in UI
+window.onerror = function () {
+    $('#photostack-error-toast').toast('show')
+}
+
 // Increase image count after imports
 function increaseImageCount(number) {
     globalFilesCount += number
@@ -14,6 +27,15 @@ function increaseImageCount(number) {
             el.disabled = false
         }
     })
+}
+
+// Read URL parameters
+function getUrlVars() {
+    var vars = {}
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+        vars[key] = value
+    })
+    return vars
 }
 
 // Apply settings to a canvas
@@ -551,15 +573,19 @@ if (localStorage['welcome-editor'] != 'true') {
     })
 }
 
-// Prevent unload
-window.onbeforeunload = function () {
-    // Warn before navigating away if there are any files imported
-    if (globalFilesCount > 0) {
-        return 'Are you sure you want to navigate away?'
-    }
+// API support
+// See readme.md in v1 folder for more information
+if (getUrlVars()['import']) {
+    // Create array of URLs to import
+    var imageArray = getUrlVars()['import'].split(',')
+    // Filter out empty items
+    imageArray = imageArray.filter(Boolean)
+    // Import the images
+    imageArray.forEach(function (url) {
+        importWebImage(decodeURIComponent(url))
+    })
+    // Remove parameters from URL
+    window.history.replaceState({}, document.title, document.URL.substring(0, document.URL.indexOf('?')))
 }
 
-// Show errors in UI
-window.onerror = function () {
-    $('#photostack-error-toast').toast('show')
-}
+// https%3A%2F%2Fwww.google.com%2Fimages%2Fbranding%2Fgooglelogo%2F1x%2Fgooglelogo_color_272x92dp.png
