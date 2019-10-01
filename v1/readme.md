@@ -10,7 +10,7 @@ https://photostack.app/v1/?import=https%3A%2F%2Fi.imgur.com%2F3uLlis3.jpg,https%
 
 This API could be used in many ways. For example, an image gallery could add an 'Open in PhotoStack' button that would automatically import one or more images from the gallery directly into PhotoStack.
 
-**Note:** While adding the `import` parameter directly to the PhotoStack editor page currently does the same thing as the API endpoint, you should not do this, because the URL of the editor page could change in the future. The URL of the API endpoint will never change.
+It is **highly recommended** that your images be served with the [Access-Control-Allow-Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin) HTTP header, so PhotoStack can download them without using the [CORS Anywhere](https://cors-anywhere.herokuapp.com/) service. If CORS Anywhere becomes temporarily available, PhotoStack will not be able to import any external images.
 
 ### Example usage (JavaScript):
 
