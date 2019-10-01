@@ -587,5 +587,3 @@ if (getUrlVars()['import']) {
     // Remove parameters from URL
     window.history.replaceState({}, document.title, document.URL.substring(0, document.URL.indexOf('?')))
 }
-
-// https%3A%2F%2Fwww.google.com%2Fimages%2Fbranding%2Fgooglelogo%2F1x%2Fgooglelogo_color_272x92dp.png
