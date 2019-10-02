@@ -2,7 +2,7 @@
 
 PhotoStack has a very simple API that allows you to open PhotoStack with specific images already imported. Images are passed as comma-seperated URLs that have been converted to [URI Components](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent).
 
-Here's a sample URL string ([demo](https://localhost/v1/?import=https%3A%2F%2Fi.imgur.com%2F3uLlis3.jpg,https%3A%2F%2Fi.imgur.com%2FAX14LIl.jpg,https%3A%2F%2Fi.imgur.com%2F5YxHV1I.jpg)):
+Here's a sample URL string ([demo](https://photostack.app/v1/?import=https%3A%2F%2Fi.imgur.com%2F3uLlis3.jpg,https%3A%2F%2Fi.imgur.com%2FAX14LIl.jpg,https%3A%2F%2Fi.imgur.com%2F5YxHV1I.jpg)):
 
 ```
 https://photostack.app/v1/?import=https%3A%2F%2Fi.imgur.com%2F3uLlis3.jpg,https%3A%2F%2Fi.imgur.com%2FAX14LIl.jpg,https%3A%2F%2Fi.imgur.com%2F5YxHV1I.jpg
