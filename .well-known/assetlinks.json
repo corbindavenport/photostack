@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.photostack.android",
+    "sha256_cert_fingerprints": [
+      "4A:1E:F1:FC:D1:EA:45:45:CB:B7:48:DB:E5:75:F1:7C:D2:BC:31:20:73:9E:39:4B:A8:2D:7A:D7:AD:4B:0F:50"
+    ]
+  }
+}]
