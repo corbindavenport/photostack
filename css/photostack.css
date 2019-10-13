@@ -47,6 +47,16 @@ nav, .photostack-mobile-toolbar {
     top: 90px;
 }
 
+/* Styles for paid app */
+
+.photostack-paid-show, .photostack-paid .photostack-paid-hide {
+    display: none;
+}
+
+.photostack-paid .photostack-paid-show, .photostack-paid-hide {
+    display: block;
+}
+
 /* Mobile toolbar */
 
 .photostack-mobile-toolbar {

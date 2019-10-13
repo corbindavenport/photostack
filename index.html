@@ -8,7 +8,8 @@
     <meta name="description" content="Convert, resize, and add watermarks to images all in your web browser.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!-- Google Analytics -->
+    <link rel="stylesheet" href="css/photostack.css">
+    <!-- Google Analytics and scripts -->
     <script async src="//www.googletagmanager.com/gtag/js?id=UA-59452245-5"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -17,6 +18,7 @@
 
         gtag('config', 'UA-59452245-5');
     </script>
+    <script src="js/shared.js"></script>
     <!-- Icons and theme -->
     <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
@@ -48,7 +50,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="feedback.html">Feedback</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item photostack-paid-hide">
                     <a class="nav-link" href="#donate">Donate</a>
                 </li>
             </ul>
@@ -60,7 +62,7 @@
         <section class="jumbotron text-center bg-light" style="border-radius: 0">
             <div class="container">
                 <h1 class="jumbotron-heading">The ultimate batch photo editor.</h1>
-                <p class="lead text-muted">PhotoStack is a free and open-source batch photo editor that runs entirely on
+                <p class="lead text-muted">PhotoStack is an open-source batch photo editor that runs entirely on
                     the web, complete with watermarking support and compatibility with all major browsers.</p>
                 <p>
                     <!--[if IE]>
@@ -108,8 +110,7 @@
                     <p>
                         <h3>Free as in freedom</h3>
                     </p>
-                    <p>PhotoStack doesn't lock you down to certain platforms or require a monthly subscription. It's
-                        free for everyone to use and runs on everything with a modern web browser.</p>
+                    <p>PhotoStack doesn't lock you down to certain platforms or require a monthly subscription. It runs on everything with a modern web browser.</p>
                     <p>All the source code is <a href="https://github.com/corbindavenport/photostack"
                             target="_blank">available on GitHub</a> under the GPLv3 license. If you're a developer, you
                         can help fix bugs, or even create your own fork of PhotoStack.</p>
@@ -143,7 +144,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row photostack-paid-hide">
                 <div class="col">
                     <p>
                         <h3 id="donate">Support development</h3>
