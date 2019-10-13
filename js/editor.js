@@ -355,7 +355,7 @@ function legacyExport() {
                 // Switch modal content to finished result
                 document.querySelector('.photostack-export-modal-loading').style.display = 'none'
                 document.querySelector('.photostack-export-modal-finished').style.display = 'block'
-                // Hide native share button because it's not part of the legacy export function
+                // Hide native share button because it's not compatible with the legacy export function
                 document.querySelector('.photostack-web-share-btn-container').style.display = 'none'
                 // Download files separately
                 document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
@@ -467,8 +467,11 @@ function asyncExport() {
                                     })
                             })
                         } else {
-                            // Hide native app share button if the API isn't available
-                            document.querySelector('.photostack-web-share-btn-container').style.display = 'none'
+                            // Disable the native app share button if the API isn't available
+                            document.getElementById('photostack-export-web-share-button').setAttribute('disabled', 'true')
+                            $('#photostack-export-web-share-button').tooltip({
+                                title: 'Your browser or platform does not support this feature.',
+                            })
                         }
                         // Download files separately
                         document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
