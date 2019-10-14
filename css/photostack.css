@@ -4,6 +4,12 @@ nav, .photostack-mobile-toolbar {
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
 }
 
+nav .navbar-brand {
+    padding-left: 50px;
+    background: url('/img/icon.svg') left center no-repeat;
+    background-size: contain;
+}
+
 #photostack-watermark-preview, #photostack-editor-preview img {
     max-width: 100%;
 }
