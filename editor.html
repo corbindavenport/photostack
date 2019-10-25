@@ -200,19 +200,33 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body photostack-import-modal-initial">
                     <p class="card-text">Select photos from your computer or the web to get started.</p>
                     <p>
-                        <button class="btn btn-primary btn-block photostack-import-file-btn" type="button">Import local files</button>
+                        <button class="btn btn-primary btn-block photostack-import-file-btn" type="button">Import local images</button>
                     </p>
                     <p>
-                        <button class="btn btn-primary btn-block photostack-import-dropbox-btn" type="button">Import from Dropbox</button>
+                        <button class="btn btn-primary btn-block photostack-import-dropbox-btn" type="button">Import images from Dropbox</button>
                     </p>
                     <p>
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Enter image URL" aria-label="Enter image URL" aria-describedby="photostack-import-url" id="photostack-import-url" autocomplete="off">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" id="photostack-import-url-button">Import</button>
+                                <button class="btn btn-primary" type="button" id="photostack-import-url-button">Import image</button>
+                            </div>
+                        </div>
+                    </p>
+                    <hr>
+                    <p>
+                        <button class="btn btn-primary btn-block photostack-import-zip-btn" type="button">Import local ZIP</button>
+                    </p>
+                </div>
+                <div class="modal-body photostack-import-modal-zip" style="display:none">
+                    <p>Importing images from ZIP file, please wait...</p>
+                    <p>
+                        <div class="d-flex justify-content-center export-spinner">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
                             </div>
                         </div>
                     </p>
@@ -287,8 +301,7 @@
                     <p>
                         <button type="button" id="photostack-export-zip-button" class="btn btn-block btn-success">Download as ZIP</button>
                     </p>
-                    <p class="photostack-android-hide" style="text-align: center">If you found PhotoStack useful, please donate via <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"
-                        target="_blank">PayPal</a> or <a href="https://www.patreon.com/corbindavenport" target="_blank">Patreon</a> to help support the project!</p>
+                    <p class="photostack-android-hide" style="text-align: center">If you found PhotoStack useful, please donate via <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">PayPal</a> or <a href="https://www.patreon.com/corbindavenport" target="_blank">Patreon</a> to help support the project!</p>
                 </div>
             </div>
         </div>
@@ -305,8 +318,9 @@
             There was an error, please try that again in a few seconds or reload PhotoStack.
         </div>
     </div>
-    <!-- File picker -->
+    <!-- File pickers -->
     <input type="file" id="photostack-import-file" multiple accept="image/*">
+    <input type="file" id="photostack-import-zip" accept=".zip">
     <!-- Container where original photos are kept as <img> elements -->
     <div id="photostack-original-container"></div>
     <!-- Container where canvas elements for each image are kept -->

@@ -54,6 +54,10 @@ nav .navbar-brand {
     top: 90px;
 }
 
+hr {
+    border-color: #444;
+}
+
 /* Styles for paid app */
 
 .photostack-android-show, .photostack-android .photostack-android-hide {

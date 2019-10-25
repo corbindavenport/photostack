@@ -118,6 +118,7 @@ function applyCanvasSettings(canvas, originalImage) {
 
 // Render canvas of first image, apply settings, and show a preview
 function renderPreviewCanvas() {
+    console.log('Rendering preview...')
     // Silently fail if there are no images imported
     if (!document.querySelectorAll('#photostack-original-container img').length) {
         console.log('Nothing to preview.')
@@ -182,6 +183,53 @@ function importLocalFiles(element) {
     document.getElementById('photostack-import-file').value = ''
     // Close import modal if it's still open
     $('#photostack-import-modal').modal('hide')
+}
+
+// Import images from file picker
+function importLocalZIP(element) {
+    // Get file
+    var file = element.files[0]
+    // Switch modal content to progress indicator
+    document.querySelector('.photostack-import-modal-initial').style.display = 'none'
+    document.querySelector('.photostack-import-modal-zip').style.display = 'block'
+    // Read the ZIP
+    var zip = new JSZip()
+    zip.loadAsync(file).then(function (zip) {
+        var zipPromises = $.map(zip.files, function (file) {
+            return new Promise(function (resolve) {
+                // Don't read files if they aren't images
+                if (file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
+                    // Add images to originals container
+                    file.async('base64').then(function (data) {
+                        var image = document.createElement('img')
+                        if (file.name.endsWith('.png')) {
+                            var base64 = 'data:image/png;base64,' + data
+                        } else if (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
+                            var base64 = 'data:image/jpeg;base64,' + data
+                        } 
+                        image.src = base64
+                        // Save image to originals container
+                        document.getElementById('photostack-original-container').appendChild(image)
+                        increaseImageCount(1)
+                        resolve()
+                    })
+                } else {
+                    resolve()
+                }
+            })
+        })
+        // Continue once all canvases are rendered
+        Promise.all(zipPromises).then(function () {
+            // Generate image preview if there isn't one already
+            if (!(document.querySelectorAll('.photostack-editor-preview img').length)) {
+                renderPreviewCanvas()
+            }
+            // Clear file select
+            document.getElementById('photostack-import-file').value = ''
+            // Close import modal if it's still open
+            $('#photostack-import-modal').modal('hide')
+        })
+    })
 }
 
 // Add image from URL
@@ -514,6 +562,12 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
     }
 })
 
+// Reset import modal content when the close button is clicked
+$('#photostack-import-modal').on('hidden.bs.modal', function (e) {
+    document.querySelector('.photostack-import-modal-zip').style.display = 'none'
+    document.querySelector('.photostack-import-modal-initial').style.display = 'block'
+})
+
 // Remove image formats from Export card that aren't supported
 if (!Modernizr.todataurljpeg) {
     var option = document.querySelector('#photostack-file-format option[value="image/jpeg"]')
@@ -548,6 +602,14 @@ document.querySelector('.photostack-import-dropbox-btn').addEventListener('click
     } else {
         importDropboxImage()
     }
+})
+
+document.querySelector('.photostack-import-zip-btn').addEventListener('click', function () {
+    $('#photostack-import-zip').click()
+})
+
+document.getElementById('photostack-import-zip').addEventListener('change', function () {
+    importLocalZIP(this)
 })
 
 document.getElementById('photostack-image-width-button').addEventListener('click', function () {
