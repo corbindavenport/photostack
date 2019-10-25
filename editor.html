@@ -191,16 +191,16 @@
         </div>
     </div>
     <!-- Import modal -->
-    <div class="modal fade" id="photostack-import-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="photostack-import-modal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content photostack-import-modal-initial">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Import images</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body photostack-import-modal-initial">
+                <div class="modal-body">
                     <p class="card-text">Select photos from your computer or the web to get started.</p>
                     <p>
                         <button class="btn btn-primary btn-block photostack-import-file-btn" type="button">Import local images</button>
@@ -218,11 +218,19 @@
                     </p>
                     <hr>
                     <p>
-                        <button class="btn btn-primary btn-block" id="photostack-import-zip-btn" type="button">Import local ZIP file</button>
+                        <button class="btn btn-primary btn-block" id="photostack-import-zip-btn" type="button">Import local ZIP file <span class="badge badge-secondary">New</span></button>
+                    </p>
+                    <p>
+                        <button class="btn btn-primary btn-block" id="photostack-import-dropbox-zip-btn" type="button">Import ZIP file from Dropbox <span class="badge badge-secondary">New</span></button>
                     </p>
                     <p style="text-align: center" class="small">PNG and JPEG files contained in the ZIP file will be imported.</p>
                 </div>
-                <div class="modal-body photostack-import-modal-zip" style="display:none">
+            </div>
+            <div class="modal-content photostack-import-modal-zip" style="display:none">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Import images</h5>
+                </div>
+                <div class="modal-body">
                     <p>PhotoStack is now importing images from the selected ZIP file. This may take a few seconds.</p>
                     <p>
                         <div class="d-flex justify-content-center export-spinner">
