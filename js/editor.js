@@ -197,8 +197,9 @@ function importLocalZIP(element) {
     zip.loadAsync(file).then(function (zip) {
         var zipPromises = $.map(zip.files, function (file) {
             return new Promise(function (resolve) {
-                // Don't read files if they aren't images
-                if (file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
+                // Only read files that are images, aren't directories, and aren't inside __MACOSX
+                if ((file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
+                    console.log(file)
                     // Add images to originals container
                     file.async('base64').then(function (data) {
                         var image = document.createElement('img')
@@ -578,6 +579,14 @@ if (!Modernizr.todataurlwebp) {
     option.setAttribute('disabled', true)
 }
 
+// Block ZIP import option from browsers that don't support Promises
+if (!Modernizr.promises) {
+    document.getElementById('photostack-import-zip-btn').setAttribute('disabled', 'true')
+    $('#photostack-import-zip-btn').tooltip({
+        title: 'Your browser does not support this feature',
+    })
+}
+
 // Append event listeners to buttons and other elements
 
 document.querySelectorAll('.photostack-import-file-btn').forEach(function (el) {
@@ -604,7 +613,7 @@ document.querySelector('.photostack-import-dropbox-btn').addEventListener('click
     }
 })
 
-document.querySelector('.photostack-import-zip-btn').addEventListener('click', function () {
+document.getElementById('photostack-import-zip-btn').addEventListener('click', function () {
     $('#photostack-import-zip').click()
 })
 
