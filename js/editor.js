@@ -198,7 +198,8 @@ function importLocalZIP(element) {
         var zipPromises = $.map(zip.files, function (file) {
             return new Promise(function (resolve) {
                 // Only read files that are images, aren't directories, and aren't inside __MACOSX
-                if ((file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.bmp') || file.name.endsWith('.svg')) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
+                var supportedImages = (file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.bmp') || (Modernizr.webp && file.name.endsWith('.webp')));
+                if ((supportedImages) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
                     console.log(file)
                     // Add images to originals container
                     file.async('base64').then(function (data) {
@@ -210,10 +211,8 @@ function importLocalZIP(element) {
                             var base64 = 'data:image/jpeg;base64,' + data
                         } else if (file.name.endsWith('.bmp')) {
                             var base64 = 'data:image/bmp;base64,' + data
-                        } else if (file.name.endsWith('.svg')) {
-                            var base64 = 'data:image/svg+xml;base64,' + data
-                        } else {
-                            resolve()
+                        } else if (file.name.endsWith('.webp')) {
+                            var base64 = 'data:image/webp;base64,' + data
                         }
                         image.src = base64
                         // Save image to originals container
@@ -583,6 +582,14 @@ if (!Modernizr.todataurlwebp) {
     var option = document.querySelector('#photostack-file-format option[value="image/webp"]')
     option.setAttribute('disabled', true)
 }
+
+// Allow WebP imports if the image format is supported
+Modernizr.on('webp', function(result) {
+    if (result) {
+        var formats = document.getElementById('photostack-import-file').getAttribute('accept')
+        document.getElementById('photostack-import-file').setAttribute('accept', formats + ',image/webp')
+    }
+})
 
 // Block ZIP import option from browsers that don't support Promises
 if (!Modernizr.promises) {

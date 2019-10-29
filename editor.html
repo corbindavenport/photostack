@@ -301,7 +301,7 @@
                         <button type="button" id="photostack-export-web-share-button" class="btn btn-block btn-success">Share to installed application</button>
                     </p>
                     <p>
-                        <button type="button" id="photostack-export-separate-button" class="btn btn-block btn-success">Download as induvidual files</button>
+                        <button type="button" id="photostack-export-separate-button" class="btn btn-block btn-success">Download as individual files</button>
                     </p>
                     <p class="text-muted" style="text-align:center">Downloading as individual files doesn't work correctly in some browsers. If you experience problems, use one of the other options.</p>
                     <p>
@@ -325,7 +325,7 @@
         </div>
     </div>
     <!-- File pickers -->
-    <input type="file" id="photostack-import-file" multiple accept="image/*">
+    <input type="file" id="photostack-import-file" multiple accept="image/jpeg,image/png,image/gif">
     <input type="file" id="photostack-import-zip" accept="application/zip,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
     <!-- Container where original photos are kept as <img> elements -->
     <div id="photostack-original-container"></div>
@@ -342,7 +342,7 @@
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="sblxtzuush1cfzz"></script>
-    <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises support -->
+    <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
     <script src="js/editor.js"></script>
     <!--[if !IE]><!-->
     <script src="js/register-sw.js"></script>
