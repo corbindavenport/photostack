@@ -198,15 +198,22 @@ function importLocalZIP(element) {
         var zipPromises = $.map(zip.files, function (file) {
             return new Promise(function (resolve) {
                 // Only read files that are images, aren't directories, and aren't inside __MACOSX
-                if ((file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.bmp')) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
+                if ((file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.bmp') || file.name.endsWith('.svg')) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
                     console.log(file)
                     // Add images to originals container
                     file.async('base64').then(function (data) {
                         var image = document.createElement('img')
+                        // Add MIME type to each image so the browser can render them
                         if (file.name.endsWith('.png')) {
                             var base64 = 'data:image/png;base64,' + data
                         } else if (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
                             var base64 = 'data:image/jpeg;base64,' + data
+                        } else if (file.name.endsWith('.bmp')) {
+                            var base64 = 'data:image/bmp;base64,' + data
+                        } else if (file.name.endsWith('.svg')) {
+                            var base64 = 'data:image/svg+xml;base64,' + data
+                        } else {
+                            resolve()
                         }
                         image.src = base64
                         // Save image to originals container
