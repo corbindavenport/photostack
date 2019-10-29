@@ -198,7 +198,7 @@ function importLocalZIP(element) {
         var zipPromises = $.map(zip.files, function (file) {
             return new Promise(function (resolve) {
                 // Only read files that are images, aren't directories, and aren't inside __MACOSX
-                if ((file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
+                if ((file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.bmp')) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
                     console.log(file)
                     // Add images to originals container
                     file.async('base64').then(function (data) {
@@ -207,7 +207,7 @@ function importLocalZIP(element) {
                             var base64 = 'data:image/png;base64,' + data
                         } else if (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
                             var base64 = 'data:image/jpeg;base64,' + data
-                        } 
+                        }
                         image.src = base64
                         // Save image to originals container
                         document.getElementById('photostack-original-container').appendChild(image)
@@ -437,105 +437,103 @@ function asyncExport() {
     var imgCount = document.querySelectorAll('#photostack-original-container img').length
     // Switch modal content to progress indicator
     document.querySelector('.photostack-export-modal-initial').style.display = 'none'
-    // Use jQuery's show() so the progress bar is fully displayed before the image processing begins
-    $('.photostack-export-modal-loading').show('fast', function () {
-        // Start rendering canvases
-        var originals = document.querySelectorAll('#photostack-original-container img')
-        var canvasContainer = document.getElementById('photostack-canvas-container')
-        // Clear current canvas elements
-        canvasContainer.innerHTML = ''
-        // Render canvas for each original image
-        var canvasPromises = $.map(originals, function (original) {
+    document.querySelector('.photostack-export-modal-loading').style.display = 'block'
+    // Start rendering canvases
+    var originals = document.querySelectorAll('#photostack-original-container img')
+    var canvasContainer = document.getElementById('photostack-canvas-container')
+    // Clear current canvas elements
+    canvasContainer.innerHTML = ''
+    // Render canvas for each original image
+    var canvasPromises = $.map(originals, function (original) {
+        return new Promise(function (resolve) {
+            // Create canvas element
+            var canvas = document.createElement('canvas')
+            // Add canvas element to canvas container
+            canvasContainer.appendChild(canvas)
+            canvas.width = original.naturalWidth
+            canvas.height = original.naturalHeight
+            canvas.getContext('2d').drawImage(original, 0, 0)
+            // Apply settings
+            applyCanvasSettings(canvas, original)
+            resolve(canvas)
+        })
+    })
+    // Continue once all canvases are rendered
+    Promise.all(canvasPromises).then(function (canvases) {
+        // Create a new ZIP object
+        var zip = new JSZip()
+        // Create promises for final render of each image
+        var promises = $.map(canvases, function (canvas) {
             return new Promise(function (resolve) {
-                // Create canvas element
-                var canvas = document.createElement('canvas')
-                // Add canvas element to canvas container
-                canvasContainer.appendChild(canvas)
-                canvas.width = original.naturalWidth
-                canvas.height = original.naturalHeight
-                canvas.getContext('2d').drawImage(original, 0, 0)
-                // Apply settings
-                applyCanvasSettings(canvas, original)
-                resolve(canvas)
+                canvas.toBlob(resolve, imgFormat, imgQuality)
             })
         })
-        // Continue once all canvases are rendered
-        Promise.all(canvasPromises).then(function (canvases) {
-            // Create a new ZIP object
-            var zip = new JSZip()
-            // Create promises for final render of each image
-            var promises = $.map(canvases, function (canvas) {
-                return new Promise(function (resolve) {
-                    canvas.toBlob(resolve, imgFormat, imgQuality)
+        // Show the final export screen when all renders are completed
+        Promise.all(promises).then(function (blobs) {
+            // Create final array of blobs with file names
+            var files = []
+            blobs.forEach(function (blob, i) {
+                if (imgFormat === 'image/jpeg') {
+                    var fileEnding = '.jpg'
+                } else if (imgFormat === 'image/png') {
+                    var fileEnding = '.png'
+                } else if (imgFormat === 'image/webp') {
+                    var fileEnding = '.webp'
+                }
+                var num = i + 1
+                var fileName = imgNamePattern + ' ' + num + fileEnding
+                // Add to files array
+                var file = new File([blob], fileName, {
+                    lastModified: Date.now(),
+                    type: imgFormat
                 })
+                files.push(file)
+                // Add to ZIP file
+                zip.file(fileName, file)
             })
-            // Show the final export screen when all renders are completed
-            Promise.all(promises).then(function (blobs) {
-                // Create final array of blobs with file names
-                var files = []
-                blobs.forEach(function (blob, i) {
-                    if (imgFormat === 'image/jpeg') {
-                        var fileEnding = '.jpg'
-                    } else if (imgFormat === 'image/png') {
-                        var fileEnding = '.png'
-                    } else if (imgFormat === 'image/webp') {
-                        var fileEnding = '.webp'
+            // Generate zip file
+            console.log('Generating zip...')
+            zip.generateAsync({ type: 'blob' })
+                .then(function (content) {
+                    // Show badge on PWA icon
+                    if ('ExperimentalBadge' in window) {
+                        window.ExperimentalBadge.set()
                     }
-                    var num = i + 1
-                    var fileName = imgNamePattern + ' ' + num + fileEnding
-                    // Add to files array
-                    var file = new File([blob], fileName, {
-                        lastModified: Date.now(),
-                        type: imgFormat
+                    // Switch modal content to finished result
+                    document.querySelector('.photostack-export-modal-loading').style.display = 'none'
+                    document.querySelector('.photostack-export-modal-finished').style.display = 'block'
+                    // Web Share API
+                    var shareData = { files: files }
+                    if (navigator.canShare && navigator.canShare(shareData)) {
+                        document.getElementById('photostack-export-web-share-button').addEventListener('click', function () {
+                            navigator.share(shareData)
+                                .then(function () {
+                                    console.log('Share successful.')
+                                })
+                                .catch(function (e) {
+                                    console.error(e)
+                                })
+                        })
+                    } else {
+                        // Disable the native app share button if the API isn't available
+                        document.getElementById('photostack-export-web-share-button').setAttribute('disabled', 'true')
+                        $('#photostack-export-web-share-button').tooltip({
+                            title: 'Your browser or platform does not support this feature.',
+                        })
+                    }
+                    // Download files separately
+                    document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
+                        files.forEach(function (file) {
+                            saveAs(file)
+                        })
                     })
-                    files.push(file)
-                    // Add to ZIP file
-                    zip.file(fileName, file)
+                    // Download as ZIP
+                    document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
+                        saveAs(content, 'images.zip')
+                    })
+                    // Stop time
+                    console.timeEnd('Async export')
                 })
-                // Generate zip file
-                console.log('Generating zip...')
-                zip.generateAsync({ type: 'blob' })
-                    .then(function (content) {
-                        // Show badge on PWA icon
-                        if ('ExperimentalBadge' in window) {
-                            window.ExperimentalBadge.set()
-                        }
-                        // Switch modal content to finished result
-                        document.querySelector('.photostack-export-modal-loading').style.display = 'none'
-                        document.querySelector('.photostack-export-modal-finished').style.display = 'block'
-                        // Web Share API
-                        var shareData = { files: files }
-                        if (navigator.canShare && navigator.canShare(shareData)) {
-                            document.getElementById('photostack-export-web-share-button').addEventListener('click', function () {
-                                navigator.share(shareData)
-                                    .then(function () {
-                                        console.log('Share successful.')
-                                    })
-                                    .catch(function (e) {
-                                        console.error(e)
-                                    })
-                            })
-                        } else {
-                            // Disable the native app share button if the API isn't available
-                            document.getElementById('photostack-export-web-share-button').setAttribute('disabled', 'true')
-                            $('#photostack-export-web-share-button').tooltip({
-                                title: 'Your browser or platform does not support this feature.',
-                            })
-                        }
-                        // Download files separately
-                        document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
-                            files.forEach(function (file) {
-                                saveAs(file)
-                            })
-                        })
-                        // Download as ZIP
-                        document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
-                            saveAs(content, 'images.zip')
-                        })
-                        // Stop time
-                        console.timeEnd('Async export')
-                    })
-            })
         })
     })
 }

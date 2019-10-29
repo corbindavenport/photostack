@@ -218,12 +218,9 @@
                     </p>
                     <hr>
                     <p>
-                        <button class="btn btn-primary btn-block" id="photostack-import-zip-btn" type="button">Import local ZIP file <span class="badge badge-secondary">New</span></button>
+                        <button class="btn btn-primary btn-block" id="photostack-import-zip-btn" type="button">Import images from ZIP/container file <span class="badge badge-secondary">New</span></button>
                     </p>
-                    <p>
-                        <button class="btn btn-primary btn-block" id="photostack-import-dropbox-zip-btn" type="button">Import ZIP file from Dropbox <span class="badge badge-secondary">New</span></button>
-                    </p>
-                    <p style="text-align: center" class="small">PNG and JPEG files contained in the ZIP file will be imported.</p>
+                    <p style="text-align: center" class="small">Supported file types: ZIP, MS Office (DOCX, PPTX, XLSX)</p>
                 </div>
             </div>
             <div class="modal-content photostack-import-modal-zip" style="display:none">
@@ -329,7 +326,7 @@
     </div>
     <!-- File pickers -->
     <input type="file" id="photostack-import-file" multiple accept="image/*">
-    <input type="file" id="photostack-import-zip" accept=".zip">
+    <input type="file" id="photostack-import-zip" accept="application/zip,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
     <!-- Container where original photos are kept as <img> elements -->
     <div id="photostack-original-container"></div>
     <!-- Container where canvas elements for each image are kept -->
