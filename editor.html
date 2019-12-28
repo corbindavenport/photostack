@@ -125,7 +125,7 @@
                                 <option value="image/png">Portable Network Graphics (.png)</option>
                                 <option value="image/webp">WebP (.webp)</option>
                             </select>
-                            <small class="form-text text-muted">Image format support varies by browser.</small>
+                            <small class="form-text text-muted">Image format support varies by <span class="photostack-android-hide">browser</span><span class="photostack-android-show">device</span>.</small>
                         </div>
                         <div class="form-group">
                             <label for="photostack-file-quality">Image quality</label>
@@ -290,7 +290,7 @@
                     <p>
                         <button type="button" id="photostack-export-separate-button" class="btn btn-block btn-success">Download as individual files</button>
                     </p>
-                    <p class="text-muted" style="text-align:center">Downloading as individual files doesn't work correctly in some browsers. If you experience problems, use one of the other options.</p>
+                    <p class="text-muted photostack-android-hide" style="text-align:center">Downloading individual files doesn't work correctly in some browsers. If you experience problems, use one of the other options.</p>
                     <p>
                         <button type="button" id="photostack-export-zip-button" class="btn btn-block btn-success">Download as ZIP</button>
                     </p>
@@ -323,16 +323,16 @@
     <!-- Scripts -->
     <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
     <script>
-    if (!Modernizr.promises) {
-        alert('Your browser does not support PhotoStack.')
-    }
+        if (!Modernizr.promises) {
+            alert('Your browser does not support PhotoStack.')
+        }
     </script>
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/FileSaver.min.js"></script>
-    <script src="js/canvas-toBlob.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/pica.min.js"></script>
     <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="sblxtzuush1cfzz"></script>
     <script src="js/editor.js"></script>
     <script src="js/register-sw.js"></script>

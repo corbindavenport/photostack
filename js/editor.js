@@ -38,86 +38,103 @@ function getUrlVars() {
     return vars
 }
 
+// Resize a canvas using Pica library
+function resizeCanvas(oldCanvas, width, height) {
+    return new Promise(function (resolve) {
+        // Create canvas with new size
+        var newCanvas = document.createElement('canvas')
+        newCanvas.width = width
+        newCanvas.height = height
+        // Do the resize
+        pica().resize(oldCanvas, newCanvas, {
+            unsharpAmount: 80,
+            unsharpRadius: 0.6,
+            unsharpThreshold: 2,
+            alpha: true
+        }).then(function () {
+            resolve(newCanvas)
+        })
+    })
+}
+
 // Apply settings to a canvas
-function applyCanvasSettings(canvas, originalImage) {
-    // Resize image
-    if (document.getElementById('photostack-image-width').value != '') {
-        // Use high-quality image scaling where possible
-        canvas.getContext('2d').mozImageSmoothingEnabled = true
-        canvas.getContext('2d').imageSmoothingQuality = "high"
-        canvas.getContext('2d').webkitImageSmoothingEnabled = true
-        canvas.getContext('2d').msImageSmoothingEnabled = true
-        canvas.getContext('2d').imageSmoothingEnabled = true
-        // Get width
-        var userWidth = parseInt(document.getElementById('photostack-image-width').value)
-        // Create aspect ratio from original canvas size
-        var ratio = (canvas.width / canvas.height)
-        // Set new canvas size
-        var canvasContent = canvas.getImageData
-        canvas.width = userWidth
-        canvas.height = userWidth / ratio
-        // Resizing the canvas wipes its contents, so we need to re-draw the image
-        canvas.getContext('2d').drawImage(originalImage, 0, 0, canvas.width, canvas.height)
-    }
-    // Apply watermark
-    if (document.getElementById('photostack-watermark-img').hasAttribute('src')) {
-        var watermark = document.getElementById('photostack-watermark-img')
-        // Calculate new size of watermark
-        var resizeRatio = watermark.naturalHeight / watermark.naturalWidth
-        var userSize = parseInt(globalWatermark.size)
-        watermark.width = canvas.width * (userSize / 100)
-        watermark.height = watermark.width * resizeRatio
-        // Create temporary canvas for the watermark
-        var watermarkCanvas = document.createElement('canvas')
-        watermarkCanvas.width = watermark.width
-        watermarkCanvas.height = watermark.height
-        // Set opacity
-        var opacity = parseInt(globalWatermark.opacity) / 100
-        watermarkCanvas.getContext('2d').globalAlpha = opacity
-        // Set horiztonal and vertical insets
-        var horizontalInset = canvas.width * (globalWatermark.horizontalInset / 100)
-        var veritcalInset = canvas.height * (globalWatermark.veritcalInset / 100)
-        // Set anchor position
-        if (globalWatermark.anchorPosition === 1) {
-            // Top-left alignment
-            // Because the X and Y values start from the top-left, nothing happens here
-        } else if (globalWatermark.anchorPosition === 2) {
-            // Top-center alignment (Ignore: Horizontal)
-            horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
-        } else if (globalWatermark.anchorPosition === 3) {
-            // Top-right alignment
-            horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
-        } else if (globalWatermark.anchorPosition === 4) {
-            // Middle-left alignment (Ignore: Vertical)
-            veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
-        } else if (globalWatermark.anchorPosition === 5) {
-            // Middle-center alignment (Ignore: Vertical & Horizontal)
-            horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
-            veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
-        } else if (globalWatermark.anchorPosition === 6) {
-            // Middle-right alignment (Ignore: Vertical)
-            horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
-            veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
-        } else if (globalWatermark.anchorPosition === 7) {
-            // Bottom-left alignment
-            veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
-        } else if (globalWatermark.anchorPosition === 8) {
-            // Bottom-center alignment (Ignore: Horizontal)
-            veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
-            horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
-        } else if (globalWatermark.anchorPosition === 9) {
-            // Bottom-right alignment
-            veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
-            horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
+function applyCanvasSettings(canvas) {
+    return new Promise(async function (resolve) {
+        // Resize image
+        if (document.getElementById('photostack-image-width').value != '') {
+            // Create aspect ratio from original canvas size
+            var ratio = (canvas.width / canvas.height)
+            // Set new canvas size
+            var width = parseInt(document.getElementById('photostack-image-width').value)
+            var height = width / ratio
+            // Do the resize
+            canvas = await resizeCanvas(canvas, width, height)
         }
-        // Draw completed image to temporary canvas
-        watermarkCanvas.getContext('2d').drawImage(watermark, 0, 0, watermark.width, watermark.height)
-        canvas.getContext('2d').drawImage(watermarkCanvas, horizontalInset, veritcalInset)
-    }
+        // Apply watermark
+        if (document.getElementById('photostack-watermark-img').hasAttribute('src')) {
+            var watermark = document.getElementById('photostack-watermark-img')
+            // Create temporary canvas for the watermark
+            var watermarkCanvas = document.createElement('canvas')
+            watermarkCanvas.width = watermark.naturalWidth
+            watermarkCanvas.height = watermark.naturalHeight
+            watermarkCanvas.getContext('2d').drawImage(watermark, 0, 0)
+            // Calculate new size of watermark
+            var resizeRatio = watermark.naturalHeight / watermark.naturalWidth
+            var userSize = parseInt(globalWatermark.size)
+            watermarkFinalWidth = canvas.width * (userSize / 100)
+            watermarkFinalHeight = watermarkFinalWidth * resizeRatio
+            // Do the resize
+            console.log(watermarkCanvas.width, watermarkCanvas.height)
+            watermarkCanvas = await resizeCanvas(watermark, watermarkFinalWidth, watermarkFinalHeight)
+            console.log(watermarkCanvas.width, watermarkCanvas.height)
+            // Set opacity
+            var opacity = parseInt(globalWatermark.opacity) / 100
+            watermarkCanvas.getContext('2d').globalAlpha = opacity
+            // Set horiztonal and vertical insets
+            var horizontalInset = canvas.width * (globalWatermark.horizontalInset / 100)
+            var veritcalInset = canvas.height * (globalWatermark.veritcalInset / 100)
+            // Set anchor position
+            if (globalWatermark.anchorPosition === 1) {
+                // Top-left alignment
+                // Because the X and Y values start from the top-left, nothing happens here
+            } else if (globalWatermark.anchorPosition === 2) {
+                // Top-center alignment (Ignore: Horizontal)
+                horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
+            } else if (globalWatermark.anchorPosition === 3) {
+                // Top-right alignment
+                horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
+            } else if (globalWatermark.anchorPosition === 4) {
+                // Middle-left alignment (Ignore: Vertical)
+                veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
+            } else if (globalWatermark.anchorPosition === 5) {
+                // Middle-center alignment (Ignore: Vertical & Horizontal)
+                horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
+                veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
+            } else if (globalWatermark.anchorPosition === 6) {
+                // Middle-right alignment (Ignore: Vertical)
+                horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
+                veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
+            } else if (globalWatermark.anchorPosition === 7) {
+                // Bottom-left alignment
+                veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
+            } else if (globalWatermark.anchorPosition === 8) {
+                // Bottom-center alignment (Ignore: Horizontal)
+                veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
+                horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
+            } else if (globalWatermark.anchorPosition === 9) {
+                // Bottom-right alignment
+                veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
+                horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
+            }
+            // Draw completed image to temporary canvas
+            canvas.getContext('2d').drawImage(watermarkCanvas, horizontalInset, veritcalInset)
+        }
+        resolve(canvas)
+    })
 }
 
 // Render canvas of first image, apply settings, and show a preview
-function renderPreviewCanvas() {
+async function renderPreviewCanvas() {
     console.log('Rendering preview...')
     // Silently fail if there are no images imported
     if (!document.querySelectorAll('#photostack-original-container img').length) {
@@ -139,7 +156,7 @@ function renderPreviewCanvas() {
     canvas.height = canvas.width * resizeRatio
     canvas.getContext('2d').drawImage(originalImage, 0, 0, canvas.width, canvas.height)
     // Apply settings
-    applyCanvasSettings(canvas, originalImage)
+    canvas = await applyCanvasSettings(canvas)
     // Create image element
     if (previewContainer.querySelector('img')) {
         previewContainer.querySelector('img').setAttribute('src', canvas.toDataURL())
@@ -361,7 +378,7 @@ function asyncExport() {
     canvasContainer.innerHTML = ''
     // Render canvas for each original image
     var canvasPromises = $.map(originals, function (original) {
-        return new Promise(function (resolve) {
+        return new Promise(async function (resolve) {
             // Create canvas element
             var canvas = document.createElement('canvas')
             // Add canvas element to canvas container
@@ -370,7 +387,7 @@ function asyncExport() {
             canvas.height = original.naturalHeight
             canvas.getContext('2d').drawImage(original, 0, 0)
             // Apply settings
-            applyCanvasSettings(canvas, original)
+            canvas = await applyCanvasSettings(canvas)
             resolve(canvas)
         })
     })
@@ -464,7 +481,6 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
     document.querySelector('.photostack-export-modal-loading').style.display = 'none'
     document.querySelector('.photostack-export-modal-finished').style.display = 'none'
     document.querySelector('.photostack-export-modal-initial').style.display = 'block'
-    document.getElementById('photostack-zip-progress').style.width = '0%'
     // Reset title
     document.title = 'PhotoStack'
     // Clear PWA icon
@@ -490,7 +506,7 @@ if (!Modernizr.todataurlwebp) {
 }
 
 // Allow WebP imports if the image format is supported
-Modernizr.on('webp', function(result) {
+Modernizr.on('webp', function (result) {
     if (result) {
         var formats = document.getElementById('photostack-import-file').getAttribute('accept')
         document.getElementById('photostack-import-file').setAttribute('accept', formats + ',image/webp')

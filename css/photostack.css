@@ -65,7 +65,7 @@ hr {
 }
 
 .photostack-android .photostack-android-show, .photostack-android-hide {
-    display: block;
+    display: inline-block;
 }
 
 /* Mobile toolbar */
