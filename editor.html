@@ -40,7 +40,7 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <a class="navbar-brand" href="index.html">PhotoStack</a>
+        <a class="navbar-brand" href="index.html">PhotoStack 2</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -255,11 +255,6 @@
                     <p style="text-align: center">
                         <b>You are about to export <span class="photostack-image-count">0</span> images.</b>
                     </p>
-                    <!-- Show warning about slow exports for legacy browsers -->
-                    <div class="alert alert-warning" id="photostack-promises-alert">
-                        Your browser does not support JavaScript Promises, so exporting will take longer and may
-                        temporarily freeze your browser's interface. Update your browser for faster exporting.
-                    </div>
                     <p>
                         <button type="button" id="photostack-export-zip-btn" class="btn btn-block btn-primary">Start export</button>
                     </p>
@@ -277,9 +272,6 @@
                         minimize PhotoStack or switch to another tab/window.
                     </p>
                     <p>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" id="photostack-zip-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-                        </div>
                         <div class="d-flex justify-content-center export-spinner">
                             <div class="spinner-border" role="status">
                                 <span class="sr-only">Loading...</span>
@@ -334,17 +326,20 @@
     <!-- Container where current watermark image is kept -->
     <img id="photostack-watermark-img">
     <!-- Scripts -->
+    <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
+    <script>
+    if (!Modernizr.promises) {
+        alert('Your browser does not support PhotoStack.')
+    }
+    </script>
     <script src="js/jquery-3.4.1.min.js"></script>
-    <script src="js/polyfills.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/FileSaver.min.js"></script>
     <script src="js/canvas-toBlob.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="sblxtzuush1cfzz"></script>
-    <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
     <script src="js/editor.js"></script>
-    <!--[if !IE]><!-->
     <script src="js/register-sw.js"></script>
     <!-- Resources that aren't used by editor page but still need to be cached by the PWA -->
     <img src="js/watermark.js" style="display:none">
@@ -352,7 +347,6 @@
     <img src="feedback.html" style="display:none">
     <img src="donate.html" style="display:none">
     <img src="v1/index.html" style="display:none">
-    <!--<![endif]-->
 </body>
 
 </html>
