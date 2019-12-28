@@ -412,8 +412,8 @@ function asyncExport() {
             zip.generateAsync({ type: 'blob' })
                 .then(function (content) {
                     // Show badge on PWA icon
-                    if ('ExperimentalBadge' in window) {
-                        window.ExperimentalBadge.set()
+                    if ('setExperimentalAppBadge' in navigator) {
+                        navigator.setExperimentalAppBadge()
                     }
                     // Switch modal content to finished result
                     document.querySelector('.photostack-export-modal-loading').style.display = 'none'
@@ -468,8 +468,8 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
     // Reset title
     document.title = 'PhotoStack'
     // Clear PWA icon
-    if ('ExperimentalBadge' in window) {
-        window.ExperimentalBadge.clear()
+    if ('setExperimentalAppBadge' in navigator) {
+        navigator.clearExperimentalAppBadge()
     }
 })
 
