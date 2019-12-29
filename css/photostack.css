@@ -58,6 +58,10 @@ hr {
     border-color: #444;
 }
 
+.card .form-group:last-of-type {
+    margin-bottom: 0;
+}
+
 /* Styles for paid app */
 
 .photostack-android-show, .photostack-android .photostack-android-hide {

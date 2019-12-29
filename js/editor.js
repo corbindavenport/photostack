@@ -45,13 +45,15 @@ function resizeCanvas(oldCanvas, width, height) {
         var newCanvas = document.createElement('canvas')
         newCanvas.width = width
         newCanvas.height = height
-        // Do the resize
-        pica().resize(oldCanvas, newCanvas, {
-            unsharpAmount: 80,
-            unsharpRadius: 0.6,
+        // Get settings
+        const options = {
+            unsharpAmount: parseInt(document.getElementById('photostack-resize-unsharpAmount').value),
+            unsharpRadius: 0.5,
             unsharpThreshold: 2,
             alpha: true
-        }).then(function () {
+        }
+        // Do the resize
+        pica().resize(oldCanvas, newCanvas, options).then(function () {
             resolve(newCanvas)
         })
     })
@@ -547,7 +549,11 @@ document.getElementById('photostack-import-zip').addEventListener('change', func
     importLocalZIP(this)
 })
 
-document.getElementById('photostack-image-width-button').addEventListener('click', function () {
+document.getElementById('photostack-resize-apply-btn').addEventListener('click', function () {
+    renderPreviewCanvas()
+})
+
+document.getElementById('photostack-sharpness-apply-btn').addEventListener('click', function () {
     renderPreviewCanvas()
 })
 
