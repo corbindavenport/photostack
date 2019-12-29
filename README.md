@@ -11,7 +11,7 @@ PhotoStack uses components from the following projects:
 - [Modernizr](https://modernizr.com/)
 - [Pica](https://github.com/nodeca/pica)
 
-Icon is from the [Oranchelo icon theme](https://github.com/OrancheloTeam/oranchelo-icon-theme).
+Icon is from the [Oranchelo icon theme](https://github.com/OrancheloTeam/oranchelo-icon-theme). Bootstrap theme is 'Darkly' from [Bootswatch](https://bootswatch.com/).
 
 ---------------------------------------------------------
 
