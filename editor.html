@@ -68,16 +68,16 @@
     <div class="container-fluid" style="margin-top: 90px">
         <div class="row">
             <!-- Preview container -->
-            <div class="col-lg col-md-6">
+            <div class="col-lg col-md-6 photostack-preview-container">
                 <!-- Temporary text for when no photos are imported -->
                 <div class="card photostack-preview-card">
-                    <div class="card-header">
-                        Image preview
-                    </div>
                     <div class="card-body" style="padding: 0">
                         <div class="text-center" id="photostack-editor-preview">
                             <p><br />A preview of your settings will appear here once you import some images.</p>
                         </div>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <small class="text-muted">Preview is limited to 800px wide.</small>
                     </div>
                 </div>
             </div>
@@ -156,8 +156,10 @@
                 </div>
                 <!-- Other options card-->
                 <div class="card">
+                    <div class="card-header">
+                        Miscellaneous
+                    </div>
                     <div class="card-body">
-                        <h5 class="card-title">Miscellaneous</h5>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="photostack-exif" checked disabled>
                             <label class="form-check-label" for="photostack-exif">Remove EXIF data</label>
@@ -329,11 +331,11 @@
     <input type="file" id="photostack-import-file" multiple accept="image/jpeg,image/png,image/gif">
     <input type="file" id="photostack-import-zip" accept="application/zip,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
     <!-- Container where original photos are kept as <img> elements -->
-    <div id="photostack-original-container"></div>
+    <div id="photostack-original-container" aria-hidden="true"></div>
     <!-- Container where canvas elements for each image are kept -->
-    <div id="photostack-canvas-container"></div>
+    <div id="photostack-canvas-container" aria-hidden="true"></div>
     <!-- Container where current watermark image is kept -->
-    <img id="photostack-watermark-img">
+    <img id="photostack-watermark-img" aria-hidden="true">
     <!-- Scripts -->
     <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
     <script>

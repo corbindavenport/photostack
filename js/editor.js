@@ -60,14 +60,23 @@ function resizeCanvas(oldCanvas, width, height) {
 }
 
 // Apply settings to a canvas
-function applyCanvasSettings(canvas) {
+function applyCanvasSettings(canvas, previewMode = false) {
     return new Promise(async function (resolve) {
+        // Create aspect ratio from original canvas size
+        var ratio = (canvas.width / canvas.height)
         // Resize image
         if (document.getElementById('photostack-image-width').value != '') {
-            // Create aspect ratio from original canvas size
-            var ratio = (canvas.width / canvas.height)
             // Set new canvas size
             var width = parseInt(document.getElementById('photostack-image-width').value)
+            if (previewMode && (width > 800)) {
+                width = 800
+            }
+            var height = width / ratio
+            // Do the resize
+            canvas = await resizeCanvas(canvas, width, height)
+        } else if (previewMode) {
+            // Set new canvas size
+            var width = 800
             var height = width / ratio
             // Do the resize
             canvas = await resizeCanvas(canvas, width, height)
@@ -86,9 +95,7 @@ function applyCanvasSettings(canvas) {
             watermarkFinalWidth = canvas.width * (userSize / 100)
             watermarkFinalHeight = watermarkFinalWidth * resizeRatio
             // Do the resize
-            console.log(watermarkCanvas.width, watermarkCanvas.height)
             watermarkCanvas = await resizeCanvas(watermark, watermarkFinalWidth, watermarkFinalHeight)
-            console.log(watermarkCanvas.width, watermarkCanvas.height)
             // Set opacity
             var opacity = parseInt(globalWatermark.opacity) / 100
             watermarkCanvas.getContext('2d').globalAlpha = opacity
@@ -137,9 +144,10 @@ function applyCanvasSettings(canvas) {
 
 // Render canvas of first image, apply settings, and show a preview
 async function renderPreviewCanvas() {
-    console.log('Rendering preview...')
     // Silently fail if there are no images imported
-    if (!document.querySelectorAll('#photostack-original-container img').length) {
+    if (document.querySelectorAll('#photostack-original-container img').length) {
+        console.log('Rendering preview...')
+    } else {
         console.log('Nothing to preview.')
         return
     }
@@ -150,15 +158,13 @@ async function renderPreviewCanvas() {
     // Create canvas element for first imported image
     var canvas = document.createElement('canvas')
     var originalImage = originalsContainer.firstChild
+    canvas.width = originalImage.naturalWidth
+    canvas.height = originalImage.naturalHeight
     // Add canvas element to canvas container
     canvasContainer.appendChild(canvas)
-    // Resize canvas to a maximum of 800 pixels wide for faster processing
-    var resizeRatio = originalImage.naturalHeight / originalImage.naturalWidth
-    canvas.width = 800
-    canvas.height = canvas.width * resizeRatio
-    canvas.getContext('2d').drawImage(originalImage, 0, 0, canvas.width, canvas.height)
+    canvas.getContext('2d').drawImage(originalImage, 0, 0)
     // Apply settings
-    canvas = await applyCanvasSettings(canvas)
+    canvas = await applyCanvasSettings(canvas, true)
     // Create image element
     if (previewContainer.querySelector('img')) {
         previewContainer.querySelector('img').setAttribute('src', canvas.toDataURL())

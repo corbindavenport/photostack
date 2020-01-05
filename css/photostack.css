@@ -1,6 +1,4 @@
 nav, .photostack-mobile-toolbar {
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
 }
 
@@ -12,6 +10,11 @@ nav .navbar-brand {
 
 #photostack-watermark-preview, #photostack-editor-preview img {
     max-width: 100%;
+}
+
+#photostack-editor-preview img {
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
 }
 
 #photostack-watermark-preview {
@@ -129,10 +132,6 @@ hr {
 /* Styles for small/x-small devices */
 
 @media (max-width: 767.98px) {
-
-    .photostack-preview-card {
-        position: initial;
-    }
 
     .toast {
         left: 0px;
