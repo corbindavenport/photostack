@@ -338,16 +338,12 @@
     <img id="photostack-watermark-img" aria-hidden="true">
     <!-- Scripts -->
     <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
-    <script>
-        if (!Modernizr.promises) {
-            alert('Your browser does not support PhotoStack.')
-        }
-    </script>
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/FileSaver.min.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/localforage.min.js"></script>
     <script src="js/pica.min.js"></script>
     <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="sblxtzuush1cfzz"></script>
     <script src="js/editor.js"></script>
@@ -358,6 +354,12 @@
     <img src="feedback.html" style="display:none">
     <img src="donate.html" style="display:none">
     <img src="v1/index.html" style="display:none">
+    <!-- Compatibility warning -->
+    <script>
+        if (!(Modernizr.promises || localforage.supports(localforage.INDEXEDDB) || localforage.supports(localforage.WEBSQL))) {
+            alert('Your browser does not support PhotoStack.')
+        }
+    </script>
 </body>
 
 </html>

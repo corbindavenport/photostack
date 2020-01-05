@@ -1,4 +1,8 @@
-var globalWatermark = {}
+/*
+
+    MAIN EDITOR
+
+*/
 
 var globalFilesCount = 0
 
@@ -318,41 +322,6 @@ function importDropboxImage() {
     Dropbox.choose(options)
 }
 
-// Read watermarks from localStorage
-for (var i = 0; i < localStorage.length; i++) {
-    if (localStorage.key(i).includes('Watermark')) {
-        // Add watermark to select menu
-        var option = document.createElement('option')
-        option.innerText = localStorage.key(i).replace('Watermark: ', '') // Remove "Watermark: " from the key name
-        option.value = i
-        document.getElementById('photostack-watermark-select').appendChild(option)
-    }
-}
-
-// Load watermark from storage
-document.getElementById('photostack-watermark-select').addEventListener('change', function () {
-    var watermarkImg = document.getElementById('photostack-watermark-img')
-    if (this.value != 'no-watermark') {
-        var selectedWatermark = localStorage.key(this.value)
-        var watermarkObj = JSON.parse(localStorage[selectedWatermark])
-        // TODO: Validate input
-        globalWatermark = watermarkObj
-        // Copy current watermark to DOM to avoid JS hangups
-        watermarkImg.onload = function () {
-            // Generate preview
-            renderPreviewCanvas()
-        }
-        document.getElementById('photostack-watermark-img').setAttribute('src', watermarkObj.image)
-    } else {
-        // Reset watermark
-        globalWatermark = {}
-        // Delete current watermark image
-        document.getElementById('photostack-watermark-img').removeAttribute('src')
-        // Generate preview
-        renderPreviewCanvas()
-    }
-})
-
 // Update sample file names when text is entered in the name pattern field
 function updateSampleFileNames() {
     var text = document.getElementById('photostack-file-pattern').value
@@ -576,13 +545,15 @@ document.getElementById('photostack-file-pattern').addEventListener('keyup', fun
 // Update sample file names when the page is loaded
 updateSampleFileNames()
 
-// Show welcome page on first run
+// Show welcome page on first run, or else open the import popup
 if (localStorage['welcome-editor'] != 'true') {
     $('#photostack-welcome-modal').modal('show')
     // Don't show welcome screen again after it is exited
     document.querySelector('#photostack-welcome-modal .btn-block').addEventListener('click', function () {
         localStorage['welcome-editor'] = 'true'
     })
+} else {
+    //$('#photostack-import-modal').modal('show')
 }
 
 // API support
@@ -599,3 +570,66 @@ if (getUrlVars()['import']) {
     // Remove parameters from URL
     window.history.replaceState({}, document.title, document.URL.substring(0, document.URL.indexOf('?')))
 }
+
+/*
+
+    WATERMARKS
+
+*/
+
+//TODO: Store watermark config as data variables in <img> object
+var globalWatermark = {}
+
+var watermarksStore = localforage.createInstance({
+    name: 'PhotoStack watermarks',
+    driver: [localforage.WEBSQL, localforage.INDEXEDDB]
+})
+
+async function loadWatermarkList() {
+    // Migrate watermarks from localStorage to localForage
+    for (var i = 0; i < localStorage.length; i++) {
+        if (localStorage.key(i).includes('Watermark: ')) {
+            var watermarkName = localStorage.key(i).replace('Watermark: ', '') // Remove "Watermark: " from the key name
+            var watermarkValue = JSON.parse(localStorage.getItem(localStorage.key(i)))
+            console.log('Migrating watermark "' + watermarkName + '" to updated storage...')
+            // Copy data to localForage
+            await watermarksStore.setItem(watermarkName, watermarkValue)
+            console.log('Watermark "' + watermarkName + '" successfully copied to updated storage.')
+            // Delete old item
+            localStorage.removeItem(localStorage.key(i))
+        }
+    }
+    // Add watermarks to dropdown menu in main editor
+    await watermarksStore.iterate(function (value, key, iterationNumber) {
+        // Add watermark to select menu
+        var option = document.createElement('option')
+        option.innerText = key
+        option.value = key
+        document.getElementById('photostack-watermark-select').appendChild(option)
+        console.log('Loaded watermark:', [key, value])
+    })
+}
+
+// Watermark select menu in main editor
+document.getElementById('photostack-watermark-select').addEventListener('change', async function () {
+    var watermarkImg = document.getElementById('photostack-watermark-img')
+    if (this.value != 'no-watermark') {
+        var watermarkObj = await watermarksStore.getItem((this.value))
+        globalWatermark = watermarkObj
+        // Copy current watermark to DOM to avoid JS hangups
+        watermarkImg.onload = function () {
+            // Generate preview
+            renderPreviewCanvas()
+        }
+        document.getElementById('photostack-watermark-img').setAttribute('src', watermarkObj.image)
+    } else {
+        // Reset watermark
+        globalWatermark = {}
+        // Delete current watermark image
+        document.getElementById('photostack-watermark-img').removeAttribute('src')
+        // Generate preview
+        renderPreviewCanvas()
+    }
+})
+
+loadWatermarkList()
