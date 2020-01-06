@@ -581,31 +581,140 @@ if (getUrlVars()['import']) {
 var globalWatermark = {}
 
 var watermarksStore = localforage.createInstance({
-    name: 'PhotoStack watermarks',
+    name: 'Watermarks',
     driver: [localforage.WEBSQL, localforage.INDEXEDDB]
 })
 
-async function loadWatermarkList() {
-    // Migrate watermarks from localStorage to localForage
-    for (var i = 0; i < localStorage.length; i++) {
-        if (localStorage.key(i).includes('Watermark: ')) {
-            var watermarkName = localStorage.key(i).replace('Watermark: ', '') // Remove "Watermark: " from the key name
-            var watermarkValue = JSON.parse(localStorage.getItem(localStorage.key(i)))
-            console.log('Migrating watermark "' + watermarkName + '" to updated storage...')
-            // Copy data to localForage
-            await watermarksStore.setItem(watermarkName, watermarkValue)
-            console.log('Watermark "' + watermarkName + '" successfully copied to updated storage.')
-            // Delete old item
-            localStorage.removeItem(localStorage.key(i))
+// Open watermark in watermark editor
+function openWatermarkEditor(watermarkKey) {
+    alert(watermarkKey)
+}
+
+// Export watermark to JSON file
+function exportWatermark(watermarkKey) {
+    watermarksStore.getItem(watermarkKey).then(function (value) {
+        var watermarkText = JSON.stringify(value)
+        var fileName = watermarkKey + ".json"
+        var blob = new Blob([watermarkText], { type: 'application/json;charset=utf-8' })
+        saveAs(blob, fileName)
+    }).catch(function (err) {
+        alert('Error: ' + err)
+    })
+}
+
+// Delete watermark from storage
+function deleteWatermark(watermarkKey) {
+    if (confirm('Are you sure you want to delete the watermark "' + watermarkKey + '"? This cannot be undone.')) {
+        watermarksStore.removeItem(watermarkKey).then(function () {
+            refreshWatermarks()
+        }).catch(function (err) {
+            alert('Error: ' + err)
+        })
+    }
+}
+
+// Import watermark from JSON file
+function importWatermarkSettings(el) {
+    // Create a promise for each file
+    var importPromises = $.map(el.files, function (file) {
+        return new Promise(function (resolve) {
+            // Read the file
+            var reader = new FileReader()
+            reader.onload = function () {
+                // Make sure file is valid JSON
+                try {
+                    var watermarkObj = JSON.parse(reader.result)
+                } catch (err) {
+                    alert('Error: ' + err)
+                    resolve()
+                }
+                // Add watermark to localStorage
+                var watermarkName = file.name.replace('.json', '')
+                watermarksStore.setItem(watermarkName, watermarkObj).then(function () {
+                    resolve()
+                }).catch(function (err) {
+                    alert('Error: ' + err)
+                    resolve()
+                })
+            }
+            reader.onerror = function (event) {
+                alert('Error: ' + event)
+                resolve()
+            }
+            reader.readAsText(file)
+        })
+    })
+    // When all promises are returned, clean up
+    Promise.all(importPromises).then(function () {
+        // Clear file select
+        document.getElementById('photostack-watermark-file-import').value = ''
+        // Refresh watermarks
+        refreshWatermarks()
+    })
+}
+
+async function refreshWatermarks(firstLoad = false) {
+    if (firstLoad) {
+        // Migrate watermarks from localStorage to localForage
+        for (var i = 0; i < localStorage.length; i++) {
+            if (localStorage.key(i).includes('Watermark: ')) {
+                var watermarkName = localStorage.key(i).replace('Watermark: ', '') // Remove "Watermark: " from the key name
+                var watermarkValue = JSON.parse(localStorage.getItem(localStorage.key(i)))
+                console.log('Migrating watermark "' + watermarkName + '" to updated storage...')
+                // Copy data to localForage
+                await watermarksStore.setItem(watermarkName, watermarkValue)
+                // Delete old item
+                localStorage.removeItem(localStorage.key(i))
+            }
         }
     }
-    // Add watermarks to dropdown menu in main editor
+    // Reset lists
+    document.getElementById('photostack-watermark-select').innerHTML = '<option selected="" value="no-watermark">No watermark</option>'
+    document.getElementById('photostack-watermark-manager-list').innerHTML = ''
+    // Add watermarks to editor dropdown menu and watermark manager
     await watermarksStore.iterate(function (value, key, iterationNumber) {
         // Add watermark to select menu
         var option = document.createElement('option')
         option.innerText = key
         option.value = key
         document.getElementById('photostack-watermark-select').appendChild(option)
+        // Add watermark to manager modal list
+        var listItem = document.createElement('div')
+        listItem.classList.add('list-group-item')
+        var itemTitle = document.createElement('h5')
+        itemTitle.innerText = key
+        listItem.appendChild(itemTitle)
+        // Add button container to list
+        var buttons = document.createElement('div')
+        buttons.classList.add('btn-group', 'btn-block')
+        buttons.setAttribute('role', 'group')
+        listItem.appendChild(buttons)
+        // Add edit button
+        var editBtn = document.createElement('button')
+        editBtn.innerText = 'Edit'
+        editBtn.classList.add('btn', 'btn-primary', 'btn-sm')
+        editBtn.addEventListener('click', function () {
+            openWatermarkEditor(key)
+        })
+        buttons.appendChild(editBtn)
+        // Add export button
+        var exportBtn = document.createElement('button')
+        exportBtn.innerText = 'Export'
+        exportBtn.classList.add('btn', 'btn-secondary', 'btn-sm')
+        exportBtn.addEventListener('click', function () {
+            exportWatermark(key)
+        })
+        buttons.appendChild(exportBtn)
+        // Add delete button
+        var deleteBtn = document.createElement('button')
+        deleteBtn.innerText = 'Delete'
+        deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm')
+        deleteBtn.addEventListener('click', function () {
+            deleteWatermark(key)
+        })
+        buttons.appendChild(deleteBtn)
+        // Add everything to the list
+        document.getElementById('photostack-watermark-manager-list').appendChild(listItem)
         console.log('Loaded watermark:', [key, value])
     })
 }
@@ -632,4 +741,12 @@ document.getElementById('photostack-watermark-select').addEventListener('change'
     }
 })
 
-loadWatermarkList()
+refreshWatermarks(true)
+
+document.getElementById('photostack-watermark-import-btn').addEventListener('click', function () {
+    $('#photostack-watermark-file-import').click()
+})
+
+document.getElementById('photostack-watermark-file-import').addEventListener('change', function () {
+    importWatermarkSettings(this)
+})

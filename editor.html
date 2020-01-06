@@ -41,17 +41,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Editor <span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-watermark-manager-modal">Watermarks</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="watermark.html">Watermarks</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="feedback.html">Feedback</a>
+                    <a class="nav-link" href="#">Feedback</a>
                 </li>
                 <li class="nav-item photostack-android-hide">
-                    <a class="nav-link" href="donate.html">Donate</a>
+                    <a class="nav-link" href="#">Donate</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/photostack/photostack/blob/master/v1/readme.md" target="_blank">API</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -315,51 +315,70 @@
             </div>
         </div>
     </div>
-    <!-- Error toast -->
-    <div id="photostack-error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="8000">
-        <div class="toast-header">
-            <strong class="mr-auto">Error</strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+    <!-- Watermark manager modal -->
+    <div class="modal fade" id="photostack-watermark-manager-modal" tabindex="-1" role="dialog" aria-labelledby="#photostack-watermark-manager-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="#photostack-watermark-manager-modal-title">Watermarks</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Watermarks stored in your <span class="photostack-android-hide">browser</span><span class="photostack-android-show">device</span> are displayed here. You can transfer them to other devices or browsers by exporting the watermarks to a file and importing them on another device/browser.</p>
+                    <br>
+                    <div class="list-group list-group-flush" id="photostack-watermark-manager-list" role="tablist">
+                        <!-- This is populated by editor.js -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="photostack-watermark-import-btn">Import from file</button>
+                </div>
+            </div>
         </div>
-        <div class="toast-body">
-            There was an error, please try that again in a few seconds or reload PhotoStack.
+        <!-- Error toast -->
+        <div id="photostack-error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="8000">
+            <div class="toast-header">
+                <strong class="mr-auto">Error</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                There was an error, please try that again in a few seconds or reload PhotoStack.
+            </div>
         </div>
-    </div>
-    <!-- File pickers -->
-    <input type="file" id="photostack-import-file" multiple accept="image/jpeg,image/png,image/gif">
-    <input type="file" id="photostack-import-zip" accept="application/zip,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-    <!-- Container where original photos are kept as <img> elements -->
-    <div id="photostack-original-container" aria-hidden="true"></div>
-    <!-- Container where canvas elements for each image are kept -->
-    <div id="photostack-canvas-container" aria-hidden="true"></div>
-    <!-- Container where current watermark image is kept -->
-    <img id="photostack-watermark-img" aria-hidden="true">
-    <!-- Scripts -->
-    <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
-    <script src="js/jquery-3.4.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/FileSaver.min.js"></script>
-    <script src="js/jszip.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/localforage.min.js"></script>
-    <script src="js/pica.min.js"></script>
-    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="sblxtzuush1cfzz"></script>
-    <script src="js/editor.js"></script>
-    <script src="js/register-sw.js"></script>
-    <!-- Resources that aren't used by editor page but still need to be cached by the PWA -->
-    <img src="js/watermark.js" style="display:none">
-    <img src="watermark.html" style="display:none">
-    <img src="feedback.html" style="display:none">
-    <img src="donate.html" style="display:none">
-    <img src="v1/index.html" style="display:none">
-    <!-- Compatibility warning -->
-    <script>
-        if (!(Modernizr.promises || localforage.supports(localforage.INDEXEDDB) || localforage.supports(localforage.WEBSQL))) {
-            alert('Your browser does not support PhotoStack.')
-        }
-    </script>
+        <!-- File pickers -->
+        <input type="file" id="photostack-import-file" multiple accept="image/jpeg,image/png,image/gif">
+        <input type="file" id="photostack-import-zip" accept="application/zip,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+        <input type="file" id="photostack-watermark-file-import" multiple accept=".json">
+        <!-- Container where original photos are kept as <img> elements -->
+        <div id="photostack-original-container" aria-hidden="true"></div>
+        <!-- Container where canvas elements for each image are kept -->
+        <div id="photostack-canvas-container" aria-hidden="true"></div>
+        <!-- Container where current watermark image is kept -->
+        <img id="photostack-watermark-img" aria-hidden="true">
+        <!-- Scripts -->
+        <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
+        <script src="js/jquery-3.4.1.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/FileSaver.min.js"></script>
+        <script src="js/jszip.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/localforage.min.js"></script>
+        <script src="js/pica.min.js"></script>
+        <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="sblxtzuush1cfzz"></script>
+        <script src="js/editor.js"></script>
+        <script src="js/register-sw.js"></script>
+        <!-- Resources that aren't used by editor page but still need to be cached by the PWA -->
+        <img src="v1/index.html" style="display:none">
+        <!-- Compatibility warning -->
+        <script>
+            if (!(Modernizr.promises || localforage.supports(localforage.INDEXEDDB) || localforage.supports(localforage.WEBSQL))) {
+                alert('Your browser does not support PhotoStack.')
+            }
+        </script>
 </body>
 
 </html>
