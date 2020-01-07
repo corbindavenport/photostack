@@ -587,7 +587,12 @@ var watermarksStore = localforage.createInstance({
 
 // Open watermark in watermark editor
 function openWatermarkEditor(watermarkKey) {
-    alert(watermarkKey)
+    // Add data to modal before opening
+    document.getElementById('photostack-watermark-editor-modal-title').innerText = watermarkKey
+    document.getElementById('photostack-watermark-editor-modal').setAttribute('data-watermark', watermarkKey)
+    // Open the modal
+    $('#photostack-watermark-manager-modal').modal('hide')
+    $('#photostack-watermark-editor-modal').modal('show')
 }
 
 // Export watermark to JSON file

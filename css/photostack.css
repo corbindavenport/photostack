@@ -67,6 +67,10 @@ hr {
     border-top-width: 1px !important;
 }
 
+#photostack-watermark-editor-modal .modal-dialog {
+    max-width: 900px;
+}
+
 /* Styles for Android app */
 
 .photostack-android-show, .photostack-android .photostack-android-hide {
@@ -127,6 +131,12 @@ hr {
 
     .col-lg-4 {
         padding-bottom: 60px;
+    }
+
+    /* Allow watermark editor to fill screen width */
+
+    #photostack-watermark-editor-modal .modal-dialog {
+        max-width: calc(100% - 15px);
     }
 
 }
