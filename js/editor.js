@@ -64,7 +64,7 @@ function resizeCanvas(oldCanvas, width, height) {
 }
 
 // Apply settings to a canvas
-function applyCanvasSettings(canvas, previewMode = false) {
+function applyCanvasSettings(canvas, watermarkObject = null, previewMode = false) {
     return new Promise(async function (resolve) {
         // Create aspect ratio from original canvas size
         var ratio = (canvas.width / canvas.height)
@@ -86,55 +86,62 @@ function applyCanvasSettings(canvas, previewMode = false) {
             canvas = await resizeCanvas(canvas, width, height)
         }
         // Apply watermark
-        if (document.getElementById('photostack-watermark-img').hasAttribute('src')) {
-            var watermark = document.getElementById('photostack-watermark-img')
+        if (watermarkObject) {
+            // Load the watermark image
+            var watermarkImage = await new Promise(function (resolve) {
+                var tempImage = document.createElement('img')
+                tempImage.onload = function () {
+                    resolve(tempImage)
+                }
+                tempImage.src = watermarkObject.image
+            })
             // Create temporary canvas for the watermark
             var watermarkCanvas = document.createElement('canvas')
-            watermarkCanvas.width = watermark.naturalWidth
-            watermarkCanvas.height = watermark.naturalHeight
-            watermarkCanvas.getContext('2d').drawImage(watermark, 0, 0)
+            watermarkCanvas.width = watermarkImage.naturalWidth
+            watermarkCanvas.height = watermarkImage.naturalHeight
+            watermarkCanvas.getContext('2d').drawImage(watermarkImage, 0, 0)
             // Calculate new size of watermark
-            var resizeRatio = watermark.naturalHeight / watermark.naturalWidth
-            var userSize = parseInt(globalWatermark.size)
+            var resizeRatio = watermarkImage.naturalHeight / watermarkImage.naturalWidth
+            var userSize = parseInt(watermarkObject.size)
             watermarkFinalWidth = canvas.width * (userSize / 100)
             watermarkFinalHeight = watermarkFinalWidth * resizeRatio
             // Do the resize
-            watermarkCanvas = await resizeCanvas(watermark, watermarkFinalWidth, watermarkFinalHeight)
+            watermarkCanvas = await resizeCanvas(watermarkImage, watermarkFinalWidth, watermarkFinalHeight)
             // Set opacity
-            var opacity = parseInt(globalWatermark.opacity) / 100
+            var opacity = parseInt(watermarkObject.opacity) / 100
             watermarkCanvas.getContext('2d').globalAlpha = opacity
             // Set horiztonal and vertical insets
-            var horizontalInset = canvas.width * (globalWatermark.horizontalInset / 100)
-            var veritcalInset = canvas.height * (globalWatermark.veritcalInset / 100)
+            var horizontalInset = canvas.width * (watermarkObject.horizontalInset / 100)
+            var veritcalInset = canvas.height * (watermarkObject.veritcalInset / 100)
             // Set anchor position
-            if (globalWatermark.anchorPosition === 1) {
+            if (watermarkObject.anchorPosition === 1) {
                 // Top-left alignment
                 // Because the X and Y values start from the top-left, nothing happens here
-            } else if (globalWatermark.anchorPosition === 2) {
+            } else if (watermarkObject.anchorPosition === 2) {
                 // Top-center alignment (Ignore: Horizontal)
                 horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
-            } else if (globalWatermark.anchorPosition === 3) {
+            } else if (watermarkObject.anchorPosition === 3) {
                 // Top-right alignment
                 horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
-            } else if (globalWatermark.anchorPosition === 4) {
+            } else if (watermarkObject.anchorPosition === 4) {
                 // Middle-left alignment (Ignore: Vertical)
                 veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
-            } else if (globalWatermark.anchorPosition === 5) {
+            } else if (watermarkObject.anchorPosition === 5) {
                 // Middle-center alignment (Ignore: Vertical & Horizontal)
                 horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
                 veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
-            } else if (globalWatermark.anchorPosition === 6) {
+            } else if (watermarkObject.anchorPosition === 6) {
                 // Middle-right alignment (Ignore: Vertical)
                 horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
                 veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
-            } else if (globalWatermark.anchorPosition === 7) {
+            } else if (watermarkObject.anchorPosition === 7) {
                 // Bottom-left alignment
                 veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
-            } else if (globalWatermark.anchorPosition === 8) {
+            } else if (watermarkObject.anchorPosition === 8) {
                 // Bottom-center alignment (Ignore: Horizontal)
                 veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
                 horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
-            } else if (globalWatermark.anchorPosition === 9) {
+            } else if (watermarkObject.anchorPosition === 9) {
                 // Bottom-right alignment
                 veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
                 horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
@@ -168,7 +175,19 @@ async function renderPreviewCanvas() {
     canvasContainer.appendChild(canvas)
     canvas.getContext('2d').drawImage(originalImage, 0, 0)
     // Apply settings
-    canvas = await applyCanvasSettings(canvas, true)
+    if (document.getElementById('photostack-watermark-select').value === 'no-watermark') {
+        canvas = await applyCanvasSettings(canvas, null, true)
+    } else {
+        var watermarkName = document.getElementById('photostack-watermark-select').value
+        var watermarkObject = await new Promise(function (resolve) {
+            watermarksStore.getItem(watermarkName).then(function (value) {
+                resolve(value)
+            }).catch(function (err) {
+                alert('Error: ' + err)
+            })
+        })
+        canvas = await applyCanvasSettings(canvas, watermarkObject, true)
+    }
     // Create image element
     if (previewContainer.querySelector('img')) {
         previewContainer.querySelector('img').setAttribute('src', canvas.toDataURL())
@@ -364,7 +383,7 @@ function asyncExport() {
             canvas.height = original.naturalHeight
             canvas.getContext('2d').drawImage(original, 0, 0)
             // Apply settings
-            canvas = await applyCanvasSettings(canvas)
+            canvas = await applyCanvasSettings(canvas, globalWatermark)
             resolve(canvas)
         })
     })
@@ -577,22 +596,56 @@ if (getUrlVars()['import']) {
 
 */
 
-//TODO: Store watermark config as data variables in <img> object
-var globalWatermark = {}
-
 var watermarksStore = localforage.createInstance({
     name: 'Watermarks',
     driver: [localforage.WEBSQL, localforage.INDEXEDDB]
 })
+
+// Render canvas of first image, apply settings, and show a preview
+async function renderWatermarkPreviewCanvas(watermarkObject) {
+    // Create white preview window for watermark
+    var canvas = document.createElement('canvas')
+    canvas.width = 800
+    canvas.height = 600
+    canvas.getContext('2d').fillStyle = '#FFFFFF'
+    canvas.getContext('2d').fillRect(0, 0, canvas.width, canvas.height)
+    // Apply settings
+    canvas = await applyCanvasSettings(canvas, watermarkObject)
+    // Add preview to window
+    var previewImage = document.getElementById('photostack-watermark-editor-preview')
+    previewImage.setAttribute('src', canvas.toDataURL())
+}
 
 // Open watermark in watermark editor
 function openWatermarkEditor(watermarkKey) {
     // Add data to modal before opening
     document.getElementById('photostack-watermark-editor-modal-title').innerText = watermarkKey
     document.getElementById('photostack-watermark-editor-modal').setAttribute('data-watermark', watermarkKey)
-    // Open the modal
-    $('#photostack-watermark-manager-modal').modal('hide')
-    $('#photostack-watermark-editor-modal').modal('show')
+    watermarksStore.getItem(watermarkKey).then(function (watermarkObj) {
+        // Set size in UI
+        document.getElementById('photostack-watermark-size').value = watermarkObj.size
+        // Set opacity in UI
+        document.getElementById('photostack-watermark-opacity').value = watermarkObj.opacity
+        // Set horizontal inset in UI
+        document.getElementById('photostack-watermark-horizontal-inset').value = parseInt(watermarkObj.horizontalInset)
+        // Set vertical inset in UI
+        document.getElementById('photostack-watermark-vertical-inset').value = parseInt(watermarkObj.veritcalInset)
+        // Clear .btn-primary style from the currently-active anchor position
+        var oldAnchor = document.querySelector('.photostack-anchor-btn.btn-primary')
+        oldAnchor.classList.remove('btn-primary')
+        oldAnchor.classList.add('btn-secondary')
+        // Add .btn-primary style to the correct value
+        var newAnchor = document.getElementById('photostack-watermark-pos-' + watermarkObj.anchorPosition)
+        newAnchor.classList.remove('btn-secondary')
+        newAnchor.classList.add('btn-primary')
+        // Render preview image
+        renderWatermarkPreviewCanvas(watermarkObj)
+        // Open the modal
+        $('#photostack-watermark-manager-modal').modal('hide')
+        $('#photostack-watermark-editor-modal').modal('show')
+    }).catch(function (err) {
+        alert('Error: ' + err)
+    })
 }
 
 // Export watermark to JSON file
@@ -726,24 +779,7 @@ async function refreshWatermarks(firstLoad = false) {
 
 // Watermark select menu in main editor
 document.getElementById('photostack-watermark-select').addEventListener('change', async function () {
-    var watermarkImg = document.getElementById('photostack-watermark-img')
-    if (this.value != 'no-watermark') {
-        var watermarkObj = await watermarksStore.getItem((this.value))
-        globalWatermark = watermarkObj
-        // Copy current watermark to DOM to avoid JS hangups
-        watermarkImg.onload = function () {
-            // Generate preview
-            renderPreviewCanvas()
-        }
-        document.getElementById('photostack-watermark-img').setAttribute('src', watermarkObj.image)
-    } else {
-        // Reset watermark
-        globalWatermark = {}
-        // Delete current watermark image
-        document.getElementById('photostack-watermark-img').removeAttribute('src')
-        // Generate preview
-        renderPreviewCanvas()
-    }
+    renderPreviewCanvas()
 })
 
 refreshWatermarks(true)
