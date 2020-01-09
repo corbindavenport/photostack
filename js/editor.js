@@ -43,7 +43,7 @@ function getUrlVars() {
 }
 
 // Resize a canvas using Pica library
-function resizeCanvas(oldCanvas, width, height) {
+function resizeCanvas(oldCanvas, width, height, globalAlpha = 1.0) {
     return new Promise(function (resolve) {
         // Create canvas with new size
         var newCanvas = document.createElement('canvas')
@@ -58,7 +58,17 @@ function resizeCanvas(oldCanvas, width, height) {
         }
         // Do the resize
         pica().resize(oldCanvas, newCanvas, options).then(function () {
-            resolve(newCanvas)
+            // We have to create ANOTHER canvas to apply transparency
+            if (globalAlpha != 1.0) {
+                var tempCanvas = document.createElement('canvas')
+                tempCanvas.width = newCanvas.width
+                tempCanvas.height = newCanvas.height
+                tempCanvas.getContext('2d').globalAlpha = globalAlpha
+                tempCanvas.getContext('2d').drawImage(newCanvas, 0, 0)
+                resolve(tempCanvas)
+            } else {
+                resolve(newCanvas)
+            }
         })
     })
 }
@@ -99,6 +109,9 @@ function applyCanvasSettings(canvas, watermarkObject = null, previewMode = false
             var watermarkCanvas = document.createElement('canvas')
             watermarkCanvas.width = watermarkImage.naturalWidth
             watermarkCanvas.height = watermarkImage.naturalHeight
+            // Set opacity
+            var opacity = parseInt(watermarkObject.opacity) / 100
+            // Draw watermark to temporary canvas
             watermarkCanvas.getContext('2d').drawImage(watermarkImage, 0, 0)
             // Calculate new size of watermark
             var resizeRatio = watermarkImage.naturalHeight / watermarkImage.naturalWidth
@@ -106,11 +119,8 @@ function applyCanvasSettings(canvas, watermarkObject = null, previewMode = false
             watermarkFinalWidth = canvas.width * (userSize / 100)
             watermarkFinalHeight = watermarkFinalWidth * resizeRatio
             // Do the resize
-            watermarkCanvas = await resizeCanvas(watermarkImage, watermarkFinalWidth, watermarkFinalHeight)
-            // Set opacity
-            var opacity = parseInt(watermarkObject.opacity) / 100
-            watermarkCanvas.getContext('2d').globalAlpha = opacity
-            // Set horiztonal and vertical insets
+            watermarkCanvas = await resizeCanvas(watermarkImage, watermarkFinalWidth, watermarkFinalHeight, opacity)
+            // Set horizontal and vertical insets
             var horizontalInset = canvas.width * (watermarkObject.horizontalInset / 100)
             var veritcalInset = canvas.height * (watermarkObject.veritcalInset / 100)
             // Set anchor position
