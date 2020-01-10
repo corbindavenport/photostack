@@ -10,7 +10,7 @@ nav, .photostack-mobile-toolbar {
     border-radius: 0.25rem;
 }
 
-#photostack-original-container, #photostack-canvas-container, #photostack-watermark-sample, #photostack-watermark-img, #photostack-import-file, #photostack-watermark-file-import, #photostack-import-zip {
+#photostack-original-container, #photostack-canvas-container, #photostack-watermark-sample, #photostack-watermark-img, #photostack-import-file, #photostack-watermark-file-import, #photostack-import-zip, #photostack-watermark-import-image {
     display: none;
 }
 

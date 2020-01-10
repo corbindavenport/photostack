@@ -4,6 +4,11 @@
 
 */
 
+const watermarksStore = localforage.createInstance({
+    name: 'Watermarks',
+    driver: [localforage.WEBSQL, localforage.INDEXEDDB]
+})
+
 var globalFilesCount = 0
 
 // Prevent unload
@@ -515,7 +520,10 @@ if (!Modernizr.todataurlwebp) {
 Modernizr.on('webp', function (result) {
     if (result) {
         var formats = document.getElementById('photostack-import-file').getAttribute('accept')
+        // Main editor image picker
         document.getElementById('photostack-import-file').setAttribute('accept', formats + ',image/webp')
+        // Watermark editor image picker
+        document.getElementById('photostack-watermark-import-image').setAttribute('accept', formats + ',image/webp')
     }
 })
 
@@ -571,6 +579,21 @@ document.getElementById('photostack-file-pattern').addEventListener('keyup', fun
     updateSampleFileNames()
 })
 
+document.getElementById('photostack-watermark-select').addEventListener('change', async function () {
+    renderPreviewCanvas()
+})
+
+document.getElementById('photostack-watermark-import-btn').addEventListener('click', function () {
+    $('#photostack-watermark-file-import').click()
+})
+
+document.getElementById('photostack-watermark-file-import').addEventListener('change', function () {
+    importWatermarkSettings(this)
+})
+
+// Get list of watermarks when page is loaded
+refreshWatermarks(true)
+
 // Update sample file names when the page is loaded
 updateSampleFileNames()
 
@@ -606,13 +629,10 @@ if (getUrlVars()['import']) {
 
 */
 
-var watermarksStore = localforage.createInstance({
-    name: 'Watermarks',
-    driver: [localforage.WEBSQL, localforage.INDEXEDDB]
-})
+const watermarkEditor = document.getElementById('photostack-watermark-editor-modal')
 
 // Render canvas of first image, apply settings, and show a preview
-async function renderWatermarkPreviewCanvas(watermarkObject) {
+async function renderWatermarkPreviewCanvas(watermarkObject = null) {
     // Create white preview window for watermark
     var canvas = document.createElement('canvas')
     canvas.width = 800
@@ -620,7 +640,20 @@ async function renderWatermarkPreviewCanvas(watermarkObject) {
     canvas.getContext('2d').fillStyle = '#FFFFFF'
     canvas.getContext('2d').fillRect(0, 0, canvas.width, canvas.height)
     // Apply settings
-    canvas = await applyCanvasSettings(canvas, watermarkObject)
+    canvas = await applyCanvasSettings(canvas, {
+        // Image
+        image: watermarkEditor.getAttribute('data-image'),
+        // Size
+        size: watermarkEditor.querySelector('#photostack-watermark-size').value,
+        // Opacity
+        opacity: parseInt(watermarkEditor.querySelector('#photostack-watermark-opacity').value),
+        // Horizontal inset
+        horizontalInset: parseInt(watermarkEditor.querySelector('#photostack-watermark-horizontal-inset').value),
+        // Vertical inset
+        veritcalInset: parseInt(watermarkEditor.querySelector('#photostack-watermark-vertical-inset').value),
+        // Anchor position
+        anchorPosition: parseInt(watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary').id.replace('photostack-watermark-pos-', ''))
+    })
     // Add preview to window
     var previewImage = document.getElementById('photostack-watermark-editor-preview')
     previewImage.setAttribute('src', canvas.toDataURL())
@@ -629,27 +662,29 @@ async function renderWatermarkPreviewCanvas(watermarkObject) {
 // Open watermark in watermark editor
 function openWatermarkEditor(watermarkKey) {
     // Add data to modal before opening
-    document.getElementById('photostack-watermark-editor-modal-title').innerText = watermarkKey
-    document.getElementById('photostack-watermark-editor-modal').setAttribute('data-watermark', watermarkKey)
+    watermarkEditor.querySelector('#photostack-watermark-editor-modal-title').innerText = watermarkKey
+    watermarkEditor.setAttribute('data-watermark', watermarkKey)
     watermarksStore.getItem(watermarkKey).then(function (watermarkObj) {
+        // Set image
+        watermarkEditor.setAttribute('data-image', watermarkObj.image)
         // Set size in UI
-        document.getElementById('photostack-watermark-size').value = watermarkObj.size
+        watermarkEditor.querySelector('#photostack-watermark-size').value = watermarkObj.size
         // Set opacity in UI
-        document.getElementById('photostack-watermark-opacity').value = watermarkObj.opacity
+        watermarkEditor.querySelector('#photostack-watermark-opacity').value = watermarkObj.opacity
         // Set horizontal inset in UI
-        document.getElementById('photostack-watermark-horizontal-inset').value = parseInt(watermarkObj.horizontalInset)
+        watermarkEditor.querySelector('#photostack-watermark-horizontal-inset').value = parseInt(watermarkObj.horizontalInset)
         // Set vertical inset in UI
-        document.getElementById('photostack-watermark-vertical-inset').value = parseInt(watermarkObj.veritcalInset)
+        watermarkEditor.querySelector('#photostack-watermark-vertical-inset').value = parseInt(watermarkObj.veritcalInset)
         // Clear .btn-primary style from the currently-active anchor position
-        var oldAnchor = document.querySelector('.photostack-anchor-btn.btn-primary')
+        var oldAnchor = watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary')
         oldAnchor.classList.remove('btn-primary')
         oldAnchor.classList.add('btn-secondary')
         // Add .btn-primary style to the correct value
-        var newAnchor = document.getElementById('photostack-watermark-pos-' + watermarkObj.anchorPosition)
+        var newAnchor = watermarkEditor.querySelector('#photostack-watermark-pos-' + watermarkObj.anchorPosition)
         newAnchor.classList.remove('btn-secondary')
         newAnchor.classList.add('btn-primary')
         // Render preview image
-        renderWatermarkPreviewCanvas(watermarkObj)
+        renderWatermarkPreviewCanvas()
         // Open the modal
         $('#photostack-watermark-manager-modal').modal('hide')
         $('#photostack-watermark-editor-modal').modal('show')
@@ -657,6 +692,87 @@ function openWatermarkEditor(watermarkKey) {
         alert('Error: ' + err)
     })
 }
+
+// Watermark editor event listeners
+
+watermarkEditor.querySelector('#photostack-watermark-editor-image-btn').addEventListener('click', function () {
+    $('#photostack-watermark-import-image').click()
+})
+
+watermarkEditor.querySelector('#photostack-watermark-import-image').addEventListener('change', function () {
+    var image = document.createElement('img')
+    var reader = new FileReader()
+    // Set the image source to the reader result, once the reader is done
+    reader.onload = function () {
+        image.src = reader.result
+    }
+    reader.onerror = function (err) {
+        alert('Error: ' + err)
+    }
+    // Once both the reader and image is done, we can safely add it to the originals container and clean up
+    image.onload = function () {
+        // Save image to watermark editor
+        watermarkEditor.setAttribute('data-image', image.src)
+        // Render preview again
+        renderWatermarkPreviewCanvas()
+        // Clear file select
+        this.value = ''
+    }
+    reader.readAsDataURL(this.files[0])
+})
+
+watermarkEditor.querySelector('#photostack-watermark-size').addEventListener('change', function () {
+    renderWatermarkPreviewCanvas()
+})
+
+watermarkEditor.querySelector('#photostack-watermark-opacity').addEventListener('change', function () {
+    renderWatermarkPreviewCanvas()
+})
+
+watermarkEditor.querySelector('#photostack-watermark-horizontal-inset').addEventListener('change', function () {
+    renderWatermarkPreviewCanvas()
+})
+
+watermarkEditor.querySelector('#photostack-watermark-vertical-inset').addEventListener('change', function () {
+    renderWatermarkPreviewCanvas()
+})
+
+watermarkEditor.querySelectorAll('.photostack-anchor-btn').forEach(function (button) {
+    button.addEventListener('click', function () {
+        // Clear .btn-primary style from the currently-active button
+        var previousButton = watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary')
+        previousButton.classList.remove('btn-primary')
+        previousButton.classList.add('btn-secondary')
+        // Add .btn-primary style to the button that was just clicked
+        button.classList.remove('btn-secondary')
+        button.classList.add('btn-primary')
+        renderWatermarkPreviewCanvas()
+    })
+})
+
+watermarkEditor.querySelector('#photostack-watermark-editor-save-btn').addEventListener('click', function() {
+    var currentWatermark = watermarkEditor.getAttribute('data-watermark')
+    // Save watermark back to storage
+    watermarksStore.setItem(currentWatermark, {
+        // Image
+        image: watermarkEditor.getAttribute('data-image'),
+        // Size
+        size: watermarkEditor.querySelector('#photostack-watermark-size').value,
+        // Opacity
+        opacity: parseInt(watermarkEditor.querySelector('#photostack-watermark-opacity').value),
+        // Horizontal inset
+        horizontalInset: parseInt(watermarkEditor.querySelector('#photostack-watermark-horizontal-inset').value),
+        // Vertical inset
+        veritcalInset: parseInt(watermarkEditor.querySelector('#photostack-watermark-vertical-inset').value),
+        // Anchor position
+        anchorPosition: parseInt(watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary').id.replace('photostack-watermark-pos-', ''))
+    }).then(function (value) {
+        // Close modal once saved
+        $('#photostack-watermark-editor-modal').modal('hide')
+    }).catch(function (err) {
+        alert('Error: ' + err)
+    })
+})
 
 // Export watermark to JSON file
 function exportWatermark(watermarkKey) {
@@ -786,18 +902,3 @@ async function refreshWatermarks(firstLoad = false) {
         console.log('Loaded watermark:', [key, value])
     })
 }
-
-// Watermark select menu in main editor
-document.getElementById('photostack-watermark-select').addEventListener('change', async function () {
-    renderPreviewCanvas()
-})
-
-refreshWatermarks(true)
-
-document.getElementById('photostack-watermark-import-btn').addEventListener('click', function () {
-    $('#photostack-watermark-file-import').click()
-})
-
-document.getElementById('photostack-watermark-file-import').addEventListener('change', function () {
-    importWatermarkSettings(this)
-})
