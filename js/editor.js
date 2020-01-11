@@ -5,8 +5,6 @@ const watermarksStore = localforage.createInstance({
 
 var globalFilesCount = 0
 
-$.fx.speeds._default = 0;
-
 // Prevent unload
 window.onbeforeunload = function () {
     // Warn before navigating away if there are any files imported
