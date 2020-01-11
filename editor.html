@@ -276,17 +276,14 @@
                     <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
                 </div>
                 <div class="modal-body">
-                    <p>Your images are being processed. Your browser or device might slow down.</p>
+                    <p style="text-align: center;">Please wait while the images are being exported...</p>
                     <p>
-                        <b>Note:</b> Some browsers throttle background windows and tabs. To speed up exports, don't
-                        minimize PhotoStack or switch to another tab/window.
-                    </p>
-                    <p>
-                        <div class="d-flex justify-content-center export-spinner">
-                            <div class="spinner-border" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="photostack-export-modal-progress"></div>
                         </div>
+                    </p>
+                    <p class="photostack-android-hide text-muted" style="text-align: center;">
+                        Some browsers throttle background windows and tabs. To speed up exports, don't minimize PhotoStack or switch to another tab/window.
                     </p>
                 </div>
             </div>

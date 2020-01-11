@@ -386,7 +386,9 @@ function asyncExport() {
     } else {
         const imgNamePattern = document.getElementById('photostack-file-pattern').value
     }
-    var imgCount = document.querySelectorAll('#photostack-original-container img').length
+    const imgTotal = document.querySelectorAll('#photostack-original-container img').length
+    const imgStep = Math.round(100 / imgTotal)
+    const progressBar = document.getElementById('photostack-export-modal-progress')
     // Switch modal content to progress indicator
     document.querySelector('.photostack-export-modal-initial').style.display = 'none'
     document.querySelector('.photostack-export-modal-loading').style.display = 'block'
@@ -419,6 +421,12 @@ function asyncExport() {
                 })
                 canvas = await applyCanvasSettings(canvas, watermarkObject, true)
             }
+            // Update progress bar and page title
+            const previousProgress = parseInt(progressBar.getAttribute('aria-valuenow'))
+            const newProgress = previousProgress + imgStep
+            progressBar.setAttribute('aria-valuenow', newProgress)
+            progressBar.setAttribute('style', 'width: ' + newProgress + '%')
+            // Return rendered canvas
             resolve(canvas)
         })
     })
@@ -512,8 +520,8 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
     document.querySelector('.photostack-export-modal-loading').style.display = 'none'
     document.querySelector('.photostack-export-modal-finished').style.display = 'none'
     document.querySelector('.photostack-export-modal-initial').style.display = 'block'
-    // Reset title
-    document.title = 'PhotoStack'
+    document.getElementById('photostack-export-modal-progress').setAttribute('aria-valuenow', '0')
+    document.getElementById('photostack-export-modal-progress').setAttribute('style', 'width: 0%')
     // Clear PWA icon
     if ('setExperimentalAppBadge' in navigator) {
         navigator.clearExperimentalAppBadge()
@@ -770,7 +778,7 @@ watermarkEditor.querySelectorAll('.photostack-anchor-btn').forEach(function (but
     })
 })
 
-watermarkEditor.querySelector('#photostack-watermark-editor-save-btn').addEventListener('click', function() {
+watermarkEditor.querySelector('#photostack-watermark-editor-save-btn').addEventListener('click', function () {
     var currentWatermark = watermarkEditor.getAttribute('data-watermark')
     // Save watermark back to storage
     watermarksStore.setItem(currentWatermark, {
@@ -923,7 +931,7 @@ async function refreshWatermarks(firstLoad = false) {
     })
 }
 
-document.getElementById('photostack-watermark-new-btn').addEventListener('click', function() {
+document.getElementById('photostack-watermark-new-btn').addEventListener('click', function () {
     var name = prompt('What do you want to call the watermark?')
     if (name && (name != '')) {
         // Create new watermark in storage
