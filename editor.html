@@ -326,13 +326,22 @@
                 </div>
                 <div class="modal-body">
                     <p>Watermarks stored in your <span class="photostack-android-hide">browser</span><span class="photostack-android-show">device</span> are displayed here. You can transfer them to other devices or browsers by exporting the watermarks to a file and importing them on another device/browser.</p>
+                    <p>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-6" style="padding-left: 0">
+                                    <button type="button" id="photostack-watermark-new-btn" class="btn btn-primary btn-block">New watermark</button>
+                                </div>
+                                <div class="col-6" style="padding-right: 0">
+                                    <button type="button" id="photostack-watermark-import-btn" class="btn btn-primary btn-block">Import from file</button>
+                                </div>
+                            </div>
+                        </div>
+                    </p>
                     <br>
                     <div class="list-group list-group-flush" id="photostack-watermark-manager-list" role="tablist">
                         <!-- This is populated by editor.js -->
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="photostack-watermark-import-btn">Import from file</button>
                 </div>
             </div>
         </div>
@@ -400,29 +409,23 @@
                                 <h5>Effects</h5>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"
-                                            aria-describedby="photostack-watermark-size">Size</span>
+                                        <span class="input-group-text" aria-describedby="photostack-watermark-size">Size</span>
                                     </div>
-                                    <input type="number" class="form-control" min="0" max="100" aria-label="Size"
-                                        id="photostack-watermark-size" value="30" autocomplete="off">
+                                    <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-size" value="30" autocomplete="off">
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"
-                                            aria-describedby="photostack-watermark-opacity">Opacity</span>
+                                        <span class="input-group-text" aria-describedby="photostack-watermark-opacity">Opacity</span>
                                     </div>
-                                    <input type="number" class="form-control" min="0" max="100" aria-label="Size"
-                                        id="photostack-watermark-opacity" value="50" autocomplete="off">
+                                    <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-opacity" value="50" autocomplete="off">
                                 </div>
                                 <div class="form-group">
                                     <label for="photostack-watermark-horizontal-inset">Horizontal inset</label>
-                                    <input type="range" class="form-control-range" autocomplete="off"
-                                        id="photostack-watermark-horizontal-inset" min="-10" max="10" value="0">
+                                    <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-horizontal-inset" min="-10" max="10" value="0">
                                 </div>
                                 <div class="form-group">
                                     <label for="photostack-watermark-vertical-inset">Vertical inset</label>
-                                    <input type="range" class="form-control-range" autocomplete="off"
-                                        id="photostack-watermark-vertical-inset" min="-10" max="10" value="0">
+                                    <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-vertical-inset" min="-10" max="10" value="0">
                                 </div>
                             </div>
                         </div>
@@ -455,6 +458,8 @@
     <div id="photostack-original-container" aria-hidden="true"></div>
     <!-- Container where canvas elements for each image are kept -->
     <div id="photostack-canvas-container" aria-hidden="true"></div>
+    <!-- Watermark image cache -->
+    <img id="photostack-watermark-cache">
     <!-- Scripts -->
     <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
     <script src="js/jquery-3.4.1.min.js"></script>

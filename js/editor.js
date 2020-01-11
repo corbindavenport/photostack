@@ -1,9 +1,3 @@
-/*
-
-    MAIN EDITOR
-
-*/
-
 const watermarksStore = localforage.createInstance({
     name: 'Watermarks',
     driver: [localforage.WEBSQL, localforage.INDEXEDDB]
@@ -23,6 +17,12 @@ window.onbeforeunload = function () {
 window.onerror = function () {
     $('#photostack-error-toast').toast('show')
 }
+
+/*
+
+    MAIN EDITOR
+
+*/
 
 // Increase image count after imports
 function increaseImageCount(number) {
@@ -103,13 +103,19 @@ function applyCanvasSettings(canvas, watermarkObject = null, previewMode = false
         // Apply watermark
         if (watermarkObject) {
             // Load the watermark image
-            var watermarkImage = await new Promise(function (resolve) {
-                var tempImage = document.createElement('img')
-                tempImage.onload = function () {
-                    resolve(tempImage)
-                }
-                tempImage.src = watermarkObject.image
-            })
+            if (watermarkObject.image.length === document.getElementById('photostack-watermark-cache').src.length) {
+                // If the current image has already been loaded, avoid loading it again
+                var watermarkImage = document.getElementById('photostack-watermark-cache')
+            } else {
+                // Load the image and add it to cache
+                var watermarkImage = await new Promise(function (resolve) {
+                    var tempImage = document.getElementById('photostack-watermark-cache')
+                    tempImage.onload = function () {
+                        resolve(tempImage)
+                    }
+                    tempImage.src = watermarkObject.image
+                })
+            }
             // Create temporary canvas for the watermark
             var watermarkCanvas = document.createElement('canvas')
             watermarkCanvas.width = watermarkImage.naturalWidth
@@ -372,11 +378,13 @@ function asyncExport() {
     // Start timer
     console.time('Async export')
     // Set variables
-    var imgFormat = document.getElementById('photostack-file-format').value
-    var imgQuality = parseInt(document.getElementById('photostack-file-quality').value) / 100
-    var imgNamePattern = document.getElementById('photostack-file-pattern').value
-    if (imgNamePattern === '') {
-        imgNamePattern = 'image'
+    const imgFormat = document.getElementById('photostack-file-format').value
+    const imgQuality = parseInt(document.getElementById('photostack-file-quality').value) / 100
+    const imgNamePattern = document.getElementById('photostack-file-pattern').value
+    if (document.getElementById('photostack-file-pattern').value === '') {
+        const imgNamePattern = 'image'
+    } else {
+        const imgNamePattern = document.getElementById('photostack-file-pattern').value
     }
     var imgCount = document.querySelectorAll('#photostack-original-container img').length
     // Switch modal content to progress indicator
@@ -398,7 +406,19 @@ function asyncExport() {
             canvas.height = original.naturalHeight
             canvas.getContext('2d').drawImage(original, 0, 0)
             // Apply settings
-            canvas = await applyCanvasSettings(canvas, globalWatermark)
+            if (document.getElementById('photostack-watermark-select').value === 'no-watermark') {
+                // No watermark selected
+                canvas = await applyCanvasSettings(canvas, null, true)
+            } else {
+                // Get selected watermark
+                var watermarkName = document.getElementById('photostack-watermark-select').value
+                var watermarkObject = await new Promise(function (resolve) {
+                    watermarksStore.getItem(watermarkName).then(function (value) {
+                        resolve(value)
+                    })
+                })
+                canvas = await applyCanvasSettings(canvas, watermarkObject, true)
+            }
             resolve(canvas)
         })
     })
@@ -902,3 +922,23 @@ async function refreshWatermarks(firstLoad = false) {
         console.log('Loaded watermark:', [key, value])
     })
 }
+
+document.getElementById('photostack-watermark-new-btn').addEventListener('click', function() {
+    var name = prompt('What do you want to call the watermark?')
+    if (name && (name != '')) {
+        // Create new watermark in storage
+        watermarksStore.setItem(name, {
+            image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABmJLR0QA/wAAAAAzJ3zzAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH5AEKFxkQjAI2aQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAALSURBVAjXY2AAAgAABQAB4iYFmwAAAABJRU5ErkJggg==', // 1x1 transparent PNG
+            size: 30,
+            opacity: 50,
+            horizontalInset: 0,
+            veritcalInset: 0,
+            anchorPosition: 5
+        }).then(function () {
+            openWatermarkEditor(name)
+            refreshWatermarks()
+        }).catch(function (err) {
+            alert('Error: ' + err)
+        })
+    }
+})
