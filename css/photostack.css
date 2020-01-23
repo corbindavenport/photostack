@@ -150,3 +150,22 @@ hr {
     }
 
 }
+
+/* Print styles */
+
+@media print {
+
+    body {
+        background: #ffffff;
+        color: #000;
+        font-size: 18px;
+    }
+
+}
+
+#photostack-print-preview {
+    width: auto;
+    height: auto;
+    max-width: 100vw;
+    max-height: 100vh;
+}

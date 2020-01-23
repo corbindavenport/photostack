@@ -209,15 +209,19 @@ async function renderPreviewCanvas() {
         })
         canvas = await applyCanvasSettings(canvas, watermarkObject, true)
     }
+    // Generate Data URL
+    var previewData = canvas.toDataURL()
     // Create image element
     if (previewContainer.querySelector('img')) {
-        previewContainer.querySelector('img').setAttribute('src', canvas.toDataURL())
+        previewContainer.querySelector('img').setAttribute('src', previewData)
     } else {
         var previewImage = document.createElement('img')
-        previewImage.setAttribute('src', canvas.toDataURL())
+        previewImage.setAttribute('src', previewData)
         previewContainer.innerHTML = ''
         previewContainer.appendChild(previewImage)
     }
+    // Set image in print preview
+    document.getElementById('photostack-print-preview').src = previewData
 }
 
 // Import images from file picker

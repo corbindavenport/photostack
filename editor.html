@@ -34,7 +34,7 @@
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top d-print-none">
         <a class="navbar-brand" href="index.html">PhotoStack 2</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -62,7 +62,7 @@
         </div>
     </nav>
     <!-- Main container -->
-    <div class="container-fluid" style="margin-top: 90px">
+    <div class="container-fluid d-print-none" style="margin-top: 90px">
         <div class="row">
             <!-- Preview container -->
             <div class="col-lg col-md-6 photostack-preview-container">
@@ -169,7 +169,7 @@
         </div>
     </div>
     <!-- Import/export toolbar for mobile only -->
-    <div class="photostack-mobile-toolbar d-lg-none">
+    <div class="photostack-mobile-toolbar d-lg-none d-print-none">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-6">
@@ -446,6 +446,10 @@
         <div class="toast-body">
             There was an error, please try that again in a few seconds or reload PhotoStack.
         </div>
+    </div>
+    <!-- Print UI -->
+    <div class="d-print-block">
+        <img id="photostack-print-preview">
     </div>
     <!-- File pickers -->
     <input type="file" id="photostack-import-file" multiple accept="image/jpeg,image/png,image/gif">
