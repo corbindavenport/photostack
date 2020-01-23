@@ -482,10 +482,11 @@
     <script src="js/register-sw.js"></script>
     <!-- Resources that aren't used by editor page but still need to be cached by the PWA -->
     <img src="v1/index.html" style="display:none">
-    <!-- Compatibility warning -->
+    <!-- Redirect old browsers to PhotoStack Classic -->
     <script>
-        if (!(Modernizr.promises || localforage.supports(localforage.INDEXEDDB) || localforage.supports(localforage.WEBSQL))) {
-            alert('Your browser does not support PhotoStack.')
+        var storageCheck = (localforage.supports(localforage.INDEXEDDB) || localforage.supports(localforage.WEBSQL))
+        if (!(Modernizr.promises && storageCheck)) {
+            window.location.replace('https://classic.photostack.app')
         }
     </script>
 </body>
