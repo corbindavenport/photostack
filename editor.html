@@ -57,6 +57,10 @@
                 </button>
             </form>
             <form class="form-inline my-2 my-lg-0">
+                <button class="btn btn-primary btn-block my-2 my-sm-0 photostack-clear-images-btn" type="button">Clear
+                </button>
+            </form>
+            <form class="form-inline my-2 my-lg-0">
                 <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
             </form>
         </div>
@@ -172,12 +176,15 @@
     <div class="photostack-mobile-toolbar d-lg-none d-print-none">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <button class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
                         <span class="badge badge-light photostack-image-count">0</span>
                     </button>
                 </div>
-                <div class="col-6">
+                <div class="col-4">
+                    <button class="btn btn-primary btn-block photostack-clear-images-btn" type="button">Clear</button>
+                </div>
+                <div class="col-4">
                     <button class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
                 </div>
             </div>
@@ -228,7 +235,7 @@
                     </p>
                     <hr>
                     <p>
-                        <button class="btn btn-primary btn-block" id="photostack-import-zip-btn" type="button">Import images from ZIP/container file <span class="badge badge-secondary">New</span></button>
+                        <button class="btn btn-primary btn-block" id="photostack-import-zip-btn" type="button">Import images from ZIP/container file</button>
                     </p>
                     <p style="text-align: center" class="small">Supported file types: ZIP, MS Office (DOCX, PPTX, XLSX)</p>
                 </div>
@@ -448,7 +455,7 @@
         </div>
     </div>
     <!-- Print UI -->
-    <div class="d-print-block">
+    <div class="d-none d-print-block">
         <img id="photostack-print-preview">
     </div>
     <!-- File pickers -->
