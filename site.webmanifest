@@ -16,5 +16,5 @@
     "theme_color": "#222",
     "background_color": "#303030",
     "display": "standalone",
-    "start_url": "editor.html"
+    "start_url": "/"
 }
