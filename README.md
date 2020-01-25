@@ -2,9 +2,16 @@
 
 PhotoStack is a free and open-source batch photo editor that runs entirely on the web, complete with watermarking support and compatibility with all major browsers.
 
-PhotoStack uses components from [jQuery](https://jquery.com/), [Bootstrap](https://getbootstrap.com), [FileSaver.js](https://github.com/eligrey/FileSaver.js/), [canvas-toBlob.js](https://github.com/eligrey/canvas-toBlob.js), [JSZip](https://stuk.github.io/jszip/), and [Modernizr](https://modernizr.com/).
+PhotoStack uses components from the following projects:
 
-Icon is from the [Oranchelo icon theme](https://github.com/OrancheloTeam/oranchelo-icon-theme).
+- [jQuery](https://jquery.com/)
+- [Bootstrap](https://getbootstrap.com)
+- [FileSaver.js](https://github.com/eligrey/FileSaver.js/)
+- [JSZip](https://stuk.github.io/jszip/)
+- [Modernizr](https://modernizr.com/)
+- [Pica](https://github.com/nodeca/pica)
+
+Icon is from the [Oranchelo icon theme](https://github.com/OrancheloTeam/oranchelo-icon-theme). Bootstrap theme is 'Darkly' from [Bootswatch](https://bootswatch.com/).
 
 ---------------------------------------------------------
 

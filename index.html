@@ -4,8 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>PhotoStack - Batch photo editor, add watermark to photos, and more</title>
+    <title>PhotoStack</title>
     <meta name="description" content="Convert, resize, and add watermarks to images all in your web browser.">
+    <meta name="robots" content="noindex">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/photostack.css">
@@ -33,163 +34,519 @@
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #222 !important">
-        <a class="navbar-brand" href="index.html">PhotoStack</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top d-print-none">
+        <a class="navbar-brand" href="index.html">PhotoStack 2 BETA</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="editor.html">Editor</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="watermark.html">Watermarks</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="feedback.html">Feedback</a>
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-feedback-modal">Feedback</a>
                 </li>
                 <li class="nav-item photostack-android-hide">
-                    <a class="nav-link" href="#donate">Donate</a>
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-donate-modal">Donate</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/photostack/photostack/blob/master/v1/readme.md" target="_blank">API</a>
                 </li>
             </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-toggle="modal" data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
+                    <span class="badge badge-light photostack-image-count">0</span>
+                </button>
+            </form>
+            <form class="form-inline my-2 my-lg-0">
+                <button class="btn btn-primary btn-block my-2 my-sm-0 photostack-clear-images-btn" type="button">Clear
+                </button>
+            </form>
+            <form class="form-inline my-2 my-lg-0">
+                <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
+            </form>
         </div>
     </nav>
     <!-- Main container -->
-    <main role="main">
-
-        <section class="jumbotron text-center bg-light" style="border-radius: 0">
-            <div class="container">
-                <h1 class="jumbotron-heading">The ultimate batch photo editor.</h1>
-                <p class="lead text-muted">PhotoStack is an open-source batch photo editor that runs entirely on
-                    the web, complete with watermarking support and compatibility with all major browsers.</p>
-                <p>
-                    <!--[if IE]>
-                        <div class="alert alert-danger" role="alert">
-                            <b>PhotoStack does not work on Internet Explorer 9 and older.</b> Please upgrade to Internet
-                            Explorer 10, or download <a href="https://www.mozilla.org/en-US/firefox/"
-                                target="_blank">Mozilla Firefox</a> or <a href="https://www.google.com/chrome/"
-                                target="_blank">Google Chrome</a>.
+    <div class="container-fluid d-print-none" style="margin-top: 90px">
+        <div class="row">
+            <!-- Preview container -->
+            <div class="col-lg col-md-6 photostack-preview-container">
+                <!-- Temporary text for when no photos are imported -->
+                <div class="card photostack-preview-card">
+                    <div class="card-body" style="padding: 0">
+                        <div class="text-center" id="photostack-editor-preview">
+                            <p><br />A preview of your settings will appear here once you import some images.</p>
                         </div>
-                        <style>
-                            .photostack-open-button {
-                                display: none
-                            }
-                        </style>
-                    <![endif]-->
-                    <a href="editor.html" class="btn btn-primary btn-lg photostack-open-button">Open PhotoStack</a>
-                    <a href="https://play.google.com/store/apps/details?id=com.photostack.android" target="_blank" class="btn btn-primary btn-lg photostack-open-button">Get PhotoStack for Android</a>
-                </p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <small class="text-muted">Preview is limited to 800px wide.</small>
+                    </div>
+                </div>
             </div>
-        </section>
-
-        <div class="container">
-
-
+            <!-- Settings panel container -->
+            <div class="col-lg-4 col-md-6">
+                <!-- Resize card -->
+                <div class="card">
+                    <div class="card-header">
+                        Resize
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" placeholder="Image width (px)" aria-label="Enter the image width in pixels." id="photostack-image-width" autocomplete="off">
+                                <div class="input-group-append">
+                                    <button class="btn btn-secondary" type="button" id="photostack-resize-apply-btn">Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-secondary btn-block" type="button" id="photostack-reset-image-width-button">Reset image size</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="photostack-resize-unsharpAmount">Sharpness</label>
+                            <div class="input-group mb-3" style="margin-bottom: 0 !important">
+                                <input type="number" class="form-control" aria-label="Sharpness value. Choose a value from 1-100. Default is 50." id="photostack-resize-unsharpAmount" autocomplete="off" value="50">
+                                <div class="input-group-append">
+                                    <button class="btn btn-secondary" type="button" id="photostack-sharpness-apply-btn">Apply</button>
+                                </div>
+                            </div>
+                            <small class="form-text text-muted">Choose a value from 1-100. Default is 50.</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- Watermarks card-->
+                <div class="card">
+                    <div class="card-header">
+                        Watermark
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <select class="custom-select" id="photostack-watermark-select" autocomplete="off">
+                                <option selected value="no-watermark">No watermark</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-secondary btn-block" data-toggle="modal" data-target="#photostack-watermark-manager-modal">Manage watermarks</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- File options -->
+                <div class="card">
+                    <div class="card-header">
+                        Export
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="photostack-file-format">File format</label>
+                            <select class="form-control" id="photostack-file-format" autocomplete="on">
+                                <option value="image/jpeg">JPEG (.jpg)</option>
+                                <option value="image/png">Portable Network Graphics (.png)</option>
+                                <option value="image/webp">WebP (.webp)</option>
+                            </select>
+                            <small class="form-text text-muted">Image format support varies by <span class="photostack-android-hide">browser</span><span class="photostack-android-show">device</span>.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="photostack-file-quality">Image quality</label>
+                            <input type="number" class="form-control" id="photostack-file-quality" value="92" min="1" max="100" autocomplete="on">
+                            <small class="form-text text-muted">Choose a value from 1-100.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="photostack-file-quality">Name pattern</label>
+                            <input type="text" class="form-control" id="photostack-file-pattern" autocomplete="on">
+                            <small class="form-text text-muted">Name to append to the start of each image. Example:
+                                <span class="photostack-file-pattern-demo">vacation</span> 1.jpg, <span class="photostack-file-pattern-demo">vacation</span> 2.jpg, etc.</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- Other options card-->
+                <div class="card">
+                    <div class="card-header">
+                        Miscellaneous
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="photostack-exif" checked disabled>
+                            <label class="form-check-label" for="photostack-exif">Remove EXIF data</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Import/export toolbar for mobile only -->
+    <div class="photostack-mobile-toolbar d-lg-none d-print-none">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-sm">
-                    <p>
-                        <h3>Feature-packed</h3>
-                    </p>
-                    <p>PhotoStack can import multiple photos from your device, or from an external web address. From
-                        there, you can resize images, add a watermark, and remove EXIF data.</p>
-                    <p>Once you're done editing, you can select your desired image format and quality, and save the
-                        images to your device.</p>
+                <div class="col-4">
+                    <button class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
+                        <span class="badge badge-light photostack-image-count">0</span>
+                    </button>
                 </div>
-                <div class="col-sm">
-                    <p>
-                        <h3>Powerful watermarking</h3>
-                    </p>
-                    <p>If you need to protect your images, you can easily create watermarks in PhotoStack for later use.
-                        You can set the image, positioning, opacity, size, and more. If you've ever used Adobe
-                        Lightroom, you'll feel right at home.</p>
-                    <p>Once you're done creating a watermark, you can save it to your device's local storage for later
-                        use, and even export the data to a file for use on another device.</p>
+                <div class="col-4">
+                    <button class="btn btn-primary btn-block photostack-clear-images-btn" type="button">Clear</button>
                 </div>
-                <div class="col-sm">
-                    <p>
-                        <h3>Free as in freedom</h3>
-                    </p>
-                    <p>PhotoStack doesn't lock you down to certain platforms or require a monthly subscription. It runs on everything with a modern web browser.</p>
-                    <p>All the source code is <a href="https://github.com/corbindavenport/photostack"
-                            target="_blank">available on GitHub</a> under the GPLv3 license. If you're a developer, you
-                        can help fix bugs, or even create your own fork of PhotoStack.</p>
+                <div class="col-4">
+                    <button class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-sm">
+        </div>
+    </div>
+    <!-- Welcome modal -->
+    <div class="modal fade" id="photostack-welcome-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div style="text-align: center; margin-bottom: 30px; margin-top: 20px;">
+                        <h2>Welcome to PhotoStack!</h2>
+                    </div>
+                    <p>Welcome to PhotoStack, the free and open-source batch photo editor.</p>
+                    <p>To get started, click the Import button at the <span class="d-lg-none">bottom</span><span class="d-none d-lg-inline">top-right</span> to import some images. When you're ready to save your work, click the Export button.</p>
                     <p>
-                        <h3>Privacy-first</h3>
+                        <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" aria-label="Close">Let's go!</button>
                     </p>
-                    <p>All image processing is done locally in your browser. Your images are never uploaded anywhere,
-                        and the only data collected by PhotoStack is basic analytics.</p>
-                </div>
-                <div class="col-sm">
-                    <p>
-                        <h3>Offline support</h3>
-                    </p>
-                    <p>PhotoStack can function entirely offline on most browsers, thanks to a web technology called
-                        Service Workers. When you run PhotoStack for the first time, the app is saved to your device's
-                        storage, so typing in "photostack.app" will always work — even when you're away from Wi-Fi.</p>
-                </div>
-                <div class="col-sm">
-                    <p>
-                        <h3>Wide compatibility</h3>
-                    </p>
-                    <p>PhotoStack works on any modern browser or platform that supports modern web features. It has been
-                        tested to work on Chrome, Firefox, Opera, Edge, and even Internet Explorer 10+.</p>
-                    <p>If you're in a pinch and need to edit pictures on the go, PhotoStack also works on mobile
-                        devices. You can even add it to your home screen on iOS and Android.</p>
                 </div>
             </div>
-
-            <div class="row photostack-android-hide">
-                <div class="col">
-                    <p>
-                        <h3 id="donate">Support development</h3>
-                    </p>
-                    <p>PhotoStack was developed entirely in my spare time, over the course of many hours. If you enjoy
-                        using PhotoStack, please consider donating with PayPal or Patreon. It would mean a lot!</p>
+        </div>
+    </div>
+    <!-- Feedback modal -->
+    <div class="modal fade" id="photostack-feedback-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Feedback</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>If you notice a bug in PhotoStack, or if you want a feature that isn't currently available, you can send feedback to the developers. The best way to submit feedback is by creating a GitHub issue, but if you don't have a GitHub account, you can also send an email.</p>
+                    <p>When you send an email, a GitHub issue is created automatically on your behalf with your email address publicly visible. You can check on the status of email feedback <a href="https://github.com/photostack/photostack/issues?utf8=%E2%9C%93&q=is%3Aissue+author%3Afire-bot+" target="_blank">here</a>.</p>
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-12">
                             <p>
-                                <a class="btn btn-success btn-block" href="https://www.patreon.com/corbindavenport"
-                                    target="_blank" role="button">Donate via Patreon</a>
+                                <a class="btn btn-primary btn-block" href="https://github.com/photostack/photostack/issues/new" target="_blank" role="button">Create GitHub issue</a>
                             </p>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12">
                             <p>
-                                <a class="btn btn-success btn-block"
-                                    href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"
-                                    target="_blank" role="button">Donate via PayPal</a>
+                                <a class="btn btn-primary btn-block" href="mailto: photostack@fire.fundersclub.com ?Subject=PhotoStack%20feedback&Body=Browser%20name%20and%20version%3A%20%0A%0AFeedback%3A%20" target="_blank" role="button">Send email</a>
                             </p>
                         </div>
                     </div>
-                    <p>If you're unable to contribute financially, telling your friends about PhotoStack and <a
-                            href="https://github.com/corbindavenport/photostack" target="_blank">starring it on
-                            GitHub</a> is also greatly appreciated!</p>
                 </div>
             </div>
-
-    </main>
-
-    <footer class="text-muted" style="border-top: 5px solid #303030; padding-top: 10px;">
-        <div class="container">
-            <p>PhotoStack uses components from <a href="https://jquery.com/" target="_blank">jQuery</a>, <a
-                    href="https://getbootstrap.com" target="_blank">Bootstrap</a>, <a
-                    href="https://github.com/eligrey/FileSaver.js/">FileSaver.js</a>, <a
-                    href="https://github.com/eligrey/canvas-toBlob.js">canvas-toBlob.js</a>, <a
-                    href="https://stuk.github.io/jszip/" target="_blank">JSZip</a>, and <a href="https://modernizr.com/"
-                    target="_blank">Modernizr</a>. PhotoStack icon is from the <a
-                    href="https://github.com/OrancheloTeam/oranchelo-icon-theme" target="_blank">Oranchelo icon
-                    theme</a>.</p>
         </div>
-    </footer>
-
+    </div>
+    <!-- Donate modal -->
+    <div class="modal fade" id="photostack-donate-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Donate</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>PhotoStack was developed entirely in my spare time, over the course of many hours. If you enjoy using PhotoStack, please consider donating with PayPal or Patreon. It would mean a lot!</p>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>
+                                <a class="btn btn-success btn-block" href="https://www.patreon.com/corbindavenport" target="_blank" role="button">Donate via Patreon</a>
+                            </p>
+                        </div>
+                        <div class="col-12">
+                            <p>
+                                <a class="btn btn-success btn-block" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank" role="button">Donate via PayPal</a>
+                            </p>
+                        </div>
+                    </div>
+                    <p>If you can't contribute financially, telling your friends about PhotoStack and <a href="https://github.com/photostack/photostack" target="_blank">starring it on GitHub</a> is also greatly appreciated!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Import modal -->
+    <div class="modal fade" id="photostack-import-modal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content photostack-import-modal-initial">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Import images</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="card-text">Select photos from your computer or the web to get started.</p>
+                    <p>
+                        <button class="btn btn-primary btn-block photostack-import-file-btn" type="button">Import local images</button>
+                    </p>
+                    <p>
+                        <button class="btn btn-primary btn-block photostack-import-dropbox-btn" type="button">Import images from Dropbox</button>
+                    </p>
+                    <p>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Enter image URL" aria-label="Enter image URL" aria-describedby="photostack-import-url" id="photostack-import-url" autocomplete="off">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" id="photostack-import-url-button">Import</button>
+                            </div>
+                        </div>
+                    </p>
+                    <hr>
+                    <p>
+                        <button class="btn btn-primary btn-block" id="photostack-import-zip-btn" type="button">Import images from ZIP/container file</button>
+                    </p>
+                    <p style="text-align: center" class="small">Supported file types: ZIP, MS Office (DOCX, PPTX, XLSX)</p>
+                </div>
+            </div>
+            <div class="modal-content photostack-import-modal-zip" style="display:none">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Import images</h5>
+                </div>
+                <div class="modal-body">
+                    <p>PhotoStack is now importing images from the selected ZIP file. This may take a few seconds.</p>
+                    <p>
+                        <div class="d-flex justify-content-center export-spinner">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Export modal -->
+    <div class="modal fade" id="photostack-export-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <!-- Initial UI -->
+            <div class="modal-content photostack-export-modal-initial">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="text-align: center">
+                        <b>You are about to export <span class="photostack-image-count">0</span> images.</b>
+                    </p>
+                    <p>
+                        <button type="button" id="photostack-export-zip-btn" class="btn btn-block btn-primary">Start export</button>
+                    </p>
+                </div>
+            </div>
+            <!-- Export in progress modal -->
+            <div class="modal-content photostack-export-modal-loading" style="display:none">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
+                </div>
+                <div class="modal-body">
+                    <p style="text-align: center;">Please wait while the images are being exported...</p>
+                    <p>
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="photostack-export-modal-progress"></div>
+                        </div>
+                    </p>
+                    <p class="photostack-android-hide text-muted" style="text-align: center;">
+                        Some browsers throttle background windows and tabs. To speed up exports, don't minimize PhotoStack or switch to another tab/window.
+                    </p>
+                </div>
+            </div>
+            <!-- Completed export modal -->
+            <div class="modal-content photostack-export-modal-finished" style="display:none">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <button type="button" id="photostack-export-web-share-button" class="btn btn-block btn-success">Share to installed application</button>
+                    </p>
+                    <p>
+                        <button type="button" id="photostack-export-separate-button" class="btn btn-block btn-success">Download as individual files</button>
+                    </p>
+                    <p class="text-muted photostack-android-hide" style="text-align:center">Downloading individual files doesn't work correctly in some browsers. If you experience problems, use one of the other options.</p>
+                    <p>
+                        <button type="button" id="photostack-export-zip-button" class="btn btn-block btn-success">Download as ZIP</button>
+                    </p>
+                    <p class="photostack-android-hide" style="text-align: center">If you found PhotoStack useful, please donate via <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">PayPal</a> or <a href="https://www.patreon.com/corbindavenport" target="_blank">Patreon</a> to help support the project!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Watermark manager modal -->
+    <div class="modal fade" id="photostack-watermark-manager-modal" tabindex="-1" role="dialog" aria-labelledby="#photostack-watermark-manager-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-watermark-manager-modal-title">Watermarks</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Watermarks stored in your <span class="photostack-android-hide">browser</span><span class="photostack-android-show">device</span> are displayed here. You can transfer them to other devices or browsers by exporting the watermarks to a file and importing them on another device/browser.</p>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-6" style="padding-left: 0">
+                                <button type="button" id="photostack-watermark-new-btn" class="btn btn-primary btn-block">New watermark</button>
+                            </div>
+                            <div class="col-6" style="padding-right: 0">
+                                <button type="button" id="photostack-watermark-import-btn" class="btn btn-primary btn-block">Import from file</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="list-group list-group-flush" id="photostack-watermark-manager-list" role="tablist">
+                        <!-- This is populated by editor.js -->
+                    </div>
+                    <br>
+                    <p>PhotoStack 2 cannot automatically access watermarks created in earlier versions. If you want to import your old watermarks, see <a href="https://github.com/photostack/photostack/wiki/Move-your-watermarks-to-PhotoStack-2" target="_blank">this help page</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Watermark editor modal -->
+    <div class="modal fade" id="photostack-watermark-editor-modal" tabindex="-1" role="dialog" aria-labelledby="#photostack-watermark-editor-modal-title" aria-hidden="true">
+        <input type="file" id="photostack-watermark-import-image" accept="image/jpeg,image/png,image/gif">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-watermark-editor-modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding-left: 0; padding-right: 0">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Preview row -->
+                            <div class="col-12 col-sm-6">
+                                <img src="" id="photostack-watermark-editor-preview">
+                            </div>
+                            <!-- Watermark settings row -->
+                            <div class="col-12 col-sm-6">
+                                <!-- Image import -->
+                                <p>
+                                    <button class="btn btn-secondary btn-block" type="button" id="photostack-watermark-editor-image-btn">Select image</button>
+                                </p>
+                                <!-- Anchor position -->
+                                <h5>Anchor position</h5>
+                                <div class="row mb-3">
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-1">1</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-2">2</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-3">3</button>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-4">4</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-block btn-primary photostack-anchor-btn" id="photostack-watermark-pos-5">5</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-6">6</button>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-7">7</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-8">8</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-9">9</button>
+                                    </div>
+                                </div>
+                                <!-- Effects -->
+                                <h5>Effects</h5>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" aria-describedby="photostack-watermark-size">Size</span>
+                                    </div>
+                                    <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-size" value="30" autocomplete="off">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" aria-describedby="photostack-watermark-opacity">Opacity</span>
+                                    </div>
+                                    <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-opacity" value="50" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label for="photostack-watermark-horizontal-inset">Horizontal inset</label>
+                                    <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-horizontal-inset" min="-10" max="10" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="photostack-watermark-vertical-inset">Vertical inset</label>
+                                    <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-vertical-inset" min="-10" max="10" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Discard</button>
+                    <button type="button" class="btn btn-primary" id="photostack-watermark-editor-save-btn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Error toast -->
+    <div id="photostack-error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="8000">
+        <div class="toast-header">
+            <strong class="mr-auto">Error</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            There was an error, please try that again in a few seconds or reload PhotoStack.
+        </div>
+    </div>
+    <!-- Print UI -->
+    <div class="d-none d-print-block">
+        <img id="photostack-print-preview">
+    </div>
+    <!-- File pickers -->
+    <input type="file" id="photostack-import-file" multiple accept="image/jpeg,image/png,image/gif">
+    <input type="file" id="photostack-import-zip" accept="application/zip,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+    <input type="file" id="photostack-watermark-file-import" multiple accept=".json">
+    <!-- Container where original photos are kept as <img> elements -->
+    <div id="photostack-original-container" aria-hidden="true"></div>
+    <!-- Container where canvas elements for each image are kept -->
+    <div id="photostack-canvas-container" aria-hidden="true"></div>
+    <!-- Watermark image cache -->
+    <img id="photostack-watermark-cache">
+    <!-- Scripts -->
+    <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
     <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/FileSaver.min.js"></script>
+    <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/localforage.min.js"></script>
+    <script src="js/pica.min.js"></script>
+    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="sblxtzuush1cfzz"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/register-sw.js"></script>
+    <!-- Resources that aren't used by editor page but still need to be cached by the PWA -->
+    <img src="v1/index.html" style="display:none">
+    <!-- Redirect old browsers to PhotoStack Classic -->
+    <script>
+        var storageCheck = (localforage.supports(localforage.INDEXEDDB) || localforage.supports(localforage.WEBSQL))
+        if (!(Modernizr.promises && storageCheck)) {
+            window.location.replace('https://classic.photostack.app')
+        }
+    </script>
 </body>
 
 </html>
