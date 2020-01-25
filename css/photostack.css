@@ -54,7 +54,8 @@ hr {
 }
 
 #photostack-watermark-manager-list {
-    margin: -1rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
 }
 
 #photostack-watermark-manager-list div:first-of-type {

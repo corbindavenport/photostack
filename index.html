@@ -35,17 +35,17 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top d-print-none">
-        <a class="navbar-brand" href="index.html">PhotoStack 2</a>
+        <a class="navbar-brand" href="index.html">PhotoStack 2 BETA</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Feedback</a>
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-feedback-modal">Feedback</a>
                 </li>
                 <li class="nav-item photostack-android-hide">
-                    <a class="nav-link" href="#">Donate</a>
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-donate-modal">Donate</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://github.com/photostack/photostack/blob/master/v1/readme.md" target="_blank">API</a>
@@ -207,6 +207,64 @@
             </div>
         </div>
     </div>
+    <!-- Feedback modal -->
+    <div class="modal fade" id="photostack-feedback-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Feedback</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>If you notice a bug in PhotoStack, or if you want a feature that isn't currently available, you can send feedback to the developers. The best way to submit feedback is by creating a GitHub issue, but if you don't have a GitHub account, you can also send an email.</p>
+                    <p>When you send an email, a GitHub issue is created automatically on your behalf with your email address publicly visible. You can check on the status of email feedback <a href="https://github.com/photostack/photostack/issues?utf8=%E2%9C%93&q=is%3Aissue+author%3Afire-bot+" target="_blank">here</a>.</p>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>
+                                <a class="btn btn-primary btn-block" href="https://github.com/photostack/photostack/issues/new" target="_blank" role="button">Create GitHub issue</a>
+                            </p>
+                        </div>
+                        <div class="col-12">
+                            <p>
+                                <a class="btn btn-primary btn-block" href="mailto: photostack@fire.fundersclub.com ?Subject=PhotoStack%20feedback&Body=Browser%20name%20and%20version%3A%20%0A%0AFeedback%3A%20" target="_blank" role="button">Send email</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Donate modal -->
+    <div class="modal fade" id="photostack-donate-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Donate</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>PhotoStack was developed entirely in my spare time, over the course of many hours. If you enjoy using PhotoStack, please consider donating with PayPal or Patreon. It would mean a lot!</p>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>
+                                <a class="btn btn-success btn-block" href="https://www.patreon.com/corbindavenport" target="_blank" role="button">Donate via Patreon</a>
+                            </p>
+                        </div>
+                        <div class="col-12">
+                            <p>
+                                <a class="btn btn-success btn-block" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank" role="button">Donate via PayPal</a>
+                            </p>
+                        </div>
+                    </div>
+                    <p>If you can't contribute financially, telling your friends about PhotoStack and <a href="https://github.com/photostack/photostack" target="_blank">starring it on GitHub</a> is also greatly appreciated!</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Import modal -->
     <div class="modal fade" id="photostack-import-modal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -330,22 +388,22 @@
                 </div>
                 <div class="modal-body">
                     <p>Watermarks stored in your <span class="photostack-android-hide">browser</span><span class="photostack-android-show">device</span> are displayed here. You can transfer them to other devices or browsers by exporting the watermarks to a file and importing them on another device/browser.</p>
-                    <p>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-6" style="padding-left: 0">
-                                    <button type="button" id="photostack-watermark-new-btn" class="btn btn-primary btn-block">New watermark</button>
-                                </div>
-                                <div class="col-6" style="padding-right: 0">
-                                    <button type="button" id="photostack-watermark-import-btn" class="btn btn-primary btn-block">Import from file</button>
-                                </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-6" style="padding-left: 0">
+                                <button type="button" id="photostack-watermark-new-btn" class="btn btn-primary btn-block">New watermark</button>
+                            </div>
+                            <div class="col-6" style="padding-right: 0">
+                                <button type="button" id="photostack-watermark-import-btn" class="btn btn-primary btn-block">Import from file</button>
                             </div>
                         </div>
-                    </p>
+                    </div>
                     <br>
                     <div class="list-group list-group-flush" id="photostack-watermark-manager-list" role="tablist">
                         <!-- This is populated by editor.js -->
                     </div>
+                    <br>
+                    <p>PhotoStack 2 cannot automatically access watermarks created in earlier versions. If you want to import your old watermarks, see <a href="https://github.com/photostack/photostack/wiki/Move-your-watermarks-to-PhotoStack-2" target="_blank">this help page</a>.</p>
                 </div>
             </div>
         </div>
