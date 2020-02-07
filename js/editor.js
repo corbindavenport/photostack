@@ -402,7 +402,6 @@ function asyncExport() {
     // Set variables
     const imgFormat = document.getElementById('photostack-file-format').value
     const imgQuality = parseInt(document.getElementById('photostack-file-quality').value) / 100
-    const imgNamePattern = document.getElementById('photostack-file-pattern').value
     if (document.getElementById('photostack-file-pattern').value === '') {
         const imgNamePattern = 'image'
     } else {
@@ -432,7 +431,7 @@ function asyncExport() {
             // Apply settings
             if (document.getElementById('photostack-watermark-select').value === 'no-watermark') {
                 // No watermark selected
-                canvas = await applyCanvasSettings(canvas, null, true)
+                canvas = await applyCanvasSettings(canvas)
             } else {
                 // Get selected watermark
                 var watermarkName = document.getElementById('photostack-watermark-select').value
@@ -441,7 +440,7 @@ function asyncExport() {
                         resolve(value)
                     })
                 })
-                canvas = await applyCanvasSettings(canvas, watermarkObject, true)
+                canvas = await applyCanvasSettings(canvas, watermarkObject)
             }
             // Update progress bar and page title
             const previousProgress = parseInt(progressBar.getAttribute('aria-valuenow'))
@@ -492,6 +491,8 @@ function asyncExport() {
                     // Show badge on PWA icon
                     if ('setExperimentalAppBadge' in navigator) {
                         navigator.setExperimentalAppBadge()
+                    } else if ('setClientBadge' in navigator) {
+                        navigator.setClientBadge()
                     }
                     // Switch modal content to finished result
                     document.querySelector('.photostack-export-modal-loading').style.display = 'none'
@@ -547,6 +548,8 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
     // Clear PWA icon
     if ('setExperimentalAppBadge' in navigator) {
         navigator.clearExperimentalAppBadge()
+    } else if ('clearClientBadge' in navigator) {
+        navigator.clearClientBadge()
     }
 })
 
