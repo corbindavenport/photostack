@@ -402,11 +402,7 @@ function asyncExport() {
     // Set variables
     const imgFormat = document.getElementById('photostack-file-format').value
     const imgQuality = parseInt(document.getElementById('photostack-file-quality').value) / 100
-    if (document.getElementById('photostack-file-pattern').value === '') {
-        const imgNamePattern = 'image'
-    } else {
-        const imgNamePattern = document.getElementById('photostack-file-pattern').value
-    }
+    const imgNamePattern = document.getElementById('photostack-file-pattern').value || 'image'
     const imgTotal = document.querySelectorAll('#photostack-original-container img').length
     const imgStep = Math.round(100 / imgTotal)
     const progressBar = document.getElementById('photostack-export-modal-progress')
@@ -668,8 +664,6 @@ if (localStorage['welcome-editor'] != 'true') {
 // Android app shortcuts
 if (getUrlVars()['open_watermarks']) {
     $('#photostack-watermark-manager-modal').modal('show')
-} else if (getUrlVars()['open_image_picker']) {
-    $('#photostack-import-file').click()
 }
 
 // API support
