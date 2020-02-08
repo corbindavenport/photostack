@@ -656,15 +656,20 @@ refreshWatermarks(true)
 // Update sample file names when the page is loaded
 updateSampleFileNames()
 
-// Show welcome page on first run, or else open the import popup
+// Show welcome page on first run
 if (localStorage['welcome-editor'] != 'true') {
     $('#photostack-welcome-modal').modal('show')
     // Don't show welcome screen again after it is exited
     document.querySelector('#photostack-welcome-modal .btn-block').addEventListener('click', function () {
         localStorage['welcome-editor'] = 'true'
     })
-} else {
-    //$('#photostack-import-modal').modal('show')
+}
+
+// Android app shortcuts
+if (getUrlVars()['open_watermarks']) {
+    $('#photostack-watermark-manager-modal').modal('show')
+} else if (getUrlVars()['open_image_picker']) {
+    $('#photostack-import-file').click()
 }
 
 // API support
