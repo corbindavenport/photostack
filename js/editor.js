@@ -688,6 +688,11 @@ if (getUrlVars()['import']) {
     window.history.replaceState({}, document.title, document.URL.substring(0, document.URL.indexOf('?')))
 }
 
+// Allow importing images using Web Share Target API
+window.addEventListener('message', function(event) {
+    console.log(event)
+})
+
 /*
 
     WATERMARKS

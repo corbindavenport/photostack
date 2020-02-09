@@ -66,3 +66,17 @@ function updateCache(request, response) {
     return cache.put(request, response);
   });
 }
+
+// Web Share Target API
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'POST') {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  event.respondWith((async () => {
+    const formData = await event.request.formData();
+    const images = formData.get('images') || '';
+    return Response.redirect(images, 303)
+  })());
+});
