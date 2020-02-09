@@ -18,7 +18,7 @@
     "display": "standalone",
     "start_url": "/",
     "share_target": {
-        "action": "/",
+        "action": "/?",
         "method": "POST",
         "enctype": "multipart/form-data",
         "params": {
