@@ -667,7 +667,7 @@ if (getUrlVars()['open_watermarks']) {
 }
 
 // API support
-// See readme.md in v1 folder for more information
+// https://github.com/photostack/photostack/wiki/API-Documentation
 if (getUrlVars()['import']) {
     // Create array of URLs to import
     var imageArray = getUrlVars()['import'].split(',')
@@ -677,6 +677,13 @@ if (getUrlVars()['import']) {
     imageArray.forEach(function (url) {
         importWebImage(decodeURIComponent(url))
     })
+    // Remove parameters from URL
+    window.history.replaceState({}, document.title, document.URL.substring(0, document.URL.indexOf('?')))
+} else if (getUrlVars()['import_single']) {
+    // Get URL of image
+    var url = getUrlVars()['import_single']
+    // Import the image
+    importWebImage(url)
     // Remove parameters from URL
     window.history.replaceState({}, document.title, document.URL.substring(0, document.URL.indexOf('?')))
 }
