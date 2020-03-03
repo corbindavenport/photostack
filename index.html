@@ -48,6 +48,9 @@
                     <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-donate-modal">Donate</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-keyboard-modal">Shortcuts</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="https://github.com/photostack/photostack/wiki/API-Documentation" target="_blank">API</a>
                 </li>
             </ul>
@@ -265,6 +268,54 @@
                         </div>
                     </div>
                     <p>If you can't contribute financially, telling your friends about PhotoStack and <a href="https://github.com/photostack/photostack" target="_blank">starring it on GitHub</a> is also greatly appreciated!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Keyboard shortcuts modal -->
+    <div class="modal fade" id="photostack-keyboard-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-export-modal-label">Keyboard shortcuts</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>PhotoStack offers keyboard shortcuts for common functions. These may not work <span class="photostack-android-hide">with all browsers</span><span class="photostack-android-show">on all devices</span>. Also, they will not work if any popups (like the watermark editor or this help menu) are open.</p>
+                    <p>
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">Command</th>
+                                <th scope="col">Shortcut</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>Import local images</td>
+                                <td>Shift + O</td>
+                              </tr>
+                              <tr>
+                                <td>Import images from Dropbox</td>
+                                <td>Shift + D</td>
+                              </tr>
+                              <tr>
+                                <td>Import ZIP/container files</td>
+                                <td>Shift + Z</td>
+                              </tr>
+                              <tr>
+                                <td>Clear imported images</td>
+                                <td>Shift + X</td>
+                              </tr>
+                              <tr>
+                                <td>Open watermarks</td>
+                                <td>Shift + W</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                    </p>
                 </div>
             </div>
         </div>
@@ -534,6 +585,7 @@
     <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/popper.min.js"></script>
+    <script src="js/jquery.hotkeys.min.js"></script>
     <script src="js/FileSaver.min.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

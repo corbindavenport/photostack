@@ -652,6 +652,63 @@ refreshWatermarks(true)
 // Update sample file names when the page is loaded
 updateSampleFileNames()
 
+// Keyboard shortcuts
+
+$(document).bind('keyup', 'shift+o', function() {
+    if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
+        $('#photostack-import-file').click()
+    }
+})
+
+$(document).bind('keyup', 'shift+z', function() {
+    if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
+        $('#photostack-import-zip').click()
+    }
+})
+
+$(document).bind('keyup', 'shift+d', function() {
+    if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
+        if (!Dropbox.isBrowserSupported()) {
+            alert('Sorry, Dropbox does not support your web browser.')
+        } else if (!navigator.onLine) {
+            alert('You are not connected to the internet. Connect to the internet and try again.')
+        } else {
+            try {
+                importDropboxImage()
+            } catch {
+                // Ask user to allow popups
+                if (document.getElementsByTagName('html')[0].classList.contains('photostack-android')) {
+                    alert('This keyboard shortcut does not work on your device.')
+                } else {
+                    alert('Your browser is blocking popups. Please allow popups for the Dropbox keyboard shortcut to work.')
+                }
+            }
+        }
+    }
+})
+
+$(document).bind('keyup', 'shift+x', function() {
+    // Make sure no modals are open and at least one image is imported
+    if ((!document.querySelectorAll('.modal.show').length) && (globalFilesCount > 0)) {
+        if (confirm('Do you want to clear all imported images?')) {
+            clearImportedImages()
+        }
+    }
+})
+
+$(document).bind('keyup', 'shift+e', function() {
+    // Make sure no modals are open and at least one image is imported
+    if ((!document.querySelectorAll('.modal.show').length) && (globalFilesCount > 0)) {
+        $('#photostack-export-modal').modal('show')
+    }
+})
+
+$(document).bind('keyup', 'shift+w', function() {
+    if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
+        $('#photostack-watermark-manager-modal').modal('show')
+    }
+})
+
 // Show welcome page on first run
 if (localStorage['welcome-editor'] != 'true') {
     $('#photostack-welcome-modal').modal('show')
