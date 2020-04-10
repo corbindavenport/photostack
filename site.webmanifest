@@ -21,7 +21,9 @@
         "action": "/",
         "method": "GET",
         "params": {
-            "import": "url"
+            "title": "share_title",
+            "text": "share_text",
+            "url": "share_url"
         }
     }
 }
