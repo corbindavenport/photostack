@@ -733,7 +733,7 @@ if (currentUrl.searchParams.get('import')) {
 
 // Web Share API support
 // Android puts the URL in either the title or text params, not the url one, so we have to parse all of them
-if (currentUrl.searchParams.get('share_text')) {
+if (currentUrl.searchParams.get('share_text') || currentUrl.searchParams.get('share_title')) {
     try {
         var image = new URL(currentUrl.searchParams.get('share_text'))
         importWebImage(image)
