@@ -16,14 +16,5 @@
     "theme_color": "#222",
     "background_color": "#303030",
     "display": "standalone",
-    "start_url": "/",
-    "share_target": {
-        "action": "/",
-        "method": "GET",
-        "params": {
-            "title": "share_title",
-            "text": "share_text",
-            "url": "share_url"
-        }
-    }
+    "start_url": "/"
 }
