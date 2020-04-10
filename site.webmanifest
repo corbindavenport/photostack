@@ -21,7 +21,7 @@
         "action": "/",
         "method": "GET",
         "params": {
-            "url": "import"
+            "import": "url"
         }
     }
 }
