@@ -3,6 +3,8 @@ const watermarksStore = localforage.createInstance({
     driver: [localforage.WEBSQL, localforage.INDEXEDDB]
 })
 
+const currentUrl = new URL(window.location)
+
 var globalFilesCount = 0
 
 // Prevent unload
@@ -37,15 +39,6 @@ function increaseImageCount(number) {
             el.disabled = false
         }
     })
-}
-
-// Read URL parameters
-function getUrlVars() {
-    var vars = {}
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-        vars[key] = value
-    })
-    return vars
 }
 
 // Resize a canvas using Pica library
@@ -715,30 +708,26 @@ if (localStorage['welcome-editor'] != 'true') {
 }
 
 // Android app shortcuts
-if (getUrlVars()['open_watermarks']) {
+if (currentUrl.searchParams.get('open_watermarks')) {
     $('#photostack-watermark-manager-modal').modal('show')
 }
 
 // API support
 // https://github.com/photostack/photostack/wiki/API-Documentation
-if (getUrlVars()['import']) {
+if (currentUrl.searchParams.get('import')) {
     // Create array of URLs to import
-    var imageArray = getUrlVars()['import'].split(',')
+    var imageArray = currentUrl.searchParams.get('import').split(',')
     // Filter out empty items
     imageArray = imageArray.filter(Boolean)
     // Import the images
     imageArray.forEach(function (url) {
         importWebImage(decodeURIComponent(url))
     })
-    // Remove parameters from URL
-    window.history.replaceState({}, document.title, document.URL.substring(0, document.URL.indexOf('?')))
-} else if (getUrlVars()['import_single']) {
+} else if (currentUrl.searchParams.get('import_single')) {
     // Get URL of image
-    var url = getUrlVars()['import_single']
+    var url = currentUrl.searchParams.get('import_single')
     // Import the image
     importWebImage(url)
-    // Remove parameters from URL
-    window.history.replaceState({}, document.title, document.URL.substring(0, document.URL.indexOf('?')))
 }
 
 // Allow importing images using Web Share Target API
