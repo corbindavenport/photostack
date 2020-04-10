@@ -18,21 +18,10 @@
     "display": "standalone",
     "start_url": "/",
     "share_target": {
-        "action": "/?",
-        "method": "POST",
-        "enctype": "multipart/form-data",
+        "action": "/",
+        "method": "GET",
         "params": {
-            "files": [
-                {
-                    "name": "images",
-                    "accept": [
-                        "image/jpeg",
-                        "image/png",
-                        "image/gif",
-                        "image/webp"
-                    ]
-                }
-            ]
+            "url": "import"
         }
     }
 }

@@ -485,10 +485,8 @@ function asyncExport() {
             zip.generateAsync({ type: 'blob' })
                 .then(function (content) {
                     // Show badge on PWA icon
-                    if ('setExperimentalAppBadge' in navigator) {
-                        navigator.setExperimentalAppBadge()
-                    } else if ('setClientBadge' in navigator) {
-                        navigator.setClientBadge()
+                    if ('setAppBadge' in navigator) {
+                        navigator.setAppBadge()
                     }
                     // Switch modal content to finished result
                     document.querySelector('.photostack-export-modal-loading').style.display = 'none'
@@ -542,10 +540,8 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
     document.getElementById('photostack-export-modal-progress').setAttribute('aria-valuenow', '0')
     document.getElementById('photostack-export-modal-progress').setAttribute('style', 'width: 0%')
     // Clear PWA icon
-    if ('setExperimentalAppBadge' in navigator) {
-        navigator.clearExperimentalAppBadge()
-    } else if ('clearClientBadge' in navigator) {
-        navigator.clearClientBadge()
+    if ('setAppBadge' in navigator) {
+        navigator.clearAppBadge()
     }
 })
 
