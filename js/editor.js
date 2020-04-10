@@ -4,6 +4,7 @@ const watermarksStore = localforage.createInstance({
 })
 
 const currentUrl = new URL(window.location)
+console.log(currentUrl)
 
 var globalFilesCount = 0
 
