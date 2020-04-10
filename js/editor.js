@@ -731,31 +731,6 @@ if (currentUrl.searchParams.get('import')) {
     importWebImage(url)
 }
 
-// Web Share API support
-// Android puts the URL in either the title or text params, not the url one, so we have to parse all of them
-if (currentUrl.searchParams.get('share_text') || currentUrl.searchParams.get('share_title')) {
-    try {
-        var image = new URL(currentUrl.searchParams.get('share_text'))
-        importWebImage(image)
-    } catch {
-        if (currentUrl.searchParams.get('share_title')) {
-            try {
-                var image = new URL(currentUrl.searchParams.get('share_title'))
-                importWebImage(image)
-            } catch {
-                alert('This link does not appear to be valid.')
-            }
-        }
-    }
-} else if (currentUrl.searchParams.get('share_url')) {
-    try {
-        var image = new URL(currentUrl.searchParams.get('share_url'))
-        importWebImage(image)
-    } catch {
-        alert('This link does not appear to be valid.')
-    }
-}
-
 // Allow importing images using Web Share Target API
 window.addEventListener('message', function(event) {
     console.log(event)
