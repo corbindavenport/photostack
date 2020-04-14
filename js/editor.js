@@ -4,7 +4,6 @@ const watermarksStore = localforage.createInstance({
 })
 
 const currentUrl = new URL(window.location)
-console.log(currentUrl)
 
 var globalFilesCount = 0
 
@@ -567,7 +566,8 @@ Modernizr.on('webp', function (result) {
 })
 
 // Add warning for Safari users
-if (navigator.userAgent.toLowerCase().includes('safari')) {
+const ifSafari = (navigator.userAgent.includes('Safari') && (!navigator.userAgent.includes('Chrome')))
+if (ifSafari) {
     var warningBlock = document.querySelector('.photostack-safari-warning')
     warningBlock.style.display = 'block'
     warningBlock.addEventListener('click', function() {
