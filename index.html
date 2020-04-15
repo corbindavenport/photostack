@@ -35,7 +35,7 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top d-print-none">
-        <a class="navbar-brand" href="index.html">PhotoStack 2 BETA</a>
+        <a class="navbar-brand" href="index.html">PhotoStack 2</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -87,10 +87,11 @@
             </div>
             <!-- Settings panel container -->
             <div class="col-lg-4 col-md-6">
-                <!-- Beta message -->
+                <!-- Beta message
                 <div class="alert alert-primary">
                     Welcome to PhotoStack 2! Check out <a href="https://blog.corbin.io/post/190452073284/photostack-2-is-now-in-beta" target="_blank" class="alert-link">this blog post</a> to find out what's new.
                 </div>
+                -->
                 <!-- Safari message -->
                 <div class="alert alert-warning photostack-safari-warning" style="display: none; cursor: pointer;">
                     Safari may periodically delete PhotoStack's data, including saved watermarks. Press here for more information.
@@ -624,7 +625,7 @@
         }
         // Browsers that fail feature checks
         var storageCheck = (localforage.supports(localforage.INDEXEDDB) || localforage.supports(localforage.WEBSQL))
-        if (!(Modernizr.promises && storageCheck)) {
+        if ((!(Modernizr.promises && storageCheck)) && (localStorage['android-app'] != 'true')) {
             window.location.replace('https://classic.photostack.app')
         }
 
