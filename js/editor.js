@@ -392,7 +392,15 @@ function importDropboxImage() {
 // Clear all imported images and reset preview box
 function clearImportedImages() {
     // Remove imported images
-    document.getElementById('photostack-original-container').innerHTML = ''
+    var originalsContainer = document.getElementById('photostack-original-container')
+    while (originalsContainer.firstChild) {
+        originalsContainer.removeChild(originalsContainer.firstChild)
+    }
+    // Remove already-exported images
+    var canvasContainer = document.getElementById('photostack-canvas-container')
+    while (canvasContainer.firstChild) {
+        canvasContainer.removeChild(canvasContainer.firstChild)
+    }
     // Reset image count
     globalFilesCount = 0
     document.querySelectorAll('.photostack-image-count').forEach(function (el) {
@@ -435,7 +443,9 @@ function asyncExport() {
     var originals = document.querySelectorAll('#photostack-original-container img')
     var canvasContainer = document.getElementById('photostack-canvas-container')
     // Clear current canvas elements
-    canvasContainer.innerHTML = ''
+    while (canvasContainer.firstChild) {
+        canvasContainer.removeChild(canvasContainer.firstChild)
+    }
     // Render canvas for each original image
     var canvasPromises = $.map(originals, function (original) {
         return new Promise(async function (resolve) {
@@ -554,8 +564,13 @@ document.getElementById('photostack-export-zip-btn').addEventListener('click', f
     asyncExport()
 })
 
-// Reset export modal content when the close button is clicked
+// Reset export status when the close button is clicked
 $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
+    // Clear event listeners
+    $('#photostack-export-web-share-button').replaceWith($('#photostack-export-web-share-button').clone())
+    $('#photostack-export-separate-button').replaceWith($('#photostack-export-separate-button').clone())
+    $('#photostack-export-zip-button').replaceWith($('#photostack-export-zip-button').clone())
+    // Clear content
     document.querySelector('.photostack-export-modal-loading').style.display = 'none'
     document.querySelector('.photostack-export-modal-finished').style.display = 'none'
     document.querySelector('.photostack-export-modal-initial').style.display = 'block'
@@ -599,7 +614,7 @@ const ifSafari = (navigator.userAgent.includes('Safari') && (!navigator.userAgen
 if (ifSafari) {
     var warningBlock = document.querySelector('.photostack-safari-warning')
     warningBlock.style.display = 'block'
-    warningBlock.addEventListener('click', function() {
+    warningBlock.addEventListener('click', function () {
         $('#photostack-safari-modal').modal('show')
     })
 }
@@ -607,13 +622,13 @@ if (ifSafari) {
 // Append event listeners to buttons and other elements
 
 document.querySelectorAll('.photostack-apply-btn').forEach(function (el) {
-    el.addEventListener('click', function() {
+    el.addEventListener('click', function () {
         renderPreviewCanvas()
     })
 })
 
 document.querySelectorAll('.photostack-clear-images-btn').forEach(function (el) {
-    el.addEventListener('click', function() {
+    el.addEventListener('click', function () {
         clearImportedImages()
     })
 })
@@ -655,11 +670,11 @@ document.getElementById('photostack-reset-image-width-button').addEventListener(
     renderPreviewCanvas()
 })
 
-document.getElementById('photostack-border-width').addEventListener('change', function() {
+document.getElementById('photostack-border-width').addEventListener('change', function () {
     renderPreviewCanvas()
 })
 
-document.getElementById('photostack-border-color').addEventListener('change', function() {
+document.getElementById('photostack-border-color').addEventListener('change', function () {
     renderPreviewCanvas()
 })
 
@@ -688,19 +703,19 @@ updateSampleFileNames()
 
 // Keyboard shortcuts
 
-$(document).bind('keyup', 'shift+o', function() {
+$(document).bind('keyup', 'shift+o', function () {
     if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
         $('#photostack-import-file').click()
     }
 })
 
-$(document).bind('keyup', 'shift+z', function() {
+$(document).bind('keyup', 'shift+z', function () {
     if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
         $('#photostack-import-zip').click()
     }
 })
 
-$(document).bind('keyup', 'shift+d', function() {
+$(document).bind('keyup', 'shift+d', function () {
     if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
         if (!Dropbox.isBrowserSupported()) {
             alert('Sorry, Dropbox does not support your web browser.')
@@ -721,7 +736,7 @@ $(document).bind('keyup', 'shift+d', function() {
     }
 })
 
-$(document).bind('keyup', 'shift+x', function() {
+$(document).bind('keyup', 'shift+x', function () {
     // Make sure no modals are open and at least one image is imported
     if ((!document.querySelectorAll('.modal.show').length) && (globalFilesCount > 0)) {
         if (confirm('Do you want to clear all imported images?')) {
@@ -730,14 +745,14 @@ $(document).bind('keyup', 'shift+x', function() {
     }
 })
 
-$(document).bind('keyup', 'shift+e', function() {
+$(document).bind('keyup', 'shift+e', function () {
     // Make sure no modals are open and at least one image is imported
     if ((!document.querySelectorAll('.modal.show').length) && (globalFilesCount > 0)) {
         $('#photostack-export-modal').modal('show')
     }
 })
 
-$(document).bind('keyup', 'shift+w', function() {
+$(document).bind('keyup', 'shift+w', function () {
     if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
         $('#photostack-watermark-manager-modal').modal('show')
     }
@@ -776,7 +791,7 @@ if (currentUrl.searchParams.get('import')) {
 }
 
 // Allow importing images using Web Share Target API
-window.addEventListener('message', function(event) {
+window.addEventListener('message', function (event) {
     console.log(event)
 })
 
