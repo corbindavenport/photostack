@@ -13,6 +13,12 @@
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
+        },
+        {
+            "src": "img/icon-maskable.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ],
     "theme_color": "#222",
@@ -28,8 +34,8 @@
                 {
                     "src": "/img/import-shortcut.png",
                     "type": "image/png",
-                    "sizes": "1024x1024",
-                    "purpose": "maskable"
+                    "sizes": "192x192",
+                    "purpose": "any maskable"
                 }
             ]
         },
@@ -41,8 +47,8 @@
                 {
                     "src": "/img/watermark-edit-shortcut.png",
                     "type": "image/png",
-                    "sizes": "1024x1024",
-                    "purpose": "maskable"
+                    "sizes": "192x192",
+                    "purpose": "any maskable"
                 }
             ]
         }
