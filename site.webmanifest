@@ -29,7 +29,7 @@
                     "src": "/img/import-shortcut.png",
                     "type": "image/png",
                     "sizes": "1024x1024",
-                    "purpose": "any maskable"
+                    "purpose": "maskable"
                 }
             ]
         },
@@ -42,7 +42,7 @@
                     "src": "/img/watermark-edit-shortcut.png",
                     "type": "image/png",
                     "sizes": "1024x1024",
-                    "purpose": "any maskable"
+                    "purpose": "maskable"
                 }
             ]
         }
