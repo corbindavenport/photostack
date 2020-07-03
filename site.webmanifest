@@ -16,5 +16,31 @@
     "theme_color": "#222",
     "background_color": "#303030",
     "display": "standalone",
-    "start_url": "/"
+    "start_url": "/",
+    "shortcuts": [
+        {
+            "name": "Import",
+            "description": "Import images",
+            "url": "/?open_import=true",
+            "icons": [
+                {
+                    "src": "/img/import-shortcut.svg",
+                    "type": "image/svg+xml",
+                    "purpose": "any"
+                }
+            ]
+        },
+        {
+            "name": "Watermarks",
+            "description": "Open list of watermarks",
+            "url": "/?open_watermarks=true",
+            "icons": [
+                {
+                    "src": "/img/watermark-edit-shortcut.svg",
+                    "type": "image/svg+xml",
+                    "purpose": "any"
+                }
+            ]
+        }
+    ]
 }

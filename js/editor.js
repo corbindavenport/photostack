@@ -767,9 +767,11 @@ if (localStorage['welcome-editor'] != 'true') {
     })
 }
 
-// Android app shortcuts
+// Android app and Web Manifest shortcuts
 if (currentUrl.searchParams.get('open_watermarks')) {
     $('#photostack-watermark-manager-modal').modal('show')
+} else if (currentUrl.searchParams.get('open_import')) {
+    $('#photostack-import-modal').modal('show')
 }
 
 // API support
