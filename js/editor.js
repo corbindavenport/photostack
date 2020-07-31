@@ -20,6 +20,12 @@ window.onerror = function () {
     $('#photostack-error-toast').toast('show')
 }
 
+// Google Analytics
+window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date
+ga('create', 'UA-59452245-5', 'auto')
+ga('require', 'displayfeatures')
+ga('send', 'pageview', '/')
+
 /*
 
     MAIN EDITOR
@@ -249,6 +255,11 @@ async function renderPreviewCanvas() {
 
 // Import images from file picker
 function importLocalFiles(element) {
+    ga('send', {
+        hitType: 'event',
+        eventCategory: 'Import',
+        eventAction: 'Import image files'
+    })
     // Get files
     var files = element.files
     console.log('Number of files selected: ' + files.length)
@@ -283,6 +294,11 @@ function importLocalFiles(element) {
 
 // Import images from file picker
 function importLocalZIP(element) {
+    ga('send', {
+        hitType: 'event',
+        eventCategory: 'Import',
+        eventAction: 'Import from ZIP'
+    })
     // Get file
     var file = element.files[0]
     // Switch modal content to progress indicator
@@ -337,6 +353,11 @@ function importLocalZIP(element) {
 
 // Add image from URL
 function importWebImage(url) {
+    ga('send', {
+        hitType: 'event',
+        eventCategory: 'Import',
+        eventAction: 'Import from URL'
+    })
     // Get image
     function addImageToCanvas(url) {
         var image = document.createElement('img')
@@ -367,6 +388,11 @@ function importWebImage(url) {
 
 // Add image from Dropbox
 function importDropboxImage() {
+    ga('send', {
+        hitType: 'event',
+        eventCategory: 'Import',
+        eventAction: 'Import from Dropbox'
+    })
     // Set configuration for file picker
     options = {
         success: function (files) {
@@ -527,6 +553,11 @@ function asyncExport() {
                     var shareData = { files: files }
                     if (navigator.canShare && navigator.canShare(shareData)) {
                         document.getElementById('photostack-export-web-share-button').addEventListener('click', function () {
+                            ga('send', {
+                                hitType: 'event',
+                                eventCategory: 'Export',
+                                eventAction: 'Export via Web Share API',
+                            })
                             navigator.share(shareData)
                                 .then(function () {
                                     console.log('Share successful.')
@@ -544,12 +575,22 @@ function asyncExport() {
                     }
                     // Download files separately
                     document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
+                        ga('send', {
+                            hitType: 'event',
+                            eventCategory: 'Export',
+                            eventAction: 'Export as individual files',
+                        })
                         files.forEach(function (file) {
                             saveAs(file)
                         })
                     })
                     // Download as ZIP
                     document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
+                        ga('send', {
+                            hitType: 'event',
+                            eventCategory: 'Export',
+                            eventAction: 'Export as ZIP',
+                        })
                         saveAs(content, 'images.zip')
                     })
                     // Stop time
@@ -560,7 +601,7 @@ function asyncExport() {
 }
 
 // Export button in modal
-document.getElementById('photostack-export-zip-btn').addEventListener('click', function () {
+document.getElementById('photostack-start-export-btn').addEventListener('click', function () {
     asyncExport()
 })
 
@@ -777,6 +818,11 @@ if (currentUrl.searchParams.get('open_watermarks')) {
 // API support
 // https://github.com/photostack/photostack/wiki/API-Documentation
 if (currentUrl.searchParams.get('import')) {
+    ga('send', {
+        hitType: 'event',
+        eventCategory: 'API',
+        eventAction: 'Multi image import'
+    })
     // Create array of URLs to import
     var imageArray = currentUrl.searchParams.get('import').split(',')
     // Filter out empty items
@@ -786,17 +832,16 @@ if (currentUrl.searchParams.get('import')) {
         importWebImage(decodeURIComponent(url))
     })
 } else if (currentUrl.searchParams.get('import_single')) {
+    ga('send', {
+        hitType: 'event',
+        eventCategory: 'API',
+        eventAction: 'Single image import'
+    })
     // Get URL of image
     var url = currentUrl.searchParams.get('import_single')
     // Import the image
     importWebImage(url)
 }
-
-// Allow importing images using Web Share Target API
-window.addEventListener('message', function (event) {
-    console.log(event)
-})
-
 /*
 
     WATERMARKS

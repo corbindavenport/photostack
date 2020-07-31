@@ -10,18 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/photostack.css">
-    <!-- Google Analytics -->
-    <script async src="//www.googletagmanager.com/gtag/js?id=UA-59452245-5"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-59452245-5');
-    </script>
-    <!-- Plausible analytics -->
-    <script async defer data-domain="edit.photostack.app" src="https://plausible.io/js/plausible.js"></script>
-    <!-- Other scripts -->
     <script src="js/shared.js"></script>
     <!-- Icons and theme -->
     <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
@@ -441,7 +429,7 @@
                         <b>You are about to export <span class="photostack-image-count">0</span> images.</b>
                     </p>
                     <p>
-                        <button type="button" id="photostack-export-zip-btn" class="btn btn-block btn-primary">Start export</button>
+                        <button type="button" id="photostack-start-export-btn" class="btn btn-block btn-primary">Start export</button>
                     </p>
                 </div>
             </div>
@@ -649,6 +637,7 @@
     <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="sblxtzuush1cfzz"></script>
     <script src="js/editor.js"></script>
     <script src="js/register-sw.js"></script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
     <!-- PhotoStack Classic redirects -->
     <script>
         // All IE versions
