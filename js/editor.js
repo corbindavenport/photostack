@@ -507,8 +507,6 @@ function asyncExport() {
     })
     // Continue once all canvases are rendered
     Promise.all(canvasPromises).then(function (canvases) {
-        // Create a new ZIP object
-        var zip = new JSZip()
         // Create promises for final render of each image
         var promises = $.map(canvases, function (canvas) {
             return new Promise(function (resolve) {
@@ -535,67 +533,76 @@ function asyncExport() {
                     type: imgFormat
                 })
                 files.push(file)
-                // Add to ZIP file
-                zip.file(fileName, file)
             })
-            // Generate zip file
-            console.log('Generating zip...')
-            zip.generateAsync({ type: 'blob' })
-                .then(function (content) {
-                    // Show badge on PWA icon
-                    if ('setAppBadge' in navigator) {
-                        navigator.setAppBadge()
-                    }
-                    // Switch modal content to finished result
-                    document.querySelector('.photostack-export-modal-loading').style.display = 'none'
-                    document.querySelector('.photostack-export-modal-finished').style.display = 'block'
-                    // Web Share API
-                    var shareData = { files: files }
-                    if (navigator.canShare && navigator.canShare(shareData)) {
-                        document.getElementById('photostack-export-web-share-button').addEventListener('click', function () {
-                            ga('send', {
-                                hitType: 'event',
-                                eventCategory: 'Export',
-                                eventAction: 'Export via Web Share API',
-                            })
-                            navigator.share(shareData)
-                                .then(function () {
-                                    console.log('Share successful.')
-                                })
-                                .catch(function (e) {
-                                    console.error(e)
-                                })
-                        })
-                    } else {
-                        // Disable the native app share button if the API isn't available
-                        document.getElementById('photostack-export-web-share-button').setAttribute('disabled', 'true')
-                        $('#photostack-export-web-share-button').tooltip({
-                            title: 'Your browser or platform does not support this feature.',
-                        })
-                    }
-                    // Download files separately
-                    document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
-                        ga('send', {
-                            hitType: 'event',
-                            eventCategory: 'Export',
-                            eventAction: 'Export as individual files',
-                        })
-                        files.forEach(function (file) {
-                            saveAs(file)
-                        })
+            // Show badge on PWA icon
+            if ('setAppBadge' in navigator) {
+                navigator.setAppBadge()
+            }
+            // Switch modal content to finished result
+            document.querySelector('.photostack-export-modal-loading').style.display = 'none'
+            document.querySelector('.photostack-export-modal-finished').style.display = 'block'
+            // Web Share API
+            var shareData = { files: files }
+            console.log(files)
+            if (navigator.canShare && navigator.canShare(shareData)) {
+                document.getElementById('photostack-export-web-share-button').addEventListener('click', function () {
+                    ga('send', {
+                        hitType: 'event',
+                        eventCategory: 'Export',
+                        eventAction: 'Export via Web Share API',
                     })
-                    // Download as ZIP
-                    document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
-                        ga('send', {
-                            hitType: 'event',
-                            eventCategory: 'Export',
-                            eventAction: 'Export as ZIP',
+                    navigator.share(shareData)
+                        .then(function () {
+                            console.log('Share successful.')
                         })
-                        saveAs(content, 'images.zip')
-                    })
-                    // Stop time
-                    console.timeEnd('Async export')
+                        .catch(function (e) {
+                            console.error(e)
+                        })
                 })
+            } else {
+                // Disable the native app share button if the API isn't available
+                document.getElementById('photostack-export-web-share-button').setAttribute('disabled', 'true')
+                $('#photostack-export-web-share-button').tooltip({
+                    title: 'Your browser or platform does not support this feature.',
+                })
+            }
+            // Download files separately
+            document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'Export',
+                    eventAction: 'Export as individual files',
+                })
+                files.forEach(function (file) {
+                    saveAs(file)
+                })
+            })
+            // Download as ZIP
+            document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'Export',
+                    eventAction: 'Export as ZIP',
+                })
+                // Change button appearance
+                document.getElementById('photostack-export-zip-button').disabled = true
+                document.getElementById('photostack-export-zip-button').innerText = 'Please wait...'
+                // Generate zip
+                var zip = new JSZip()
+                files.forEach(function (file) {
+                    zip.file(file.name, file)
+                })
+                zip.generateAsync({ type: 'blob' }).then(function (zipData) {
+                    var today = new Date()
+                    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+                    saveAs(zipData, 'photostack-export-' + date + '.zip')
+                    // Reset button appearance
+                    document.getElementById('photostack-export-zip-button').disabled = false
+                    document.getElementById('photostack-export-zip-button').innerText = 'Download as ZIP'
+                })
+            })
+            // Stop time
+            console.timeEnd('Async export')
         })
     })
 }
