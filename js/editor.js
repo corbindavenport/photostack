@@ -255,11 +255,6 @@ async function renderPreviewCanvas() {
 
 // Import images from file picker
 function importLocalFiles(element) {
-    ga('send', {
-        hitType: 'event',
-        eventCategory: 'Import',
-        eventAction: 'Import image files'
-    })
     // Get files
     var files = element.files
     console.log('Number of files selected: ' + files.length)
@@ -294,11 +289,6 @@ function importLocalFiles(element) {
 
 // Import images from file picker
 function importLocalZIP(element) {
-    ga('send', {
-        hitType: 'event',
-        eventCategory: 'Import',
-        eventAction: 'Import from ZIP'
-    })
     // Get file
     var file = element.files[0]
     // Switch modal content to progress indicator
@@ -353,11 +343,6 @@ function importLocalZIP(element) {
 
 // Add image from URL
 function importWebImage(url) {
-    ga('send', {
-        hitType: 'event',
-        eventCategory: 'Import',
-        eventAction: 'Import from URL'
-    })
     // Get image
     function addImageToCanvas(url) {
         var image = document.createElement('img')
@@ -388,11 +373,6 @@ function importWebImage(url) {
 
 // Add image from Dropbox
 function importDropboxImage() {
-    ga('send', {
-        hitType: 'event',
-        eventCategory: 'Import',
-        eventAction: 'Import from Dropbox'
-    })
     // Set configuration for file picker
     options = {
         success: function (files) {
@@ -683,6 +663,11 @@ document.querySelectorAll('.photostack-clear-images-btn').forEach(function (el) 
 
 document.querySelectorAll('.photostack-import-file-btn').forEach(function (el) {
     el.addEventListener('click', function () {
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'Import',
+            eventAction: 'Import image files'
+        })
         $('#photostack-import-file').click()
     })
 })
@@ -692,6 +677,11 @@ document.getElementById('photostack-import-file').addEventListener('change', fun
 })
 
 document.getElementById('photostack-import-url-button').addEventListener('click', function () {
+    ga('send', {
+        hitType: 'event',
+        eventCategory: 'Import',
+        eventAction: 'Import from URL'
+    })
     importWebImage(document.getElementById('photostack-import-url').value.trim())
 })
 
@@ -701,11 +691,21 @@ document.querySelector('.photostack-import-dropbox-btn').addEventListener('click
     } else if (!navigator.onLine) {
         alert('You are not connected to the internet. Connect to the internet and try again.')
     } else {
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'Import',
+            eventAction: 'Import from Dropbox'
+        })
         importDropboxImage()
     }
 })
 
 document.getElementById('photostack-import-zip-btn').addEventListener('click', function () {
+    ga('send', {
+        hitType: 'event',
+        eventCategory: 'Import',
+        eventAction: 'Import from ZIP'
+    })
     $('#photostack-import-zip').click()
 })
 
