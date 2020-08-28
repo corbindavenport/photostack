@@ -91,7 +91,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <div class="input-group mb-3">
-                                <input type="number" class="form-control" placeholder="Image width (px)" aria-label="Enter the image width in pixels." id="photostack-image-width" autocomplete="off">
+                                <input type="number" class="form-control" placeholder="Image width (px)" aria-label="Enter the image width in pixels." id="photostack-image-width" autocomplete="off" enterkeyhint="done">
                                 <div class="input-group-append">
                                     <button class="btn btn-secondary photostack-apply-btn" type="button">Apply</button>
                                 </div>
@@ -103,7 +103,7 @@
                         <div class="form-group">
                             <label for="photostack-resize-unsharpAmount">Sharpness</label>
                             <div class="input-group mb-3" style="margin-bottom: 0 !important">
-                                <input type="number" class="form-control" id="photostack-resize-unsharpAmount" autocomplete="off" value="50" min="1" max="100">
+                                <input type="number" class="form-control" id="photostack-resize-unsharpAmount" autocomplete="off" value="50" min="1" max="100" enterkeyhint="done">
                                 <div class="input-group-append">
                                     <button class="btn btn-secondary" type="button" id="photostack-sharpness-apply-btn">Apply</button>
                                 </div>
@@ -150,13 +150,13 @@
                         <div class="form-group">
                             <label for="photostack-border-width">Border width (px)</label>
                             <div class="input-group mb-3" style="margin-bottom: 0 !important">
-                                <input type="number" class="form-control" placeholder="Border width (px)" id="photostack-border-width" autocomplete="off" value="0" min="0">
+                                <input type="number" class="form-control" placeholder="Border width (px)" id="photostack-border-width" autocomplete="off" value="0" min="0" enterkeyhint="done">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="photostack-border-color">Border color</label>
                             <div class="input-group mb-3" style="margin-bottom: 0 !important">
-                                <input type="color" class="btn btn-secondary form-control" id="photostack-border-color" autocomplete="off" value="#000000">
+                                <input type="color" class="btn btn-secondary form-control" id="photostack-border-color" autocomplete="off" value="#000000" enterkeyhint="done">
                             </div>
                         </div>
                     </div>
@@ -178,12 +178,12 @@
                         </div>
                         <div class="form-group">
                             <label for="photostack-file-quality">Image quality</label>
-                            <input type="number" class="form-control" id="photostack-file-quality" value="92" min="1" max="100" autocomplete="on">
+                            <input type="number" class="form-control" id="photostack-file-quality" value="92" min="1" max="100" autocomplete="on" enterkeyhint="done">
                             <small class="form-text text-muted">Choose a value from 1-100.</small>
                         </div>
                         <div class="form-group">
                             <label for="photostack-file-quality">Name pattern</label>
-                            <input type="text" class="form-control" id="photostack-file-pattern" autocomplete="on">
+                            <input type="text" class="form-control" id="photostack-file-pattern" autocomplete="on" enterkeyhint="done">
                             <small class="form-text text-muted">Name to append to the start of each image. Example:
                                 <span class="photostack-file-pattern-demo">vacation</span> 1.jpg, <span class="photostack-file-pattern-demo">vacation</span> 2.jpg, etc.</small>
                         </div>
@@ -383,7 +383,7 @@
                     </p>
                     <p>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Enter image URL" aria-label="Enter image URL" aria-describedby="photostack-import-url" id="photostack-import-url" autocomplete="off">
+                            <input type="text" class="form-control" placeholder="Enter image URL" aria-label="Enter image URL" aria-describedby="photostack-import-url" id="photostack-import-url" autocomplete="off" enterkeyhint="done">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button" id="photostack-import-url-button">Import</button>
                             </div>
@@ -571,21 +571,21 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" aria-describedby="photostack-watermark-size">Size</span>
                                     </div>
-                                    <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-size" value="30" autocomplete="off">
+                                    <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-size" value="30" autocomplete="off" enterkeyhint="done">
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" aria-describedby="photostack-watermark-opacity">Opacity</span>
                                     </div>
-                                    <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-opacity" value="50" autocomplete="off">
+                                    <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-opacity" value="50" autocomplete="off" enterkeyhint="done">
                                 </div>
                                 <div class="form-group">
                                     <label for="photostack-watermark-horizontal-inset">Horizontal inset</label>
-                                    <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-horizontal-inset" min="-10" max="10" value="0">
+                                    <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-horizontal-inset" min="-10" max="10" value="0" enterkeyhint="done">
                                 </div>
                                 <div class="form-group">
                                     <label for="photostack-watermark-vertical-inset">Vertical inset</label>
-                                    <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-vertical-inset" min="-10" max="10" value="0">
+                                    <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-vertical-inset" min="-10" max="10" value="0" enterkeyhint="done">
                                 </div>
                             </div>
                         </div>
