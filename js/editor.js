@@ -284,11 +284,47 @@ function importFiles(element) {
         return new Promise(function (resolve) {
             if (containerFiles.includes(file.type)) {
                 // This is a container file
-                console.log('detected container file', file.name)
+                var zip = new JSZip()
+                zip.loadAsync(file).then(function (zip) {
+                    // Create a promise for each file in the container file
+                    var zipPromises = $.map(zip.files, function (file) {
+                        return new Promise(function (resolve) {
+                            // Only read files that are images, aren't directories, and aren't inside __MACOSX
+                            var supportedImages = (file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.bmp') || (Modernizr.webp && file.name.endsWith('.webp')))
+                            if ((supportedImages) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
+                                // Add images to originals container
+                                file.async('base64').then(function (data) {
+                                    // Create image element
+                                    var image = document.createElement('img')
+                                    // Add MIME type to each image so the browser can render them
+                                    if (file.name.endsWith('.png')) {
+                                        var base64 = 'data:image/png;base64,' + data
+                                    } else if (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
+                                        var base64 = 'data:image/jpeg;base64,' + data
+                                    } else if (file.name.endsWith('.bmp')) {
+                                        var base64 = 'data:image/bmp;base64,' + data
+                                    } else if (file.name.endsWith('.webp')) {
+                                        var base64 = 'data:image/webp;base64,' + data
+                                    }
+                                    // Add data to image element
+                                    image.setAttribute('src', base64)
+                                    image.setAttribute('data-file-name', file.name)
+                                    console.log('Processed image:', image)
+                                    resolve(image)
+                                })
+                            } else {
+                                resolve()
+                            }
+                        })
+                    })
+                    // Pass all processed images to main Promise
+                    Promise.all(zipPromises).then(function (data) {
+                        resolve(data)
+                    })
+                })
             } else if (imageFiles.includes(file.type)) {
                 // This is an image file
                 var image = document.createElement('img')
-                image.setAttribute('data-file-name', file.name)
                 var reader = new FileReader()
                 // Set the image source to the reader result, once the reader is done
                 reader.onload = function () {
@@ -300,6 +336,8 @@ function importFiles(element) {
                 }
                 // Once both the reader and image is done, resolve the Promise
                 image.onload = function () {
+                    image.setAttribute('data-file-name', file.name)
+                    console.log('Processed image:', image)
                     resolve(image)
                 }
                 reader.readAsDataURL(file)
@@ -310,10 +348,11 @@ function importFiles(element) {
     })
     // Add processed files to originals container
     Promise.all(importPromises).then(function (imageArray) {
+        // Promises for containers return arrays of objects, so we need to flatten the entire array
+        imageArray = imageArray.flat()
         // Update image counter
         increaseImageCount(imageArray.length)
-        // Promises for containers return arrays of objects, so we need to flatten the data
-        imageArray = imageArray.flat()
+        // Add images to originals container
         imageArray.forEach(function (imageEl) {
             document.getElementById('photostack-original-container').appendChild(imageEl)
         })
@@ -321,94 +360,6 @@ function importFiles(element) {
         renderPreviewCanvas()
         // Close import modal
         $('#photostack-import-modal').modal('hide')
-    })
-}
-
-// Import images from file picker
-function importLocalFiles(element) {
-    // Get files
-    var files = element.files
-    console.log('Number of files selected: ' + files.length)
-    // Add each image to originals container
-    Array.prototype.forEach.call(files, function (file, index) {
-        var image = document.createElement('img')
-        var reader = new FileReader()
-        // Set the image source to the reader result, once the reader is done
-        reader.onload = function () {
-            image.src = reader.result
-        }
-        reader.onerror = function () {
-            alert('Could not import this image: ' + file.name)
-        }
-        // Once both the reader and image is done, we can safely add it to the originals container and clean up
-        image.onload = function () {
-            // Save image to originals container
-            document.getElementById('photostack-original-container').appendChild(image)
-            // Increase image counter
-            increaseImageCount(1)
-            if (index === 0) {
-                renderPreviewCanvas()
-            }
-        }
-        reader.readAsDataURL(file)
-    })
-    // Clear file select
-    document.getElementById('photostack-import-file').value = ''
-    // Close import modal if it's still open
-    $('#photostack-import-modal').modal('hide')
-}
-
-// Import images from file picker
-function importLocalZIP(element) {
-    // Get file
-    var file = element.files[0]
-    // Switch modal content to progress indicator
-    document.querySelector('.photostack-import-modal-initial').style.display = 'none'
-    document.querySelector('.photostack-import-modal-zip').style.display = 'block'
-    // Read the ZIP
-    var zip = new JSZip()
-    zip.loadAsync(file).then(function (zip) {
-        var zipPromises = $.map(zip.files, function (file) {
-            return new Promise(function (resolve) {
-                // Only read files that are images, aren't directories, and aren't inside __MACOSX
-                var supportedImages = (file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.bmp') || (Modernizr.webp && file.name.endsWith('.webp')));
-                if ((supportedImages) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
-                    console.log(file)
-                    // Add images to originals container
-                    file.async('base64').then(function (data) {
-                        var image = document.createElement('img')
-                        // Add MIME type to each image so the browser can render them
-                        if (file.name.endsWith('.png')) {
-                            var base64 = 'data:image/png;base64,' + data
-                        } else if (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
-                            var base64 = 'data:image/jpeg;base64,' + data
-                        } else if (file.name.endsWith('.bmp')) {
-                            var base64 = 'data:image/bmp;base64,' + data
-                        } else if (file.name.endsWith('.webp')) {
-                            var base64 = 'data:image/webp;base64,' + data
-                        }
-                        image.src = base64
-                        // Save image to originals container
-                        document.getElementById('photostack-original-container').appendChild(image)
-                        increaseImageCount(1)
-                        resolve()
-                    })
-                } else {
-                    resolve()
-                }
-            })
-        })
-        // Continue once all canvases are rendered
-        Promise.all(zipPromises).then(function () {
-            // Generate image preview if there isn't one already
-            if (!(document.querySelectorAll('.photostack-editor-preview img').length)) {
-                renderPreviewCanvas()
-            }
-            // Clear file select
-            document.getElementById('photostack-import-file').value = ''
-            // Close import modal if it's still open
-            $('#photostack-import-modal').modal('hide')
-        })
     })
 }
 
