@@ -253,6 +253,77 @@ async function renderPreviewCanvas() {
     document.getElementById('photostack-print-preview').src = previewData
 }
 
+// Unified importer for local files (images and ZIPs)
+function importFiles(element) {
+    // Define file types
+    var containerFiles = [
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.template', // .dotx
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.template', // .xltx
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
+        'application/vnd.openxmlformats-officedocument.presentationml.template', // .potx
+        'application/vnd.openxmlformats-officedocument.presentationml.slideshow', // .ppsx
+        'application/zip' // .zip
+    ]
+    var imageFiles = [
+        'image/jpeg', // .jpg
+        'image/png', // .png
+        'image/gif', // .gif
+        'image/bmp', // .bmp
+        'image/webp' // .webp
+    ]
+    // Get files
+    var files = element.files
+    console.log('Number of files selected: ' + files.length)
+    // Switch modal content to progress indicator
+    document.querySelector('.photostack-import-modal-initial').style.display = 'none'
+    document.querySelector('.photostack-import-modal-loading').style.display = 'block'
+    // Process files
+    var importPromises = $.map(files, function (file) {
+        return new Promise(function (resolve) {
+            if (containerFiles.includes(file.type)) {
+                // This is a container file
+                console.log('detected container file', file.name)
+            } else if (imageFiles.includes(file.type)) {
+                // This is an image file
+                var image = document.createElement('img')
+                image.setAttribute('data-file-name', file.name)
+                var reader = new FileReader()
+                // Set the image source to the reader result, once the reader is done
+                reader.onload = function () {
+                    image.src = reader.result
+                }
+                reader.onerror = function () {
+                    console.log('Could not import this image: ' + file.name)
+                    resolve()
+                }
+                // Once both the reader and image is done, resolve the Promise
+                image.onload = function () {
+                    resolve(image)
+                }
+                reader.readAsDataURL(file)
+            } else {
+                console.log('Could not detect format of this file, skipping:', file)
+            }
+        })
+    })
+    // Add processed files to originals container
+    Promise.all(importPromises).then(function (imageArray) {
+        // Update image counter
+        increaseImageCount(imageArray.length)
+        // Promises for containers return arrays of objects, so we need to flatten the data
+        imageArray = imageArray.flat()
+        imageArray.forEach(function (imageEl) {
+            document.getElementById('photostack-original-container').appendChild(imageEl)
+        })
+        // Generate preview if needed
+        renderPreviewCanvas()
+        // Close import modal
+        $('#photostack-import-modal').modal('hide')
+    })
+}
+
 // Import images from file picker
 function importLocalFiles(element) {
     // Get files
@@ -612,7 +683,7 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
 
 // Reset import modal content when the close button is clicked
 $('#photostack-import-modal').on('hidden.bs.modal', function (e) {
-    document.querySelector('.photostack-import-modal-zip').style.display = 'none'
+    document.querySelector('.photostack-import-modal-loading').style.display = 'none'
     document.querySelector('.photostack-import-modal-initial').style.display = 'block'
 })
 
@@ -666,14 +737,14 @@ document.querySelectorAll('.photostack-import-file-btn').forEach(function (el) {
         ga('send', {
             hitType: 'event',
             eventCategory: 'Import',
-            eventAction: 'Import image files'
+            eventAction: 'Import local files'
         })
         $('#photostack-import-file').click()
     })
 })
 
 document.getElementById('photostack-import-file').addEventListener('change', function () {
-    importLocalFiles(this)
+    importFiles(this)
 })
 
 document.getElementById('photostack-import-url-button').addEventListener('click', function () {
@@ -698,19 +769,6 @@ document.querySelector('.photostack-import-dropbox-btn').addEventListener('click
         })
         importDropboxImage()
     }
-})
-
-document.getElementById('photostack-import-zip-btn').addEventListener('click', function () {
-    ga('send', {
-        hitType: 'event',
-        eventCategory: 'Import',
-        eventAction: 'Import from ZIP'
-    })
-    $('#photostack-import-zip').click()
-})
-
-document.getElementById('photostack-import-zip').addEventListener('change', function () {
-    importLocalZIP(this)
 })
 
 document.getElementById('photostack-reset-image-width-button').addEventListener('click', function () {
