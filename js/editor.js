@@ -204,53 +204,62 @@ function applyCanvasSettings(canvas, watermarkObject = null, previewMode = false
 }
 
 // Render canvas of first image, apply settings, and show a preview
-async function renderPreviewCanvas() {
-    // Silently fail if there are no images imported
-    if (document.querySelectorAll('#photostack-original-container img').length) {
-        console.log('Rendering preview...')
-    } else {
-        console.log('Nothing to preview.')
-        return
-    }
-    // Find elements
-    var previewContainer = document.getElementById('photostack-editor-preview')
-    var originalsContainer = document.getElementById('photostack-original-container')
-    var canvasContainer = document.getElementById('photostack-canvas-container')
-    // Create canvas element for first imported image
-    var canvas = document.createElement('canvas')
-    var originalImage = originalsContainer.firstChild
-    canvas.width = originalImage.naturalWidth
-    canvas.height = originalImage.naturalHeight
-    // Add canvas element to canvas container
-    canvasContainer.appendChild(canvas)
-    canvas.getContext('2d').drawImage(originalImage, 0, 0)
-    // Apply settings
-    if (document.getElementById('photostack-watermark-select').value === 'no-watermark') {
-        canvas = await applyCanvasSettings(canvas, null, true)
-    } else {
-        var watermarkName = document.getElementById('photostack-watermark-select').value
-        var watermarkObject = await new Promise(function (resolve) {
-            watermarksStore.getItem(watermarkName).then(function (value) {
-                resolve(value)
-            }).catch(function (err) {
-                alert('Error: ' + err)
+function renderPreviewCanvas() {
+    return new Promise(async function (resolve) {
+        // Silently fail if there are no images imported
+        if (document.querySelectorAll('#photostack-original-container img').length) {
+            console.log('Rendering preview...')
+        } else {
+            console.log('Nothing to preview.')
+            return
+        }
+        // Find elements
+        var previewContainer = document.getElementById('photostack-editor-preview')
+        var originalsContainer = document.getElementById('photostack-original-container')
+        var canvasContainer = document.getElementById('photostack-canvas-container')
+        // Create canvas element for first imported image
+        var canvas = document.createElement('canvas')
+        var originalImage = originalsContainer.firstChild
+        canvas.width = originalImage.naturalWidth
+        canvas.height = originalImage.naturalHeight
+        // Add canvas element to canvas container
+        canvasContainer.appendChild(canvas)
+        canvas.getContext('2d').drawImage(originalImage, 0, 0)
+        // Apply settings
+        if (document.getElementById('photostack-watermark-select').value === 'no-watermark') {
+            canvas = await applyCanvasSettings(canvas, null, true)
+        } else {
+            var watermarkName = document.getElementById('photostack-watermark-select').value
+            var watermarkObject = await new Promise(function (resolve) {
+                watermarksStore.getItem(watermarkName).then(function (value) {
+                    resolve(value)
+                }).catch(function (err) {
+                    alert('Error: ' + err)
+                })
             })
-        })
-        canvas = await applyCanvasSettings(canvas, watermarkObject, true)
-    }
-    // Generate Data URL
-    var previewData = canvas.toDataURL()
-    // Create image element
-    if (previewContainer.querySelector('img')) {
-        previewContainer.querySelector('img').setAttribute('src', previewData)
-    } else {
-        var previewImage = document.createElement('img')
-        previewImage.setAttribute('src', previewData)
-        previewContainer.innerHTML = ''
-        previewContainer.appendChild(previewImage)
-    }
-    // Set image in print preview
-    document.getElementById('photostack-print-preview').src = previewData
+            canvas = await applyCanvasSettings(canvas, watermarkObject, true)
+        }
+        // Generate Data URL
+        var previewData = canvas.toDataURL()
+        // Create image element
+        if (previewContainer.querySelector('img')) {
+            var previewImage = previewContainer.querySelector('img')
+            previewImage.onload = function () {
+                resolve()
+            }
+            previewImage.setAttribute('src', previewData)
+        } else {
+            var previewImage = document.createElement('img')
+            previewImage.onload = function () {
+                previewContainer.innerHTML = ''
+                previewContainer.appendChild(previewImage)
+                resolve()
+            }
+            previewImage.setAttribute('src', previewData)
+        }
+        // Set image in print preview
+        document.getElementById('photostack-print-preview').setAttribute('src', previewData)
+    })
 }
 
 // Unified importer for local files (images and ZIPs)
@@ -306,11 +315,17 @@ function importFiles(element) {
                                     } else if (file.name.endsWith('.webp')) {
                                         var base64 = 'data:image/webp;base64,' + data
                                     }
-                                    // Add data to image element
+                                    // Once both the reader and image is done, resolve the Promise
+                                    image.onload = function () {
+                                        image.setAttribute('data-file-name', file.name)
+                                        console.log('Processed image:', file.name)
+                                        resolve(image)
+                                    }
+                                    image.onerror = function () {
+                                        console.log('Could not import this image: ' + file.name)
+                                        resolve()
+                                    }
                                     image.setAttribute('src', base64)
-                                    image.setAttribute('data-file-name', file.name)
-                                    console.log('Processed image:', image)
-                                    resolve(image)
                                 })
                             } else {
                                 resolve()
@@ -337,7 +352,7 @@ function importFiles(element) {
                 // Once both the reader and image is done, resolve the Promise
                 image.onload = function () {
                     image.setAttribute('data-file-name', file.name)
-                    console.log('Processed image:', image)
+                    console.log('Processed image:', file.name)
                     resolve(image)
                 }
                 reader.readAsDataURL(file)
@@ -347,9 +362,12 @@ function importFiles(element) {
         })
     })
     // Add processed files to originals container
-    Promise.all(importPromises).then(function (imageArray) {
+    Promise.all(importPromises).then(async function (imageArray) {
         // Promises for containers return arrays of objects, so we need to flatten the entire array
         imageArray = imageArray.flat()
+        imageArray = imageArray.filter(function (e) {
+            return e instanceof HTMLElement
+        })
         // Update image counter
         increaseImageCount(imageArray.length)
         // Add images to originals container
@@ -357,7 +375,7 @@ function importFiles(element) {
             document.getElementById('photostack-original-container').appendChild(imageEl)
         })
         // Generate preview if needed
-        renderPreviewCanvas()
+        await renderPreviewCanvas()
         // Close import modal
         $('#photostack-import-modal').modal('hide')
     })
@@ -370,14 +388,14 @@ function importWebImage(url) {
         var image = document.createElement('img')
         image.crossOrigin = 'anonymous'
         image.src = url
-        image.onload = function () {
+        image.onload = async function () {
             console.log('Loaded image URL: ' + url)
             // Save image to originals container
             document.getElementById('photostack-original-container').appendChild(image)
             // Increase image counter
             increaseImageCount(1)
             // Generate preview
-            renderPreviewCanvas()
+            await renderPreviewCanvas()
         }
         image.onerror = function () {
             if (!url.includes('https://cors-anywhere.herokuapp.com/')) {
@@ -672,8 +690,8 @@ if (ifSafari) {
 // Append event listeners to buttons and other elements
 
 document.querySelectorAll('.photostack-apply-btn').forEach(function (el) {
-    el.addEventListener('click', function () {
-        renderPreviewCanvas()
+    el.addEventListener('click', async function () {
+        await renderPreviewCanvas()
     })
 })
 
