@@ -273,7 +273,9 @@ function importFiles(element) {
         'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
         'application/vnd.openxmlformats-officedocument.presentationml.template', // .potx
         'application/vnd.openxmlformats-officedocument.presentationml.slideshow', // .ppsx
-        'application/zip' // .zip
+        'application/zip', // .zip
+        'application/x-zip', // .zip
+        'application/x-zip-compressed' // .zip
     ]
     var imageFiles = [
         'image/jpeg', // .jpg
@@ -358,6 +360,7 @@ function importFiles(element) {
                 reader.readAsDataURL(file)
             } else {
                 console.log('Could not detect format of this file, skipping:', file)
+                resolve()
             }
         })
     })
