@@ -379,8 +379,9 @@ function importFiles(element) {
         })
         // Generate preview if needed
         await renderPreviewCanvas()
-        // Close import modal
+        // Close import modal and reset file picker
         $('#photostack-import-modal').modal('hide')
+        element.value = ''
     })
 }
 
