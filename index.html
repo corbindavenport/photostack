@@ -327,10 +327,6 @@
                                     <td>Shift + D</td>
                                 </tr>
                                 <tr>
-                                    <td>Import ZIP/container files</td>
-                                    <td>Shift + Z</td>
-                                </tr>
-                                <tr>
                                     <td>Clear imported images</td>
                                     <td>Shift + X</td>
                                 </tr>
@@ -374,10 +370,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <p>Select photos from your device or the web to get started. You can also drag and drop files into PhotoStack to import them.</p>
                     <p>
                         <button class="btn btn-primary btn-block photostack-import-file-btn" type="button">Import local files</button>
                     </p>
-                    <p style="text-align: center" class="small">Supported file types: Images, ZIP, MS Office (DOCX, PPTX, XLSX)</p>
+                    <p style="text-align: center" class="small">Supported file types: Images, ZIP, MS Office 2007+</p>
                     <p>
                         <button class="btn btn-primary btn-block photostack-import-dropbox-btn" type="button">Import images from Dropbox</button>
                     </p>
@@ -389,6 +386,12 @@
                             </div>
                         </div>
                     </p>
+                </div>
+            </div>
+            <div class="modal-content photostack-import-modal-drag-drop" style="display:none">
+                <div class="modal-body">
+                    <p style="text-align: center">Drop your files into PhotoStack to import them.</p>
+                    <p style="text-align: center" class="small">Supported file types: Images, ZIP, MS Office 2007+</p>
                 </div>
             </div>
             <div class="modal-content photostack-import-modal-loading" style="display:none">

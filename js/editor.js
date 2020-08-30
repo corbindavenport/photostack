@@ -263,7 +263,7 @@ function renderPreviewCanvas() {
 }
 
 // Unified importer for local files (images and ZIPs)
-function importFiles(element) {
+function importFiles(files, element = null) {
     // Define file types
     var containerFiles = [
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
@@ -285,10 +285,10 @@ function importFiles(element) {
         'image/webp' // .webp
     ]
     // Get files
-    var files = element.files
     console.log('Number of files selected: ' + files.length)
     // Switch modal content to progress indicator
     document.querySelector('.photostack-import-modal-initial').style.display = 'none'
+    document.querySelector('.photostack-import-modal-drag-drop').style.display = 'none'
     document.querySelector('.photostack-import-modal-loading').style.display = 'block'
     // Process files
     var importPromises = $.map(files, function (file) {
@@ -379,9 +379,11 @@ function importFiles(element) {
         })
         // Generate preview if needed
         await renderPreviewCanvas()
-        // Close import modal and reset file picker
+        // Close import modal and reset <input> if needed
         $('#photostack-import-modal').modal('hide')
-        element.value = ''
+        if (element) {
+            element.value = ''
+        }
     })
 }
 
@@ -657,6 +659,7 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
 // Reset import modal content when the close button is clicked
 $('#photostack-import-modal').on('hidden.bs.modal', function (e) {
     document.querySelector('.photostack-import-modal-loading').style.display = 'none'
+    document.querySelector('.photostack-import-modal-drag-drop').style.display = 'none'
     document.querySelector('.photostack-import-modal-initial').style.display = 'block'
 })
 
@@ -717,7 +720,7 @@ document.querySelectorAll('.photostack-import-file-btn').forEach(function (el) {
 })
 
 document.getElementById('photostack-import-file').addEventListener('change', function () {
-    importFiles(this)
+    importFiles(this.files, this)
 })
 
 document.getElementById('photostack-import-url-button').addEventListener('click', function () {
@@ -774,6 +777,35 @@ document.getElementById('photostack-watermark-file-import').addEventListener('ch
     importWatermarkSettings(this)
 })
 
+// Drag and drop file upload
+
+document.body.addEventListener('dragenter', function (e) {
+    console.log('Drag enter detected')
+    document.querySelector('.photostack-import-modal-initial').style.display = 'none'
+    document.querySelector('.photostack-import-modal-drag-drop').style.display = 'block'
+    $('#photostack-import-modal').modal('show')
+})
+
+document.body.addEventListener('dragleave', function (e) {
+    console.log('Drag leave detected')
+    $('#photostack-import-modal').modal('hide')
+})
+
+document.body.addEventListener('drop', function (e) {
+    var files = e.dataTransfer.files
+    importFiles(files)
+})
+
+// Prevent default browser drag/drop actions
+
+var eventNames = ['dragenter', 'dragover', 'dragleave', 'drop']
+eventNames.forEach(function (eventName) {
+    document.body.addEventListener(eventName, function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+    }, false)
+})
+
 // Get list of watermarks when page is loaded
 refreshWatermarks(true)
 
@@ -785,12 +817,6 @@ updateSampleFileNames()
 $(document).bind('keyup', 'shift+o', function () {
     if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
         $('#photostack-import-file').click()
-    }
-})
-
-$(document).bind('keyup', 'shift+z', function () {
-    if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
-        $('#photostack-import-zip').click()
     }
 })
 
