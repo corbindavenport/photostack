@@ -564,12 +564,37 @@ function asyncExport() {
             if ('setAppBadge' in navigator) {
                 navigator.setAppBadge()
             }
-            // Switch modal content to finished result
-            document.querySelector('.photostack-export-modal-loading').style.display = 'none'
-            document.querySelector('.photostack-export-modal-finished').style.display = 'block'
+            // File System Access API
+            if ('showDirectoryPicker' in window) {
+                // Add functionality for File System save button
+                document.getElementById('photostack-export-filesystem-api-button').addEventListener('click', async function () {
+                    // Send analytics event
+                    ga('send', {
+                        hitType: 'event',
+                        eventCategory: 'Export',
+                        eventAction: 'Export via File System API',
+                    })
+                    // Ask for export directory
+                    var directory = await window.showDirectoryPicker()
+                    if (directory) {
+                        // Save each file
+                        console.log('Saving files in ' + directory.name + ' directory...')
+                        files.forEach(async function (file) {
+                            var writeableFile = await directory.getFileHandle(file.name, { create: true })
+                            var writer = await writeableFile.createWritable()
+                            await writer.write(file)
+                            await writer.close()
+                        })
+                    }
+                })
+                // Hide legacy download method
+                document.getElementById('photostack-legacy-download').style.display = 'none'
+            } else {
+                // Hide the File System Access button if the API isn't available
+                document.getElementById('photostack-export-filesystem-api-button').style.display = 'none'
+            }
             // Web Share API
             var shareData = { files: files }
-            console.log(files)
             if (navigator.canShare && navigator.canShare(shareData)) {
                 document.getElementById('photostack-export-web-share-button').addEventListener('click', function () {
                     ga('send', {
@@ -629,6 +654,9 @@ function asyncExport() {
             })
             // Stop time
             console.timeEnd('Async export')
+            // Switch modal content to finished result
+            document.querySelector('.photostack-export-modal-loading').style.display = 'none'
+            document.querySelector('.photostack-export-modal-finished').style.display = 'block'
         })
     })
 }
@@ -643,6 +671,7 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
     // Clear event listeners
     $('#photostack-export-web-share-button').replaceWith($('#photostack-export-web-share-button').clone())
     $('#photostack-export-separate-button').replaceWith($('#photostack-export-separate-button').clone())
+    $('#photostack-export-filesystem-api-button').replaceWith($('#pphotostack-export-filesystem-api-button').clone())
     $('#photostack-export-zip-button').replaceWith($('#photostack-export-zip-button').clone())
     // Clear content
     document.querySelector('.photostack-export-modal-loading').style.display = 'none'

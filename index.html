@@ -310,32 +310,32 @@
                 <div class="modal-body">
                     <p>PhotoStack offers keyboard shortcuts for common functions. These may not work <span class="photostack-android-hide">with all browsers</span><span class="photostack-android-show">on all devices</span>. Also, they will not work if any popups (like the watermark editor or this help menu) are open.</p>
                     <p>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Command</th>
-                                    <th scope="col">Shortcut</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Import local images</td>
-                                    <td>Shift + O</td>
-                                </tr>
-                                <tr>
-                                    <td>Import images from Dropbox</td>
-                                    <td>Shift + D</td>
-                                </tr>
-                                <tr>
-                                    <td>Clear imported images</td>
-                                    <td>Shift + X</td>
-                                </tr>
-                                <tr>
-                                    <td>Open watermarks</td>
-                                    <td>Shift + W</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Command</th>
+                                <th scope="col">Shortcut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Import local images</td>
+                                <td>Shift + O</td>
+                            </tr>
+                            <tr>
+                                <td>Import images from Dropbox</td>
+                                <td>Shift + D</td>
+                            </tr>
+                            <tr>
+                                <td>Clear imported images</td>
+                                <td>Shift + X</td>
+                            </tr>
+                            <tr>
+                                <td>Open watermarks</td>
+                                <td>Shift + W</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     </p>
                 </div>
             </div>
@@ -379,12 +379,12 @@
                         <button class="btn btn-primary btn-block photostack-import-dropbox-btn" type="button">Import images from Dropbox</button>
                     </p>
                     <p>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Enter image URL" aria-label="Enter image URL" aria-describedby="photostack-import-url" id="photostack-import-url" autocomplete="off" enterkeyhint="done">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" id="photostack-import-url-button">Import</button>
-                            </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Enter image URL" aria-label="Enter image URL" aria-describedby="photostack-import-url" id="photostack-import-url" autocomplete="off" enterkeyhint="done">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="photostack-import-url-button">Import</button>
                         </div>
+                    </div>
                     </p>
                 </div>
             </div>
@@ -401,11 +401,11 @@
                 <div class="modal-body">
                     <p>PhotoStack is now processing the files you selected. This may take a few seconds.</p>
                     <p>
-                        <div class="d-flex justify-content-center export-spinner">
-                            <div class="spinner-border" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
+                    <div class="d-flex justify-content-center export-spinner">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
                         </div>
+                    </div>
                     </p>
                 </div>
             </div>
@@ -439,9 +439,9 @@
                 <div class="modal-body">
                     <p style="text-align: center;">Please wait while the images are being exported...</p>
                     <p>
-                        <div class="progress" style="height: 20px;">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="photostack-export-modal-progress"></div>
-                        </div>
+                    <div class="progress" style="height: 20px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="photostack-export-modal-progress"></div>
+                    </div>
                     </p>
                     <p class="photostack-android-hide text-muted" style="text-align: center;">
                         Some browsers throttle background windows and tabs. To speed up exports, don't minimize PhotoStack or switch to another tab/window.
@@ -457,15 +457,20 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div id="photostack-legacy-download">
+                        <p>
+                            <button type="button" id="photostack-export-separate-button" class="btn btn-block btn-success">Save images to Downloads</button>
+                        </p>
+                        <p class="text-muted photostack-android-hide" style="text-align:center">Saving images to Downloads doesn't work correctly in some browsers. If you experience problems, use one of the other options.</p>
+                    </div>
                     <p>
-                        <button type="button" id="photostack-export-separate-button" class="btn btn-block btn-success">Download as individual files</button>
+                        <button type="button" id="photostack-export-filesystem-api-button" class="btn btn-block btn-success">Save images to device <span class="badge badge-secondary">New</span></button>
                     </p>
-                    <p class="text-muted photostack-android-hide" style="text-align:center">Downloading individual files doesn't work correctly in some browsers. If you experience problems, use one of the other options.</p>
                     <p>
-                        <button type="button" id="photostack-export-web-share-button" class="btn btn-block btn-success">Share to installed application</button>
+                        <button type="button" id="photostack-export-web-share-button" class="btn btn-block btn-success">Share images to installed application</button>
                     </p>
                     <p>
-                        <button type="button" id="photostack-export-zip-button" class="btn btn-block btn-success">Download as ZIP</button>
+                        <button type="button" id="photostack-export-zip-button" class="btn btn-block btn-success">Save images as ZIP</button>
                     </p>
                     <p class="photostack-android-hide" style="text-align: center">If you found PhotoStack useful, please donate via <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">PayPal</a> or <a href="https://www.patreon.com/corbindavenport" target="_blank">Patreon</a> to help support the project!</p>
                 </div>
