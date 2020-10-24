@@ -807,7 +807,7 @@ eventNames.forEach(function (eventName) {
 })
 
 // Get list of watermarks when page is loaded
-refreshWatermarks(true)
+refreshWatermarks()
 
 // Update sample file names when the page is loaded
 updateSampleFileNames()
@@ -1120,21 +1120,7 @@ function importWatermarkSettings(el) {
     })
 }
 
-async function refreshWatermarks(firstLoad = false) {
-    if (firstLoad) {
-        // Migrate watermarks from localStorage to localForage
-        for (var i = 0; i < localStorage.length; i++) {
-            if (localStorage.key(i).includes('Watermark: ')) {
-                var watermarkName = localStorage.key(i).replace('Watermark: ', '') // Remove "Watermark: " from the key name
-                var watermarkValue = JSON.parse(localStorage.getItem(localStorage.key(i)))
-                console.log('Migrating watermark "' + watermarkName + '" to updated storage...')
-                // Copy data to localForage
-                await watermarksStore.setItem(watermarkName, watermarkValue)
-                // Delete old item
-                localStorage.removeItem(localStorage.key(i))
-            }
-        }
-    }
+async function refreshWatermarks() {
     // Reset lists
     document.getElementById('photostack-watermark-select').innerHTML = '<option selected="" value="no-watermark">No watermark</option>'
     document.getElementById('photostack-watermark-manager-list').innerHTML = ''
