@@ -319,7 +319,15 @@ function importFiles(files, element = null) {
                                     }
                                     // Once both the reader and image is done, resolve the Promise
                                     image.onload = function () {
-                                        image.setAttribute('data-file-name', file.name)
+                                        // Remove file ending
+                                        var filename = file.name
+                                        if (filename.includes('.')) {
+                                            filename = filename.slice(0, filename.indexOf("."))
+                                            image.setAttribute('data-file-name', filename)
+                                        } else {
+                                            image.setAttribute('data-file-name', filename)
+                                        }
+                                        // Resolve promise
                                         console.log('Processed image:', file.name)
                                         resolve(image)
                                     }
@@ -353,7 +361,15 @@ function importFiles(files, element = null) {
                 }
                 // Once both the reader and image is done, resolve the Promise
                 image.onload = function () {
-                    image.setAttribute('data-file-name', file.name)
+                    // Remove file ending
+                    var filename = file.name
+                    if (filename.includes('.')) {
+                        filename = filename.slice(0, filename.indexOf("."))
+                        image.setAttribute('data-file-name', filename)
+                    } else {
+                        image.setAttribute('data-file-name', filename)
+                    }
+                    // Resolve promise
                     console.log('Processed image:', file.name)
                     resolve(image)
                 }
@@ -391,9 +407,21 @@ function importFiles(files, element = null) {
 function importWebImage(url) {
     // Get image
     function addImageToCanvas(url) {
+        // Create image element
         var image = document.createElement('img')
-        image.crossOrigin = 'anonymous'
-        image.src = url
+        image.setAttribute('crossorigin', 'anonymous')
+        image.setAttribute('src', url)
+        // Get filename
+        try {
+            var filename = url.split('/').pop().split('#')[0].split('?')[0]
+            filename = decodeURIComponent(filename) // Revert URI encoding
+            filename = filename.slice(0, filename.indexOf(".")) // Remove file ending
+            image.setAttribute('data-file-name', filename)
+        } catch (error) {
+            console.error('Error obtaining filename for image:', error)
+            image.setAttribute('data-file-name', 'Image ' + (globalFilesCount + 1))
+        }
+        // Load image
         image.onload = async function () {
             console.log('Loaded image URL: ' + url)
             // Save image to originals container
@@ -466,17 +494,6 @@ function clearImportedImages() {
     document.getElementById('photostack-editor-preview').innerHTML = '<p><br />A preview of your settings will appear here once you import some images.</p>'
 }
 
-// Update sample file names when text is entered in the name pattern field
-function updateSampleFileNames() {
-    var text = document.getElementById('photostack-file-pattern').value
-    if (text === '') {
-        text = 'vacation'
-    }
-    document.querySelectorAll('.photostack-file-pattern-demo').forEach(function (el) {
-        el.textContent = text
-    })
-}
-
 // Async export with Promises
 function asyncExport() {
     // Start timer
@@ -484,7 +501,8 @@ function asyncExport() {
     // Set variables
     const imgFormat = document.getElementById('photostack-file-format').value
     const imgQuality = parseInt(document.getElementById('photostack-file-quality').value) / 100
-    const imgNamePattern = document.getElementById('photostack-file-pattern').value || 'image'
+    const imgUseOriginalNames = document.getElementById('photostack-file-keep-name').checked
+    const imgNamePattern = document.getElementById('photostack-file-name-pattern').value || 'Image'
     const imgTotal = document.querySelectorAll('#photostack-original-container img').length
     const imgStep = Math.round(100 / imgTotal)
     const progressBar = document.getElementById('photostack-export-modal-progress')
@@ -507,6 +525,7 @@ function asyncExport() {
             canvasContainer.appendChild(canvas)
             canvas.width = original.naturalWidth
             canvas.height = original.naturalHeight
+            canvas.setAttribute('data-file-name', original.getAttribute('data-file-name'))
             canvas.getContext('2d').drawImage(original, 0, 0)
             // Apply settings
             if (document.getElementById('photostack-watermark-select').value === 'no-watermark') {
@@ -536,7 +555,9 @@ function asyncExport() {
         // Create promises for final render of each image
         var promises = $.map(canvases, function (canvas) {
             return new Promise(function (resolve) {
-                canvas.toBlob(resolve, imgFormat, imgQuality)
+                canvas.toBlob(function (blob) {
+                    resolve([blob, canvas.getAttribute('data-file-name')])
+                }, imgFormat, imgQuality)
             })
         })
         // Show the final export screen when all renders are completed
@@ -544,6 +565,7 @@ function asyncExport() {
             // Create final array of blobs with file names
             var files = []
             blobs.forEach(function (blob, i) {
+                // Set file ending
                 if (imgFormat === 'image/jpeg') {
                     var fileEnding = '.jpg'
                 } else if (imgFormat === 'image/png') {
@@ -551,10 +573,15 @@ function asyncExport() {
                 } else if (imgFormat === 'image/webp') {
                     var fileEnding = '.webp'
                 }
-                var num = i + 1
-                var fileName = imgNamePattern + ' ' + num + fileEnding
+                // Set file name
+                if (imgUseOriginalNames) {
+                    var fileName = blob[1] + fileEnding
+                } else {
+                    var num = i + 1
+                    var fileName = imgNamePattern + ' ' + num + fileEnding
+                }
                 // Add to files array
-                var file = new File([blob], fileName, {
+                var file = new File([blob[0]], fileName, {
                     lastModified: Date.now(),
                     type: imgFormat
                 })
@@ -671,7 +698,7 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
     // Clear event listeners
     $('#photostack-export-web-share-button').replaceWith($('#photostack-export-web-share-button').clone())
     $('#photostack-export-separate-button').replaceWith($('#photostack-export-separate-button').clone())
-    $('#photostack-export-filesystem-api-button').replaceWith($('#pphotostack-export-filesystem-api-button').clone())
+    $('#photostack-export-filesystem-api-button').replaceWith($('#photostack-export-filesystem-api-button').clone())
     $('#photostack-export-zip-button').replaceWith($('#photostack-export-zip-button').clone())
     // Clear content
     document.querySelector('.photostack-export-modal-loading').style.display = 'none'
@@ -722,6 +749,24 @@ if (ifSafari) {
         $('#photostack-safari-modal').modal('show')
     })
 }
+
+// Set initial name pattern radio value
+if (document.querySelector('input[name="photostack-file-name"]:checked').id === 'photostack-file-keep-name') {
+    document.getElementById('photostack-file-name-pattern').disabled = true
+} else {
+    document.getElementById('photostack-file-name-pattern').disabled = false
+}
+
+// Enable/disable name pattern field based on radio button
+document.querySelectorAll('input[name="photostack-file-name"]').forEach(function (el) {
+    el.addEventListener('click', function () {
+        if (document.querySelector('input[name="photostack-file-name"]:checked').id === 'photostack-file-keep-name') {
+            document.getElementById('photostack-file-name-pattern').disabled = true
+        } else {
+            document.getElementById('photostack-file-name-pattern').disabled = false
+        }
+    })
+})
 
 // Append event listeners to buttons and other elements
 
@@ -789,11 +834,6 @@ document.getElementById('photostack-border-color').addEventListener('change', fu
     renderPreviewCanvas()
 })
 
-// Show name pattern example in real-time
-document.getElementById('photostack-file-pattern').addEventListener('keyup', function () {
-    updateSampleFileNames()
-})
-
 document.getElementById('photostack-watermark-select').addEventListener('change', async function () {
     renderPreviewCanvas()
 })
@@ -837,9 +877,6 @@ eventNames.forEach(function (eventName) {
 
 // Get list of watermarks when page is loaded
 refreshWatermarks()
-
-// Update sample file names when the page is loaded
-updateSampleFileNames()
 
 // Keyboard shortcuts
 
