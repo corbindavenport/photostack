@@ -282,7 +282,8 @@ function importFiles(files, element = null) {
         'image/png', // .png
         'image/gif', // .gif
         'image/bmp', // .bmp
-        'image/webp' // .webp
+        'image/webp', // .webp
+        'image/avif' // .avif
     ]
     // Get files
     console.log('Number of files selected: ' + files.length)
@@ -301,7 +302,14 @@ function importFiles(files, element = null) {
                     var zipPromises = $.map(zip.files, function (file) {
                         return new Promise(function (resolve) {
                             // Only read files that are images, aren't directories, and aren't inside __MACOSX
-                            var supportedImages = (file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.bmp') || (Modernizr.webp && file.name.endsWith('.webp')))
+                            var supportedImages = (
+                                file.name.endsWith('.png') ||
+                                file.name.endsWith('.jpg') ||
+                                file.name.endsWith('.jpeg') ||
+                                file.name.endsWith('.bmp') ||
+                                (Modernizr.webp && file.name.endsWith('.webp')) ||
+                                (document.getElementsByTagName('html')[0].classList.includes('avif') && file.name.endsWith('.avif'))
+                            )
                             if ((supportedImages) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
                                 // Add images to originals container
                                 file.async('base64').then(function (data) {
@@ -316,6 +324,8 @@ function importFiles(files, element = null) {
                                         var base64 = 'data:image/bmp;base64,' + data
                                     } else if (file.name.endsWith('.webp')) {
                                         var base64 = 'data:image/webp;base64,' + data
+                                    } else if (file.name.endsWith('.avif')) {
+                                        var base64 = 'data:image/avif;base64,' + data
                                     }
                                     // Once both the reader and image is done, resolve the Promise
                                     image.onload = function () {
@@ -739,6 +749,19 @@ Modernizr.on('webp', function (result) {
         document.getElementById('photostack-watermark-import-image').setAttribute('accept', formats + ',image/webp')
     }
 })
+
+// Allow AVIF imports if the image format is supported
+var testAVIF = new Image()
+testAVIF.onload = function () {
+    var formats = document.getElementById('photostack-import-file').getAttribute('accept')
+    // Main editor image picker
+    document.getElementById('photostack-import-file').setAttribute('accept', formats + ',image/avif')
+    // Watermark editor image picker
+    document.getElementById('photostack-watermark-import-image').setAttribute('accept', formats + ',image/avif')
+    // Add class to <html> tag like Modernizr
+    document.getElementsByTagName('html')[0].classList.add('avif')
+}
+testAVIF.setAttribute('src', 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK42A=')
 
 // Add warning for Safari users
 const ifSafari = (navigator.userAgent.includes('Safari') && (!navigator.userAgent.includes('Chrome')))
