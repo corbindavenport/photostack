@@ -42,6 +42,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-keyboard-modal">Shortcuts</a>
                 </li>
+                <!--
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-settings-modal">Settings</a>
+                </li>
+                -->
                 <li class="nav-item">
                     <a class="nav-link" href="https://github.com/photostack/photostack/wiki/API-Documentation" target="_blank">API</a>
                 </li>
@@ -80,8 +85,15 @@
             <!-- Settings panel container -->
             <div class="col-lg-4 col-md-6">
                 <!-- Safari message -->
-                <div class="alert alert-warning photostack-safari-warning" style="display: none; cursor: pointer;">
+                <div class="alert alert-warning photostack-safari-warning" data-toggle="modal" data-target="#photostack-safari-modal" style="display: none; cursor: pointer;">
                     Safari may periodically delete PhotoStack's data, including saved watermarks. Press here for more information.
+                </div>
+                <!-- Privacy alert -->
+                <div class="alert alert-secondary alert-dismissible fade show photostack-privacy-warning" data-toggle="modal" data-target="#photostack-settings-modal" style="display: none;" role="alert">
+                    <b>PhotoStack collects anonymous usage data.</b> Press here to manage your settings, or change them at any time from 'Settings' in the main navigation.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <!-- Resize card -->
                 <div class="card">
@@ -366,6 +378,22 @@
                     <p>Safari 13.1+ on macOS, as well as Safari on iOS/iPadOS 13.4+, introduced a <a href="https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/" target="_blank">seven-day cap on all locally-stored data</a> by websites. This means that unless you open PhotoStack at least once a week, <b>your saved watermarks could be deleted</b>.</p>
                     <p>The only way to avoid losing your watermarks is to export them as files (from the watermark list), then re-import them after Safari wipes PhotoStack's data.</p>
                     <p>In addition, PhotoStack may not be able to download files (completed images, exported watermarks, etc.) when it is opened from the iOS home screen. To get around this, open <b>edit.photostack.app</b> in your browser instead.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Settings modal -->
+    <div class="modal fade" id="photostack-settings-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photostack-settings-modal-label">Settings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Coming soon!</p>
                 </div>
             </div>
         </div>

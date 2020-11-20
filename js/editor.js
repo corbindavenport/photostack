@@ -3,6 +3,11 @@ const watermarksStore = localforage.createInstance({
     driver: [localforage.WEBSQL, localforage.INDEXEDDB]
 })
 
+const SettingsStore = localforage.createInstance({
+    name: 'Settings',
+    driver: [localforage.WEBSQL, localforage.INDEXEDDB]
+})
+
 const currentUrl = new URL(window.location)
 
 var globalFilesCount = 0
@@ -768,9 +773,6 @@ const ifSafari = (navigator.userAgent.includes('Safari') && (!navigator.userAgen
 if (ifSafari) {
     var warningBlock = document.querySelector('.photostack-safari-warning')
     warningBlock.style.display = 'block'
-    warningBlock.addEventListener('click', function () {
-        $('#photostack-safari-modal').modal('show')
-    })
 }
 
 // Set initial name pattern radio value
@@ -790,6 +792,20 @@ document.querySelectorAll('input[name="photostack-file-name"]').forEach(function
         }
     })
 })
+
+// Privacy popup
+/*
+SettingsStore.getItem('privacy-popup').then(function (value) {
+    // Show popup if it has never been closed
+    if (!value) {
+        document.querySelector('.photostack-privacy-warning').style.display = 'block'
+        // Hide popup after alert is closed
+        $('.photostack-privacy-warning').on('closed.bs.alert', function () {
+            SettingsStore.setItem('privacy-popup', 'true')
+        })
+    }
+})
+*/
 
 // Append event listeners to buttons and other elements
 
@@ -953,13 +969,19 @@ $(document).bind('keyup', 'shift+w', function () {
 })
 
 // Show welcome page on first run
-if (localStorage['welcome-editor'] != 'true') {
-    $('#photostack-welcome-modal').modal('show')
-    // Don't show welcome screen again after it is exited
-    document.querySelector('#photostack-welcome-modal .btn-block').addEventListener('click', function () {
-        localStorage['welcome-editor'] = 'true'
-    })
-}
+SettingsStore.getItem('welcome-completed').then(function (value) {
+    if (localStorage.getItem('welcome-editor') === 'true') {
+        // Migrate older variable from localStorage
+        SettingsStore.setItem('welcome-completed', 'true')
+        localStorage.removeItem('welcome-editor')
+    } else if (!value) {
+        $('#photostack-welcome-modal').modal('show')
+        // Don't show welcome screen again after it is exited
+        $('#photostack-welcome-modal').on('hidden.bs.modal', function () {
+            SettingsStore.setItem('welcome-completed', 'true')
+        })
+    }
+})
 
 // Android app and Web Manifest shortcuts
 if (currentUrl.searchParams.get('open_watermarks')) {
@@ -995,10 +1017,11 @@ if (currentUrl.searchParams.get('import')) {
     // Import the image
     importWebImage(url)
 }
+
 /*
-
+ 
     WATERMARKS
-
+ 
 */
 
 const watermarkEditor = document.getElementById('photostack-watermark-editor-modal')
@@ -1184,7 +1207,7 @@ function importWatermarkSettings(el) {
                     alert('Error: ' + err)
                     return resolve()
                 }
-                // Add watermark to localStorage
+                // Add watermark to watermarksStore
                 var watermarkName = file.name.replace('.json', '')
                 watermarksStore.setItem(watermarkName, watermarkObj).then(function () {
                     resolve()
