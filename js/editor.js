@@ -313,7 +313,7 @@ function importFiles(files, element = null) {
                                 file.name.endsWith('.jpeg') ||
                                 file.name.endsWith('.bmp') ||
                                 (Modernizr.webp && file.name.endsWith('.webp')) ||
-                                (document.getElementsByTagName('html')[0].classList.includes('avif') && file.name.endsWith('.avif'))
+                                (document.getElementsByTagName('html')[0].classList.contains('avif') && file.name.endsWith('.avif'))
                             )
                             if ((supportedImages) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
                                 // Add images to originals container
