@@ -49,6 +49,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="https://github.com/photostack/photostack/wiki/API-Documentation" target="_blank">API</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://discord.gg/59wfy5cNHw" target="_blank">Discord</a>
+                </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-toggle="modal" data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
@@ -83,12 +86,6 @@
             </div>
             <!-- Settings panel container -->
             <div class="col-lg-4 col-md-6">
-                <!-- Discord message -->
-                <a href="https://discord.gg/59wfy5cNHw" target="_blank">
-                    <div class="alert alert-primary" data-toggle="modal" style="cursor: pointer;">
-                        <b>New:</b> Press here to join the PhotoStack Discord server!
-                    </div>
-                </a>
                 <!-- Safari message -->
                 <div class="alert alert-warning photostack-safari-warning" data-toggle="modal" data-target="#photostack-safari-modal" style="display: none; cursor: pointer;">
                     Safari may periodically delete PhotoStack's data, including saved watermarks. Press here for more information.
@@ -227,6 +224,12 @@
                             <input class="form-check-input" type="checkbox" id="photostack-exif" checked disabled>
                             <label class="form-check-label" for="photostack-exif">Remove EXIF data</label>
                         </div>
+                    </div>
+                </div>
+                <!-- Credits -->
+                <div class="card">
+                    <div class="card-body" id="photostack-credits">
+                        Loading credits...
                     </div>
                 </div>
             </div>
