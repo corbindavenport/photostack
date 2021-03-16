@@ -26,47 +26,35 @@
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top d-print-none">
-        <a class="navbar-brand" href="index.html">PhotoStack</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">PhootStack</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-feedback-modal">Feedback</a>
-                </li>
-                <li class="nav-item photostack-android-hide">
-                    <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-donate-modal">Donate</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-keyboard-modal">Shortcuts</a>
-                </li>
-                <!--
-                <li class="nav-item">
-                    <a class="nav-link" href="#" data-toggle="modal" data-target="#photostack-settings-modal">Settings</a>
-                </li>
-                -->
-                <li class="nav-item">
-                    <a class="nav-link" href="https://github.com/photostack/photostack/wiki/API-Documentation" target="_blank">API</a>
-                </li>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#photostack-feedback-modal">Feedback</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link photostack-android-hide" href="#" data-bs-toggle="modal" data-bs-target="#photostack-donate-modal">Donate</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#photostack-keyboard-modal">Shortcuts</a>
+              </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-toggle="modal" data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
+            <form class="d-flex">
+                <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-bs-toggle="modal" data-bs-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
                     <span class="badge badge-light photostack-image-count">0</span>
                 </button>
+                <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
             </form>
-            <form class="form-inline my-2 my-lg-0">
-                <button class="btn btn-primary btn-block my-2 my-sm-0 photostack-clear-images-btn" type="button">Clear
-                </button>
-            </form>
-            <form class="form-inline my-2 my-lg-0">
-                <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
-            </form>
+          </div>
         </div>
-    </nav>
+      </nav>
     <!-- Main container -->
-    <div class="container-fluid d-print-none" style="margin-top: 90px">
+    <div class="container-fluid d-print-none">
         <div class="row">
             <!-- Preview container -->
             <div class="col-lg col-md-6 photostack-preview-container">
@@ -85,11 +73,11 @@
             <!-- Settings panel container -->
             <div class="col-lg-4 col-md-6">
                 <!-- Safari message -->
-                <div class="alert alert-warning photostack-safari-warning" data-toggle="modal" data-target="#photostack-safari-modal" style="display: none; cursor: pointer;">
+                <div class="alert alert-warning photostack-safari-warning" data-bs-toggle="modal" data-bs-target="#photostack-safari-modal" style="display: none; cursor: pointer;">
                     Safari may periodically delete PhotoStack's data, including saved watermarks. Press here for more information.
                 </div>
                 <!-- Privacy alert -->
-                <div class="alert alert-secondary alert-dismissible fade show photostack-privacy-warning" data-toggle="modal" data-target="#photostack-settings-modal" style="display: none;" role="alert">
+                <div class="alert alert-secondary alert-dismissible fade show photostack-privacy-warning" data-bs-toggle="modal" data-bs-target="#photostack-settings-modal" style="display: none;" role="alert">
                     <b>PhotoStack collects anonymous usage data.</b> Press here to manage your settings, or change them at any time from 'Settings' in the main navigation.
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -149,7 +137,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-secondary btn-block" data-toggle="modal" data-target="#photostack-watermark-manager-modal">Manage watermarks</button>
+                            <button class="btn btn-secondary btn-block" data-bs-toggle="modal" data-bs-target="#photostack-watermark-manager-modal">Manage watermarks</button>
                         </div>
                     </div>
                 </div>
@@ -232,7 +220,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-4">
-                    <button class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
+                    <button class="btn btn-primary btn-block" type="button" data-bs-toggle="modal" data-bs-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
                         <span class="badge badge-light photostack-image-count">0</span>
                     </button>
                 </div>
@@ -240,7 +228,7 @@
                     <button class="btn btn-primary btn-block photostack-clear-images-btn" type="button">Clear</button>
                 </div>
                 <div class="col-4">
-                    <button class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
+                    <button class="btn btn-primary btn-block" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
                 </div>
             </div>
         </div>

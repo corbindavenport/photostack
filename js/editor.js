@@ -44,7 +44,7 @@ function increaseImageCount(number) {
     document.querySelectorAll('.photostack-image-count').forEach(function (el) {
         el.textContent = globalFilesCount.toString()
     })
-    var exportBtns = document.querySelectorAll('*[data-target="#photostack-export-modal"]')
+    var exportBtns = document.querySelectorAll('*[data-bs-target="#photostack-export-modal"]')
     exportBtns.forEach(function (el) {
         if ((globalFilesCount > 0) && (el.disabled)) {
             el.disabled = false
@@ -501,7 +501,7 @@ function clearImportedImages() {
     document.querySelectorAll('.photostack-image-count').forEach(function (el) {
         el.textContent = '0'
     })
-    var exportBtns = document.querySelectorAll('*[data-target="#photostack-export-modal"]')
+    var exportBtns = document.querySelectorAll('*[data-bs-target="#photostack-export-modal"]')
     exportBtns.forEach(function (el) {
         el.disabled = true
     })

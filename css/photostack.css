@@ -2,6 +2,10 @@ nav, .photostack-mobile-toolbar {
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
 }
 
+body {
+    padding-top: 70px;
+}
+
 #photostack-watermark-preview, #photostack-editor-preview img, #photostack-watermark-editor-preview {
     max-width: 100%;
 }
@@ -42,7 +46,7 @@ nav, .photostack-mobile-toolbar {
 .photostack-preview-card {
     position: -webkit-sticky;
     position: sticky;
-    top: 90px;
+    top: 70px;
 }
 
 hr {
