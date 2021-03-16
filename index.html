@@ -48,6 +48,7 @@
                 <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-bs-toggle="modal" data-bs-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
                     <span class="badge badge-light photostack-image-count">0</span>
                 </button>
+                <button class="btn btn-primary btn-block my-2 my-sm-0 photostack-clear-images-btn" type="button">Clear</button>
                 <button class="btn btn-primary btn-block my-2 my-sm-0" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
             </form>
           </div>
@@ -256,9 +257,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Feedback</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>If you notice a bug in PhotoStack, or if you want a feature that isn't currently available, you can send feedback to the developers. The best way to submit feedback is by creating a GitHub issue, but if you don't have a GitHub account, you can also send an email.</p>
@@ -285,9 +284,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Donate</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>PhotoStack was developed entirely in my spare time, over the course of many hours. If you enjoy using PhotoStack, please consider donating with PayPal or Patreon. It would mean a lot!</p>
@@ -314,9 +311,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Keyboard shortcuts</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>PhotoStack offers keyboard shortcuts for common functions. These may not work <span class="photostack-android-hide">with all browsers</span><span class="photostack-android-show">on all devices</span>. Also, they will not work if any popups (like the watermark editor or this help menu) are open.</p>
@@ -358,30 +353,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-safari-modal-label">Important info for Safari</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>Safari 13.1+ on macOS, as well as Safari on iOS/iPadOS 13.4+, introduced a <a href="https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/" target="_blank">seven-day cap on all locally-stored data</a> by websites. This means that unless you open PhotoStack at least once a week, <b>your saved watermarks could be deleted</b>.</p>
                     <p>The only way to avoid losing your watermarks is to export them as files (from the watermark list), then re-import them after Safari wipes PhotoStack's data.</p>
                     <p>In addition, PhotoStack may not be able to download files (completed images, exported watermarks, etc.) when it is opened from the iOS home screen. To get around this, open <b>edit.photostack.app</b> in your browser instead.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Settings modal -->
-    <div class="modal fade" id="photostack-settings-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="photostack-settings-modal-label">Settings</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Coming soon!</p>
                 </div>
             </div>
         </div>
@@ -392,9 +369,7 @@
             <div class="modal-content photostack-import-modal-initial">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Import images</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>Select photos from your device or the web to get started. You can also drag and drop files into PhotoStack to import them.</p>
@@ -445,9 +420,7 @@
             <div class="modal-content photostack-export-modal-initial">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p style="text-align: center">
@@ -479,9 +452,7 @@
             <div class="modal-content photostack-export-modal-finished" style="display:none">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div id="photostack-legacy-download">
@@ -510,9 +481,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-watermark-manager-modal-title">Watermarks</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>Watermarks stored in your <span class="photostack-android-hide">browser</span><span class="photostack-android-show">device</span> are displayed here. You can transfer them to other devices or browsers by exporting the watermarks to a file and importing them on another device/browser.</p>
@@ -541,9 +510,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-watermark-editor-modal-title"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="padding-left: 0; padding-right: 0">
                     <div class="container-fluid">
