@@ -21,13 +21,16 @@ self.addEventListener("install", function (event) {
 // If any fetch fails, it will look for the request in the cache and serve it from there first
 self.addEventListener("fetch", function (event) {
   if (event.request.method !== "GET") return;
-
-  // Don't cache external libraries, imported URLs, or PhotoStack API requests
-  var match =
+  // Don't cache external libraries, included URLs imported URLs, or PhotoStack API requests
+  var blockedResources =
     event.request.url.includes('http://' + self.location.hostname) ||
     event.request.url.includes('https://' + self.location.hostname) ||
     event.request.url.includes('https://' + self.location.hostname + '/v1/?')
-  if (!match) return;
+  if (event.request.url.includes('jsdelivr.net')) {
+    // Do nothing
+  } else if (!blockedResources) {
+    console.log('Skipped cache for URL:', event.request.url)
+  } return;
 
   event.respondWith(
     fetch(event.request)

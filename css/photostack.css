@@ -4,6 +4,7 @@ nav, .photostack-mobile-toolbar {
 
 body {
     padding-top: 70px;
+    background-color: #222;
 }
 
 #photostack-watermark-preview, #photostack-editor-preview img, #photostack-watermark-editor-preview {
@@ -68,6 +69,17 @@ hr {
 
 #photostack-watermark-editor-modal .modal-dialog {
     max-width: 900px;
+}
+
+/* Custom colors */
+
+.bg-photostack {
+    background-color: #303030;
+    color: #FFF;
+}
+
+.bg-photostack .text-muted {
+    color: #adb5bd !important;
 }
 
 /* Styles for Android app */
