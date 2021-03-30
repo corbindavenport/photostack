@@ -1073,10 +1073,10 @@ function openWatermarkEditor(watermarkKey) {
         // Clear .btn-primary style from the currently-active anchor position
         var oldAnchor = watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary')
         oldAnchor.classList.remove('btn-primary')
-        oldAnchor.classList.add('btn-secondary')
+        oldAnchor.classList.add('btn-primary')
         // Add .btn-primary style to the correct value
         var newAnchor = watermarkEditor.querySelector('#photostack-watermark-pos-' + watermarkObj.anchorPosition)
-        newAnchor.classList.remove('btn-secondary')
+        newAnchor.classList.remove('btn-primary')
         newAnchor.classList.add('btn-primary')
         // Render preview image
         renderWatermarkPreviewCanvas()
@@ -1137,9 +1137,9 @@ watermarkEditor.querySelectorAll('.photostack-anchor-btn').forEach(function (but
         // Clear .btn-primary style from the currently-active button
         var previousButton = watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary')
         previousButton.classList.remove('btn-primary')
-        previousButton.classList.add('btn-secondary')
+        previousButton.classList.add('btn-primary')
         // Add .btn-primary style to the button that was just clicked
-        button.classList.remove('btn-secondary')
+        button.classList.remove('btn-primary')
         button.classList.add('btn-primary')
         renderWatermarkPreviewCanvas()
     })
@@ -1251,7 +1251,7 @@ async function refreshWatermarks() {
         listItem.appendChild(itemTitle)
         // Add button container to list
         var buttons = document.createElement('div')
-        buttons.classList.add('btn-group', 'btn-block')
+        buttons.classList.add('btn-group', 'w-100')
         buttons.setAttribute('role', 'group')
         listItem.appendChild(buttons)
         // Add edit button

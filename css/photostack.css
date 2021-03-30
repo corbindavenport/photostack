@@ -82,6 +82,22 @@ hr {
     color: #adb5bd !important;
 }
 
+.bg-photostack .btn-close {
+    filter: invert(100%);
+}
+
+.bg-photostack .list-group-item {
+    background-color: #303030;
+}
+
+.bg-photostack * {
+    border-color: #242424;
+}
+
+.bg-photostack .btn {
+    border-color: #242424;
+}
+
 /* Styles for Android app */
 
 .photostack-android-show, .photostack-android .photostack-android-hide {

@@ -46,16 +46,16 @@
               </li>
             </ul>
             <form class="d-flex">
-                <button class="btn btn-secondary btn-block me-2" type="button" data-bs-toggle="modal" data-bs-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false" aria-label="Import">
+                <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false" aria-label="Import">
                     <i class="bi bi-upload"></i>
                     Import
                     <span class="badge bg-dark photostack-image-count">0</span>
                 </button>
-                <button class="btn btn-secondary btn-block photostack-clear-images-btn me-2" type="button" aria-label="Clear">
+                <button class="btn btn-primary photostack-clear-images-btn me-2" type="button" aria-label="Clear">
                     <i class="bi bi-trash"></i>
                     Clear
                 </button>
-                <button class="btn btn-secondary btn-block" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled aria-label="Export">
+                <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled aria-label="Export">
                     <i class="bi bi-save"></i>
                     Export
                 </button>
@@ -96,19 +96,19 @@
                             <div class="input-group mb-3">
                                 <input type="number" class="form-control" placeholder="Image width (px)" aria-label="Enter the image width in pixels." id="photostack-image-width" autocomplete="off" enterkeyhint="done">
                                 <div class="input-group-append">
-                                    <button class="btn btn-secondary photostack-apply-btn" type="button">Apply</button>
+                                    <button class="btn btn-primary photostack-apply-btn" type="button">Apply</button>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-secondary btn-block" type="button" id="photostack-reset-image-width-button">Reset image size</button>
+                            <button class="btn btn-primary w-100" type="button" id="photostack-reset-image-width-button">Reset image size</button>
                         </div>
                         <div class="form-group">
                             <label for="photostack-resize-unsharpAmount">Sharpness</label>
                             <div class="input-group mb-3" style="margin-bottom: 0 !important">
                                 <input type="number" class="form-control" id="photostack-resize-unsharpAmount" autocomplete="off" value="50" min="1" max="100" enterkeyhint="done">
                                 <div class="input-group-append">
-                                    <button class="btn btn-secondary" type="button" id="photostack-sharpness-apply-btn">Apply</button>
+                                    <button class="btn btn-primary" type="button" id="photostack-sharpness-apply-btn">Apply</button>
                                 </div>
                             </div>
                             <small class="form-text text-muted">Choose a value from 1-100. Default is 50.</small>
@@ -140,7 +140,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-secondary btn-block" data-bs-toggle="modal" data-bs-target="#photostack-watermark-manager-modal">Manage watermarks</button>
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#photostack-watermark-manager-modal">Manage watermarks</button>
                         </div>
                     </div>
                 </div>
@@ -159,7 +159,7 @@
                         <div class="form-group">
                             <label for="photostack-border-color">Border color</label>
                             <div class="input-group mb-3" style="margin-bottom: 0 !important">
-                                <input type="color" class="btn btn-secondary form-control" id="photostack-border-color" autocomplete="off" value="#000000" enterkeyhint="done">
+                                <input type="color" class="btn btn-primary form-control" id="photostack-border-color" autocomplete="off" value="#000000" enterkeyhint="done">
                             </div>
                         </div>
                     </div>
@@ -188,7 +188,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="photostack-file-name" value="photostack-file-keep-name" id="photostack-file-keep-name">
                                 <label class="form-check-label" for="photostack-file-keep-name">
-                                    Keep original file names <span class="badge badge-secondary">New</span>
+                                    Keep original file names
                                 </label>
                             </div>
                             <div class="form-check">
@@ -223,15 +223,15 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-4">
-                    <button class="btn btn-primary btn-block" type="button" data-bs-toggle="modal" data-bs-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
+                    <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
                         <span class="badge badge-light photostack-image-count">0</span>
                     </button>
                 </div>
                 <div class="col-4">
-                    <button class="btn btn-primary btn-block photostack-clear-images-btn" type="button">Clear</button>
+                    <button class="btn btn-primary w-100 photostack-clear-images-btn" type="button">Clear</button>
                 </div>
                 <div class="col-4">
-                    <button class="btn btn-primary btn-block" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
+                    <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
                 </div>
             </div>
         </div>
@@ -247,7 +247,7 @@
                     <p>Welcome to PhotoStack, the free and open-source batch photo editor.</p>
                     <p>To get started, click the Import button at the <span class="d-lg-none">bottom</span><span class="d-none d-lg-inline">top-right</span> to import some images. When you're ready to save your work, click the Export button.</p>
                     <p>
-                        <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" aria-label="Close">Let's go!</button>
+                        <button type="button" class="btn btn-primary w-100" data-dismiss="modal" aria-label="Close">Let's go!</button>
                     </p>
                 </div>
             </div>
@@ -256,7 +256,7 @@
     <!-- Feedback modal -->
     <div class="modal fade" id="photostack-feedback-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content bg-photostack">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Feedback</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -267,12 +267,12 @@
                     <div class="row">
                         <div class="col-12">
                             <p>
-                                <a class="btn btn-primary btn-block" href="https://github.com/photostack/photostack/issues/new" target="_blank" role="button">Create GitHub issue</a>
+                                <a class="btn btn-primary w-100" href="https://github.com/photostack/photostack/issues/new" target="_blank" role="button">Create GitHub issue</a>
                             </p>
                         </div>
                         <div class="col-12">
                             <p>
-                                <a class="btn btn-primary btn-block" href="mailto: photostack@fire.fundersclub.com ?Subject=PhotoStack%20feedback&Body=Browser%20name%20and%20version%3A%20%0A%0AFeedback%3A%20" target="_blank" role="button">Send email</a>
+                                <a class="btn btn-primary w-100" href="mailto: photostack@fire.fundersclub.com ?Subject=PhotoStack%20feedback&Body=Browser%20name%20and%20version%3A%20%0A%0AFeedback%3A%20" target="_blank" role="button">Send email</a>
                             </p>
                         </div>
                     </div>
@@ -283,7 +283,7 @@
     <!-- Donate modal -->
     <div class="modal fade" id="photostack-donate-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content bg-photostack">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Donate</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -293,12 +293,12 @@
                     <div class="row">
                         <div class="col-12">
                             <p>
-                                <a class="btn btn-success btn-block" href="https://www.patreon.com/corbindavenport" target="_blank" role="button">Donate via Patreon</a>
+                                <a class="btn btn-success w-100" href="https://www.patreon.com/corbindavenport" target="_blank" role="button">Donate via Patreon</a>
                             </p>
                         </div>
                         <div class="col-12">
                             <p>
-                                <a class="btn btn-success btn-block" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank" role="button">Donate via PayPal</a>
+                                <a class="btn btn-success w-100" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank" role="button">Donate via PayPal</a>
                             </p>
                         </div>
                     </div>
@@ -310,7 +310,7 @@
     <!-- Keyboard shortcuts modal -->
     <div class="modal fade" id="photostack-keyboard-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content bg-photostack">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Keyboard shortcuts</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -352,7 +352,7 @@
     <!-- Safari storage help modal -->
     <div class="modal fade" id="photostack-safari-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-            <div class="modal-content">
+            <div class="modal-content bg-photostack">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-safari-modal-label">Important info for Safari</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -368,7 +368,7 @@
     <!-- Import modal -->
     <div class="modal fade" id="photostack-import-modal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content photostack-import-modal-initial">
+            <div class="modal-content bg-photostack photostack-import-modal-initial">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Import images</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -376,11 +376,11 @@
                 <div class="modal-body">
                     <p>Select photos from your device or the web to get started. You can also drag and drop files into PhotoStack to import them.</p>
                     <p>
-                        <button class="btn btn-primary btn-block photostack-import-file-btn" type="button">Import local files</button>
+                        <button class="btn btn-primary w-100 photostack-import-file-btn" type="button">Import local files</button>
                     </p>
                     <p style="text-align: center" class="small">Supported file types: Images, ZIP, MS Office 2007+</p>
                     <p>
-                        <button class="btn btn-primary btn-block photostack-import-dropbox-btn" type="button">Import images from Dropbox</button>
+                        <button class="btn btn-primary w-100 photostack-import-dropbox-btn" type="button">Import images from Dropbox</button>
                     </p>
                     <p>
                     <div class="input-group mb-3">
@@ -392,13 +392,13 @@
                     </p>
                 </div>
             </div>
-            <div class="modal-content photostack-import-modal-drag-drop" style="display:none">
+            <div class="modal-content bg-photostack photostack-import-modal-drag-drop" style="display:none">
                 <div class="modal-body">
                     <p style="text-align: center">Drop your files into PhotoStack to import them.</p>
                     <p style="text-align: center" class="small">Supported file types: Images, ZIP, MS Office 2007+</p>
                 </div>
             </div>
-            <div class="modal-content photostack-import-modal-loading" style="display:none">
+            <div class="modal-content bg-photostack photostack-import-modal-loading" style="display:none">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Import images</h5>
                 </div>
@@ -419,7 +419,7 @@
     <div class="modal fade" id="photostack-export-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <!-- Initial UI -->
-            <div class="modal-content photostack-export-modal-initial">
+            <div class="modal-content bg-photostack photostack-export-modal-initial">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -429,12 +429,12 @@
                         <b>You are about to export <span class="photostack-image-count">0</span> images.</b>
                     </p>
                     <p>
-                        <button type="button" id="photostack-start-export-btn" class="btn btn-block btn-primary">Start export</button>
+                        <button type="button" id="photostack-start-export-btn" class="btn w-100 btn-primary">Start export</button>
                     </p>
                 </div>
             </div>
             <!-- Export in progress modal -->
-            <div class="modal-content photostack-export-modal-loading" style="display:none">
+            <div class="modal-content bg-photostack photostack-export-modal-loading" style="display:none">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
                 </div>
@@ -451,7 +451,7 @@
                 </div>
             </div>
             <!-- Completed export modal -->
-            <div class="modal-content photostack-export-modal-finished" style="display:none">
+            <div class="modal-content bg-photostack photostack-export-modal-finished" style="display:none">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -459,18 +459,18 @@
                 <div class="modal-body">
                     <div id="photostack-legacy-download">
                         <p>
-                            <button type="button" id="photostack-export-separate-button" class="btn btn-block btn-success">Save images to Downloads</button>
+                            <button type="button" id="photostack-export-separate-button" class="btn w-100 btn-success">Save images to Downloads</button>
                         </p>
                         <p class="text-muted photostack-android-hide" style="text-align:center">Saving images to Downloads doesn't work correctly in some browsers. If you experience problems, use one of the other options.</p>
                     </div>
                     <p>
-                        <button type="button" id="photostack-export-filesystem-api-button" class="btn btn-block btn-success">Save images to device <span class="badge badge-secondary">New</span></button>
+                        <button type="button" id="photostack-export-filesystem-api-button" class="btn w-100 btn-success">Save images to device <span class="badge badge-secondary">New</span></button>
                     </p>
                     <p>
-                        <button type="button" id="photostack-export-web-share-button" class="btn btn-block btn-success">Share images to installed application</button>
+                        <button type="button" id="photostack-export-web-share-button" class="btn w-100 btn-success">Share images to installed application</button>
                     </p>
                     <p>
-                        <button type="button" id="photostack-export-zip-button" class="btn btn-block btn-success">Save images as ZIP</button>
+                        <button type="button" id="photostack-export-zip-button" class="btn w-100 btn-success">Save images as ZIP</button>
                     </p>
                     <p class="photostack-android-hide" style="text-align: center">If you found PhotoStack useful, please donate via <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">PayPal</a> or <a href="https://www.patreon.com/corbindavenport" target="_blank">Patreon</a> to help support the project!</p>
                 </div>
@@ -480,7 +480,7 @@
     <!-- Watermark manager modal -->
     <div class="modal fade" id="photostack-watermark-manager-modal" tabindex="-1" role="dialog" aria-labelledby="#photostack-watermark-manager-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content bg-photostack">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-watermark-manager-modal-title">Watermarks</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -490,10 +490,10 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-6" style="padding-left: 0">
-                                <button type="button" id="photostack-watermark-new-btn" class="btn btn-primary btn-block">New watermark</button>
+                                <button type="button" id="photostack-watermark-new-btn" class="btn btn-primary w-100">New watermark</button>
                             </div>
                             <div class="col-6" style="padding-right: 0">
-                                <button type="button" id="photostack-watermark-import-btn" class="btn btn-primary btn-block">Import from file</button>
+                                <button type="button" id="photostack-watermark-import-btn" class="btn btn-primary w-100">Import from file</button>
                             </div>
                         </div>
                     </div>
@@ -509,7 +509,7 @@
     <div class="modal fade" id="photostack-watermark-editor-modal" tabindex="-1" role="dialog" aria-labelledby="#photostack-watermark-editor-modal-title" aria-hidden="true">
         <input type="file" id="photostack-watermark-import-image" accept="image/jpeg,image/png,image/gif">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content bg-photostack">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-watermark-editor-modal-title"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -525,41 +525,41 @@
                             <div class="col-12 col-sm-6">
                                 <!-- Image import -->
                                 <p>
-                                    <button class="btn btn-secondary btn-block" type="button" id="photostack-watermark-editor-image-btn">Select image</button>
+                                    <button class="btn btn-primary w-100" type="button" id="photostack-watermark-editor-image-btn">Select image</button>
                                 </p>
                                 <!-- Anchor position -->
                                 <h5>Anchor position</h5>
                                 <div class="row mb-3">
                                     <div class="col-4">
-                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-1">1</button>
+                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-1">1</button>
                                     </div>
                                     <div class="col-4">
-                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-2">2</button>
+                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-2">2</button>
                                     </div>
                                     <div class="col-4">
-                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-3">3</button>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-4">
-                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-4">4</button>
-                                    </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn btn-block btn-primary photostack-anchor-btn" id="photostack-watermark-pos-5">5</button>
-                                    </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-6">6</button>
+                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-3">3</button>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-4">
-                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-7">7</button>
+                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-4">4</button>
                                     </div>
                                     <div class="col-4">
-                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-8">8</button>
+                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-5">5</button>
                                     </div>
                                     <div class="col-4">
-                                        <button type="button" class="btn btn-block btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-9">9</button>
+                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-6">6</button>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-4">
+                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-7">7</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-8">8</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-9">9</button>
                                     </div>
                                 </div>
                                 <!-- Effects -->
