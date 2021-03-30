@@ -61,7 +61,7 @@ function resizeCanvas(oldCanvas, width, height, globalAlpha = 1.0) {
         newCanvas.height = height
         // Get settings
         const options = {
-            unsharpAmount: parseInt(document.getElementById('photostack-resize-unsharpAmount').value),
+            unsharp-amount: parseInt(document.getElementById('photostack-resize-unsharp-amount').value),
             unsharpRadius: 0.5,
             unsharpThreshold: 2,
             alpha: true
@@ -808,12 +808,6 @@ SettingsStore.getItem('privacy-popup').then(function (value) {
 */
 
 // Append event listeners to buttons and other elements
-
-document.querySelectorAll('.photostack-apply-btn').forEach(function (el) {
-    el.addEventListener('click', async function () {
-        await renderPreviewCanvas()
-    })
-})
 
 document.querySelectorAll('.photostack-clear-images-btn').forEach(function (el) {
     el.addEventListener('click', function () {

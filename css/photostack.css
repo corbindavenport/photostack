@@ -54,10 +54,6 @@ hr {
     border-color: #444;
 }
 
-.card .form-group:last-of-type {
-    margin-bottom: 0;
-}
-
 #photostack-watermark-manager-list {
     margin-left: -1rem;
     margin-right: -1rem;
@@ -78,7 +74,7 @@ hr {
     color: #FFF;
 }
 
-.bg-photostack .text-muted {
+.bg-photostack .text-muted,.bg-photostack .form-text {
     color: #adb5bd !important;
 }
 
