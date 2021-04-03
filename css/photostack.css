@@ -19,18 +19,6 @@ body {
     display: none;
 }
 
-.card {
-    margin-bottom: 15px;
-}
-
-.btn-dropbox {
-    background: #0061fe;
-}
-
-.btn-dropbox:hover {
-    background: #004cc7;
-}
-
 .toast {
     position: fixed;
     bottom: 20px;
@@ -121,15 +109,7 @@ hr {
 @media (min-width: 992px) {
 
     .photostack-preview-card img {
-        max-height: calc(100vh - 160px);
-    }
-
-    .navbar .form-inline {
-        margin-right: 10px;
-    }
-
-    .navbar .form-inline:last-of-type {
-        margin-right: 0;
+        max-height: calc(100vh - 8rem);
     }
 
 }

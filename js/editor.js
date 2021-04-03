@@ -61,7 +61,7 @@ function resizeCanvas(oldCanvas, width, height, globalAlpha = 1.0) {
         newCanvas.height = height
         // Get settings
         const options = {
-            unsharp-amount: parseInt(document.getElementById('photostack-resize-unsharp-amount').value),
+            unsharpAmount: parseInt(document.getElementById('photostack-resize-unsharp-amount').value),
             unsharpRadius: 0.5,
             unsharpThreshold: 2,
             alpha: true
@@ -106,7 +106,8 @@ function applyCanvasSettings(canvas, watermarkObject = null, previewMode = false
             canvas = await resizeCanvas(canvas, width, height)
         }
         // Apply border
-        if (document.getElementById('photostack-border-width').value != '0') {
+        if (parseInt(document.getElementById('photostack-border-width').value) > 0) {
+            console.log(document.getElementById('photostack-border-width').value)
             var borderSize = document.getElementById('photostack-border-width').value
             var borderColor = document.getElementById('photostack-border-color').value
             // Top border
