@@ -62,7 +62,7 @@ hr {
     color: #FFF;
 }
 
-.bg-photostack .text-muted,.bg-photostack .form-text {
+.bg-photostack .text-muted,.bg-photostack .form-text, table {
     color: #adb5bd !important;
 }
 

@@ -245,17 +245,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>If you notice a bug in PhotoStack, or if you want a feature that isn't currently available, you can send feedback to the developers. The best way to submit feedback is by creating a GitHub issue, but if you don't have a GitHub account, you can also send an email.</p>
-                    <p>When you send an email, a GitHub issue is created automatically on your behalf with your email address publicly visible. You can check on the status of email feedback <a href="https://github.com/photostack/photostack/issues?utf8=%E2%9C%93&q=is%3Aissue+author%3Afire-bot+" target="_blank">here</a>.</p>
+                    <p>If you notice a bug in PhotoStack, or if you want a feature that isn't currently available, you can send feedback to the developers. The best way to submit feedback is by creating a GitHub issue.</p>
                     <div class="row">
                         <div class="col-12">
                             <p>
                                 <a class="btn btn-primary w-100" href="https://github.com/photostack/photostack/issues/new" target="_blank" role="button">Create GitHub issue</a>
-                            </p>
-                        </div>
-                        <div class="col-12">
-                            <p>
-                                <a class="btn btn-primary w-100" href="mailto: photostack@fire.fundersclub.com ?Subject=PhotoStack%20feedback&Body=Browser%20name%20and%20version%3A%20%0A%0AFeedback%3A%20" target="_blank" role="button">Send email</a>
                             </p>
                         </div>
                     </div>
@@ -507,72 +501,66 @@
                             <!-- Watermark settings row -->
                             <div class="col-12 col-sm-6">
                                 <!-- Image import -->
-                                <p>
+                                <div class="mb-3">
                                     <button class="btn btn-primary w-100" type="button" id="photostack-watermark-editor-image-btn">Select image</button>
-                                </p>
+                                </div>
                                 <!-- Anchor position -->
-                                <h5>Anchor position</h5>
+                                <div class="form-label mb-3">Anchor position</div>
                                 <div class="row mb-3">
                                     <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-1">1</button>
+                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-1">1</button>
                                     </div>
                                     <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-2">2</button>
+                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-2">2</button>
                                     </div>
                                     <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-3">3</button>
+                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-3">3</button>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-4">4</button>
+                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-4">4</button>
                                     </div>
                                     <div class="col-4">
                                         <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-5">5</button>
                                     </div>
                                     <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-6">6</button>
+                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-6">6</button>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-7">7</button>
+                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-7">7</button>
                                     </div>
                                     <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-8">8</button>
+                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-8">8</button>
                                     </div>
                                     <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-9">9</button>
+                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-9">9</button>
                                     </div>
                                 </div>
                                 <!-- Effects -->
-                                <h5>Effects</h5>
+                                <div class="form-label mb-3">Effects</div>
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" aria-describedby="photostack-watermark-size">Size</span>
-                                    </div>
+                                    <span class="input-group-text">Size</span>
                                     <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-size" value="30" autocomplete="off" enterkeyhint="done">
                                 </div>
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" aria-describedby="photostack-watermark-opacity">Opacity</span>
-                                    </div>
+                                    <span class="input-group-text">Opacity</span>
                                     <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-opacity" value="50" autocomplete="off" enterkeyhint="done">
                                 </div>
-                                <div class="form-group">
-                                    <label for="photostack-watermark-horizontal-inset">Horizontal inset</label>
-                                    <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-horizontal-inset" min="-10" max="10" value="0" enterkeyhint="done">
-                                </div>
-                                <div class="form-group">
-                                    <label for="photostack-watermark-vertical-inset">Vertical inset</label>
-                                    <input type="range" class="form-control-range" autocomplete="off" id="photostack-watermark-vertical-inset" min="-10" max="10" value="0" enterkeyhint="done">
+                                <div class="mb-3">
+                                    <label for="photostack-watermark-horizontal-inset" class="form-label">Horizontal inset</label>
+                                    <input type="range" class="form-range" autocomplete="off" id="photostack-watermark-horizontal-inset" min="-10" max="10" value="0" enterkeyhint="done">
+                                    <label for="photostack-watermark-vertical-inset" class="form-label">Vertical inset</label>
+                                    <input type="range" class="form-range" autocomplete="off" id="photostack-watermark-vertical-inset" min="-10" max="10" value="0" enterkeyhint="done">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Discard</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Discard changes</button>
                     <button type="button" class="btn btn-primary" id="photostack-watermark-editor-save-btn">Save</button>
                 </div>
             </div>

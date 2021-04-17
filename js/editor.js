@@ -270,6 +270,12 @@ function renderPreviewCanvas() {
 
 // Unified importer for local files (images and ZIPs)
 function importFiles(files, element = null) {
+    try {
+        var importModal = bootstrap.Modal.getInstance(document.getElementById('photostack-import-modal'))
+    } catch {
+        var importModal = new bootstrap.Modal(document.getElementById('photostack-import-modal'))
+    }
+    importModal.show()
     // Define file types
     var containerFiles = [
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
@@ -412,7 +418,7 @@ function importFiles(files, element = null) {
         // Generate preview if needed
         await renderPreviewCanvas()
         // Close import modal and reset <input> if needed
-        $('#photostack-import-modal').modal('hide')
+        importModal.hide()
         if (element) {
             element.value = ''
         }
@@ -1068,10 +1074,10 @@ function openWatermarkEditor(watermarkKey) {
         // Clear .btn-primary style from the currently-active anchor position
         var oldAnchor = watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary')
         oldAnchor.classList.remove('btn-primary')
-        oldAnchor.classList.add('btn-primary')
+        oldAnchor.classList.add('btn-secondary')
         // Add .btn-primary style to the correct value
         var newAnchor = watermarkEditor.querySelector('#photostack-watermark-pos-' + watermarkObj.anchorPosition)
-        newAnchor.classList.remove('btn-primary')
+        newAnchor.classList.remove('btn-secondary')
         newAnchor.classList.add('btn-primary')
         // Render preview image
         renderWatermarkPreviewCanvas()
@@ -1132,9 +1138,9 @@ watermarkEditor.querySelectorAll('.photostack-anchor-btn').forEach(function (but
         // Clear .btn-primary style from the currently-active button
         var previousButton = watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary')
         previousButton.classList.remove('btn-primary')
-        previousButton.classList.add('btn-primary')
+        previousButton.classList.add('btn-secondary')
         // Add .btn-primary style to the button that was just clicked
-        button.classList.remove('btn-primary')
+        button.classList.remove('btn-secondary')
         button.classList.add('btn-primary')
         renderWatermarkPreviewCanvas()
     })
