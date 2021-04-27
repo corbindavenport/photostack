@@ -960,34 +960,6 @@ if (currentUrl.searchParams.get('open_watermarks')) {
     $('#photostack-import-modal').modal('show')
 }
 
-// API support
-// https://github.com/photostack/photostack/wiki/API-Documentation
-if (currentUrl.searchParams.get('import')) {
-    ga('send', {
-        hitType: 'event',
-        eventCategory: 'API',
-        eventAction: 'Multi image import'
-    })
-    // Create array of URLs to import
-    var imageArray = currentUrl.searchParams.get('import').split(',')
-    // Filter out empty items
-    imageArray = imageArray.filter(Boolean)
-    // Import the images
-    imageArray.forEach(function (url) {
-        importWebImage(decodeURIComponent(url))
-    })
-} else if (currentUrl.searchParams.get('import_single')) {
-    ga('send', {
-        hitType: 'event',
-        eventCategory: 'API',
-        eventAction: 'Single image import'
-    })
-    // Get URL of image
-    var url = currentUrl.searchParams.get('import_single')
-    // Import the image
-    importWebImage(url)
-}
-
 /*
  
     WATERMARKS
