@@ -415,7 +415,9 @@ function importFiles(files, element = null) {
         // Generate preview if needed
         await renderPreviewCanvas()
         // Hide import toast and reset <input> if needed
-        importToast.hide()
+        setTimeout(function() {
+            importToast.hide()
+        },1000)
         if (element) {
             element.value = ''
         }
@@ -874,19 +876,20 @@ document.getElementById('photostack-watermark-file-import').addEventListener('ch
 
 // Drag and drop file upload
 
+const dragModal = new bootstrap.Modal(document.getElementById('photostack-drag-modal'))
+
 document.body.addEventListener('dragenter', function (e) {
     console.log('Drag enter detected')
-    document.querySelector('.photostack-import-modal-initial').style.display = 'none'
-    document.querySelector('.photostack-import-modal-drag-drop').style.display = 'block'
-    $('#photostack-import-modal').modal('show')
+    dragModal.show()
 })
 
 document.body.addEventListener('dragleave', function (e) {
     console.log('Drag leave detected')
-    $('#photostack-import-modal').modal('hide')
+    dragModal.hide()
 })
 
 document.body.addEventListener('drop', function (e) {
+    dragModal.hide()
     var files = e.dataTransfer.files
     importFiles(files)
 })
