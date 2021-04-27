@@ -19,19 +19,6 @@ body {
     display: none;
 }
 
-.toast {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    color: #000;
-    z-index: 100;
-    display: none;
-}
-
-.toast .close {
-    color: #000;
-}
-
 .photostack-preview-card {
     position: -webkit-sticky;
     position: sticky;

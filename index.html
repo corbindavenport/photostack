@@ -345,7 +345,7 @@
     <!-- Import modal -->
     <div class="modal fade" id="photostack-import-modal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content bg-photostack photostack-import-modal-initial">
+            <div class="modal-content bg-photostack">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Import images</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -353,38 +353,17 @@
                 <div class="modal-body">
                     <p>Select photos from your device or the web to get started. You can also drag and drop files into PhotoStack to import them.</p>
                     <p>
-                        <button class="btn btn-primary w-100 photostack-import-file-btn" type="button">Import local files</button>
+                        <button class="btn btn-primary w-100 photostack-import-file-btn" type="button" data-bs-dismiss="modal">Import local files</button>
                     </p>
                     <p style="text-align: center" class="small">Supported file types: Images, ZIP, MS Office 2007+</p>
                     <p>
-                        <button class="btn btn-primary w-100 photostack-import-dropbox-btn" type="button">Import images from Dropbox</button>
+                        <button class="btn btn-primary w-100 photostack-import-dropbox-btn" type="button" data-bs-dismiss="modal">Import images from Dropbox</button>
                     </p>
                     <p>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Enter image URL" aria-label="Enter image URL" aria-describedby="photostack-import-url" id="photostack-import-url" autocomplete="off" enterkeyhint="done">
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="button" id="photostack-import-url-button">Import</button>
-                        </div>
-                    </div>
-                    </p>
-                </div>
-            </div>
-            <div class="modal-content bg-photostack photostack-import-modal-drag-drop" style="display:none">
-                <div class="modal-body">
-                    <p style="text-align: center">Drop your files into PhotoStack to import them.</p>
-                    <p style="text-align: center" class="small">Supported file types: Images, ZIP, MS Office 2007+</p>
-                </div>
-            </div>
-            <div class="modal-content bg-photostack photostack-import-modal-loading" style="display:none">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="photostack-export-modal-label">Import images</h5>
-                </div>
-                <div class="modal-body">
-                    <p>PhotoStack is now processing the files you selected. This may take a few seconds.</p>
-                    <p>
-                    <div class="d-flex justify-content-center export-spinner">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
+                            <button class="btn btn-primary" type="button" id="photostack-import-url-button" data-bs-dismiss="modal">Import</button>
                         </div>
                     </div>
                     </p>
@@ -566,16 +545,28 @@
             </div>
         </div>
     </div>
-    <!-- Error toast -->
-    <div id="photostack-error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="8000">
-        <div class="toast-header">
-            <strong class="mr-auto">Error</strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+    <!-- Import toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <!-- Import toast -->
+        <div id="photostack-import-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body">
+                <div class="d-flex align-items-center">
+                    <strong>Importing photos...</strong>
+                    <div class="spinner-border spinner-border-sm ms-auto" role="status" aria-hidden="true"></div>
+                  </div>
+            </div>
         </div>
-        <div class="toast-body">
-            There was an error, please try that again in a few seconds or reload PhotoStack.
+    </div>
+    <!-- Error toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <!-- Import toast -->
+        <div id="photostack-error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Error :(</strong>
+            </div>
+            <div class="toast-body">
+                There was an error, please try that again in a few seconds or reload PhotoStack.
+            </div>
         </div>
     </div>
     <!-- Print UI -->

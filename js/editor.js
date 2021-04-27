@@ -22,7 +22,8 @@ window.onbeforeunload = function () {
 
 // Show errors in UI
 window.onerror = function () {
-    $('#photostack-error-toast').toast('show')
+    var errorToast = new bootstrap.Toast(document.getElementById('photostack-error-toast'))
+    errorToast.show()
 }
 
 // Google Analytics
@@ -270,12 +271,12 @@ function renderPreviewCanvas() {
 
 // Unified importer for local files (images and ZIPs)
 function importFiles(files, element = null) {
-    try {
-        var importModal = bootstrap.Modal.getInstance(document.getElementById('photostack-import-modal'))
-    } catch {
-        var importModal = new bootstrap.Modal(document.getElementById('photostack-import-modal'))
-    }
-    importModal.show()
+    // Initialize import toast
+    var importToast = new bootstrap.Toast(document.getElementById('photostack-import-toast'), {
+        'autohide': false
+    })
+    // Show import toast
+    importToast.show()
     // Define file types
     var containerFiles = [
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
@@ -299,10 +300,6 @@ function importFiles(files, element = null) {
     ]
     // Get files
     console.log('Number of files selected: ' + files.length)
-    // Switch modal content to progress indicator
-    document.querySelector('.photostack-import-modal-initial').style.display = 'none'
-    document.querySelector('.photostack-import-modal-drag-drop').style.display = 'none'
-    document.querySelector('.photostack-import-modal-loading').style.display = 'block'
     // Process files
     var importPromises = $.map(files, function (file) {
         return new Promise(function (resolve) {
@@ -320,7 +317,7 @@ function importFiles(files, element = null) {
                                 file.name.endsWith('.jpeg') ||
                                 file.name.endsWith('.bmp') ||
                                 (Modernizr.webp && file.name.endsWith('.webp')) ||
-                                (document.getElementsByTagName('html')[0].classList.includes('avif') && file.name.endsWith('.avif'))
+                                (document.getElementsByTagName('html')[0].classList.contains('avif') && file.name.endsWith('.avif'))
                             )
                             if ((supportedImages) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
                                 // Add images to originals container
@@ -417,8 +414,8 @@ function importFiles(files, element = null) {
         })
         // Generate preview if needed
         await renderPreviewCanvas()
-        // Close import modal and reset <input> if needed
-        importModal.hide()
+        // Hide import toast and reset <input> if needed
+        importToast.hide()
         if (element) {
             element.value = ''
         }
@@ -427,6 +424,12 @@ function importFiles(files, element = null) {
 
 // Add image from URL
 function importWebImage(url) {
+    // Initialize import toast
+    var importToast = new bootstrap.Toast(document.getElementById('photostack-import-toast'), {
+        'autohide': false
+    })
+    // Show import toast
+    importToast.show()
     // Get image
     function addImageToCanvas(url) {
         // Create image element
@@ -452,6 +455,8 @@ function importWebImage(url) {
             increaseImageCount(1)
             // Generate preview
             await renderPreviewCanvas()
+            // Hide toast
+            importToast.hide()
         }
         image.onerror = function () {
             if (!url.includes('https://cors-anywhere.herokuapp.com/')) {
@@ -459,6 +464,8 @@ function importWebImage(url) {
                 addImageToCanvas('https://cors-anywhere.herokuapp.com/' + url)
             } else {
                 alert('Could not import URL.')
+                // Hide toast
+                importToast.hide()
             }
         }
     }
@@ -734,13 +741,6 @@ $('#photostack-export-modal').on('hidden.bs.modal', function (e) {
     }
 })
 
-// Reset import modal content when the close button is clicked
-$('#photostack-import-modal').on('hidden.bs.modal', function (e) {
-    document.querySelector('.photostack-import-modal-loading').style.display = 'none'
-    document.querySelector('.photostack-import-modal-drag-drop').style.display = 'none'
-    document.querySelector('.photostack-import-modal-initial').style.display = 'block'
-})
-
 // Remove image formats from Export card that aren't supported
 if (!Modernizr.todataurljpeg) {
     var option = document.querySelector('#photostack-file-format option[value="image/jpeg"]')
@@ -799,20 +799,6 @@ document.querySelectorAll('input[name="photostack-file-name"]').forEach(function
         }
     })
 })
-
-// Privacy popup
-/*
-SettingsStore.getItem('privacy-popup').then(function (value) {
-    // Show popup if it has never been closed
-    if (!value) {
-        document.querySelector('.photostack-privacy-warning').style.display = 'block'
-        // Hide popup after alert is closed
-        $('.photostack-privacy-warning').on('closed.bs.alert', function () {
-            SettingsStore.setItem('privacy-popup', 'true')
-        })
-    }
-})
-*/
 
 // Append event listeners to buttons and other elements
 
