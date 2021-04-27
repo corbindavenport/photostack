@@ -117,8 +117,8 @@ hr {
 
     /* Don't allow toasts to cover floating toolbar */
 
-    .toast {
-        bottom: 80px;
+    .toast-container {
+        bottom: 65px !important;
     }
 
     /* Fix bottom of container being cut off by mobile toolbar */
@@ -144,14 +144,12 @@ hr {
         padding-right: 5px;
     }
 
-    .toast {
-        left: 0px;
-        right: 0px;
-        bottom: 58px;
-        max-width: none;
-        border: 0;
-        margin: 0 !important;
-        border-radius: 0;
+    .toast-container {
+        padding: 0 5px !important;
+    }
+
+    .toast-container {
+        width: 100%;
     }
 
 }
