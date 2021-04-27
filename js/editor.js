@@ -415,9 +415,9 @@ function importFiles(files, element = null) {
         // Generate preview if needed
         await renderPreviewCanvas()
         // Hide import toast and reset <input> if needed
-        setTimeout(function() {
+        setTimeout(function () {
             importToast.hide()
-        },1000)
+        }, 1000)
         if (element) {
             element.value = ''
         }
@@ -461,19 +461,14 @@ function importWebImage(url) {
             importToast.hide()
         }
         image.onerror = function () {
-            if (!url.includes('https://cors-anywhere.herokuapp.com/')) {
-                console.log('Error loading image, trying CORS Anywhere...')
-                addImageToCanvas('https://cors-anywhere.herokuapp.com/' + url)
-            } else {
-                alert('Could not import URL.')
-                // Hide toast
+            alert('Could not import image: ' + url)
+            // Hide toast
+            setTimeout(function () {
                 importToast.hide()
-            }
+            }, 1000)
         }
     }
     addImageToCanvas(url)
-    // Close import modal if it's still open
-    $('#photostack-import-modal').modal('hide')
 }
 
 // Add image from Dropbox
@@ -485,12 +480,6 @@ function importDropboxImage() {
             files.forEach(function (file) {
                 importWebImage(file.link)
             })
-            // Close import modal if it's still open
-            $('#photostack-import-modal').modal('hide')
-        },
-        cancel: function () {
-            // Close import modal if it's still open
-            $('#photostack-import-modal').modal('hide')
         },
         linkType: "direct",
         multiselect: true,
@@ -823,15 +812,6 @@ document.querySelectorAll('.photostack-import-file-btn').forEach(function (el) {
 
 document.getElementById('photostack-import-file').addEventListener('change', function () {
     importFiles(this.files, this)
-})
-
-document.getElementById('photostack-import-url-button').addEventListener('click', function () {
-    ga('send', {
-        hitType: 'event',
-        eventCategory: 'Import',
-        eventAction: 'Import from URL'
-    })
-    importWebImage(document.getElementById('photostack-import-url').value.trim())
 })
 
 document.querySelector('.photostack-import-dropbox-btn').addEventListener('click', function () {
