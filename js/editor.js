@@ -660,9 +660,6 @@ function asyncExport() {
             } else {
                 // Disable the native app share button if the API isn't available
                 document.getElementById('photostack-export-web-share-button').setAttribute('disabled', 'true')
-                $('#photostack-export-web-share-button').tooltip({
-                    title: 'Your browser or platform does not support this feature.',
-                })
             }
             // Download files separately
             document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
