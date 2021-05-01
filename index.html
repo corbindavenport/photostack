@@ -89,14 +89,14 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <label for="photostack-image-width" class="form-label">Maximum image width (pixels)</label>
-                            <input type="number" class="form-control" id="photostack-image-width" autocomplete="off" enterkeyhint="done" placeholder="500">
+                            <input type="number" class="form-control photostack-preview-update" id="photostack-image-width" autocomplete="off" enterkeyhint="done" placeholder="500">
                         </div>
                         <div class="mb-3">
                             <button class="btn btn-primary w-100" type="button" id="photostack-reset-image-width-button">Reset image size</button>
                         </div>
                         <div class="mb-0">
                             <label for="photostack-resize-unsharp-amount" class="form-label">Sharpness</label>
-                            <input type="number" class="form-control" id="photostack-resize-unsharp-amount" autocomplete="off" value="50" placeholder="50" min="1" max="100" enterkeyhint="done">
+                            <input type="number" class="form-control photostack-preview-update" id="photostack-resize-unsharp-amount" autocomplete="off" value="50" placeholder="50" min="1" max="100" enterkeyhint="done">
                             <div class="form-text">Choose a value from 1-100. Default is 50.</div>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <select class="form-select" id="photostack-watermark-select" autocomplete="off">
+                            <select class="form-select photostack-preview-update" id="photostack-watermark-select" autocomplete="off">
                                 <option selected value="no-watermark">No watermark</option>
                             </select>
                         </div>
@@ -137,8 +137,8 @@
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <input type="number" class="form-control input-group" placeholder="Border width (px)" id="photostack-border-width" autocomplete="off" min="0" enterkeyhint="done">
-                            <input type="color" class="form-control form-control-color input-group" id="photostack-border-color" autocomplete="off" value="#00FF00">
+                            <input type="number" class="form-control input-group photostack-preview-update" placeholder="Border width (px)" id="photostack-border-width" autocomplete="off" min="0" enterkeyhint="done">
+                            <input type="color" class="form-control form-control-color input-group photostack-preview-update" id="photostack-border-color" autocomplete="off" value="#00FF00">
                         </div>
                     </div>
                 </div>
@@ -201,15 +201,23 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-4">
-                    <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false">Import
-                        <span class="badge badge-light photostack-image-count">0</span>
+                    <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false" aria-label="Import">
+                        <i class="bi bi-upload d-none d-sm-inline"></i>
+                        Import
+                        <span class="badge bg-dark photostack-image-count">0</span>
                     </button>
                 </div>
                 <div class="col-4">
-                    <button class="btn btn-primary w-100 photostack-clear-images-btn" type="button">Clear</button>
+                    <button class="btn btn-primary photostack-clear-images-btn w-100" type="button" aria-label="Clear">
+                        <i class="bi bi-trash d-none d-sm-inline"></i>
+                        Clear
+                    </button>
                 </div>
                 <div class="col-4">
-                    <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled>Export</button>
+                    <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled aria-label="Export">
+                        <i class="bi bi-save d-none d-sm-inline"></i>
+                        Export
+                    </button>
                 </div>
             </div>
         </div>

@@ -790,19 +790,19 @@ document.querySelectorAll('input[name="photostack-file-name"]').forEach(function
 
 // Show credits
 fetch('https://corbin.io/supporters.json')
-  .then(function (response) {
-    response.json().then(function (data) {
-        var creditsList = ''
-        for (var i = 0; i < data['supporters'].length; i++) {
-            creditsList += data['supporters'][i] + ', '
-        }
-        creditsList = creditsList.substring(0, creditsList.length - 2)
-        document.getElementById('photostack-credits').innerText = creditsList
+    .then(function (response) {
+        response.json().then(function (data) {
+            var creditsList = ''
+            for (var i = 0; i < data['supporters'].length; i++) {
+                creditsList += data['supporters'][i] + ', '
+            }
+            creditsList = creditsList.substring(0, creditsList.length - 2)
+            document.getElementById('photostack-credits').innerText = creditsList
+        })
     })
-  })
-  .catch(function (err) {
-    document.getElementById('photostack-credits').innerText = 'There was an error fetching PhotoStack supporters.'
-  })
+    .catch(function (err) {
+        document.getElementById('photostack-credits').innerText = 'There was an error fetching PhotoStack supporters.'
+    })
 
 // Append event listeners to buttons and other elements
 
@@ -842,20 +842,14 @@ document.querySelector('.photostack-import-dropbox-btn').addEventListener('click
     }
 })
 
+document.querySelectorAll('.photostack-preview-update').forEach(function (item) {
+    item.addEventListener('change', function () {
+        renderPreviewCanvas()
+    })
+})
+
 document.getElementById('photostack-reset-image-width-button').addEventListener('click', function () {
     document.getElementById('photostack-image-width').value = ''
-    renderPreviewCanvas()
-})
-
-document.getElementById('photostack-border-width').addEventListener('change', function () {
-    renderPreviewCanvas()
-})
-
-document.getElementById('photostack-border-color').addEventListener('change', function () {
-    renderPreviewCanvas()
-})
-
-document.getElementById('photostack-watermark-select').addEventListener('change', async function () {
     renderPreviewCanvas()
 })
 
