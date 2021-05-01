@@ -45,8 +45,8 @@ hr {
 /* Custom colors */
 
 .bg-photostack {
-    background-color: #303030;
-    color: #FFF;
+    background-color: #303030 !important;
+    color: #FFF !important;
 }
 
 .bg-photostack .list-group-item {
