@@ -788,6 +788,22 @@ document.querySelectorAll('input[name="photostack-file-name"]').forEach(function
     })
 })
 
+// Show credits
+fetch('https://corbin.io/supporters.json')
+  .then(function (response) {
+    response.json().then(function (data) {
+        var creditsList = ''
+        for (var i = 0; i < data['supporters'].length; i++) {
+            creditsList += data['supporters'][i] + ', '
+        }
+        creditsList = creditsList.substring(0, creditsList.length - 2)
+        document.getElementById('photostack-credits').innerText = creditsList
+    })
+  })
+  .catch(function (err) {
+    document.getElementById('photostack-credits').innerText = 'There was an error fetching PhotoStack supporters.'
+  })
+
 // Append event listeners to buttons and other elements
 
 document.querySelectorAll('.photostack-clear-images-btn').forEach(function (el) {
