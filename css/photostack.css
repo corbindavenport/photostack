@@ -49,7 +49,11 @@ hr {
     color: #FFF;
 }
 
-.bg-photostack .text-muted,.bg-photostack .form-text, table {
+.bg-photostack .list-group-item {
+    color: #FFF;
+}
+
+.bg-photostack .text-muted,.bg-photostack .form-text, .bg-photostack table {
     color: #adb5bd !important;
 }
 
@@ -67,6 +71,14 @@ hr {
 
 .bg-photostack .btn {
     border-color: #242424;
+}
+
+.bg-photostack a {
+    color: #FFF;
+}
+
+.bg-photostack a:hover {
+    color: #adb5bd;
 }
 
 /* Styles for Android app */

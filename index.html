@@ -36,10 +36,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#photostack-feedback-modal">Feedback</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link photostack-android-hide" href="#" data-bs-toggle="modal" data-bs-target="#photostack-donate-modal">Donate</a>
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#photostack-about-modal">About</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#photostack-keyboard-modal">Shortcuts</a>
@@ -236,50 +233,25 @@
             </div>
         </div>
     </div>
-    <!-- Feedback modal -->
-    <div class="modal fade" id="photostack-feedback-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- About modal -->
+    <div class="modal fade" id="photostack-about-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content bg-photostack">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="photostack-export-modal-label">Feedback</h5>
+                    <h5 class="modal-title" id="photostack-export-modal-label">About</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>If you notice a bug in PhotoStack, or if you want a feature that isn't currently available, you can send feedback to the developers. The best way to submit feedback is by creating a GitHub issue.</p>
-                    <div class="row">
-                        <div class="col-12">
-                            <p>
-                                <a class="btn btn-primary w-100" href="https://github.com/photostack/photostack/issues/new" target="_blank" role="button">Create GitHub issue</a>
-                            </p>
-                        </div>
+                    <div style="text-align: center; margin: 1em 0;">
+                        <h1>PhotoStack</h1>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Donate modal -->
-    <div class="modal fade" id="photostack-donate-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content bg-photostack">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="photostack-export-modal-label">Donate</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>PhotoStack was developed entirely in my spare time, over the course of many hours. If you enjoy using PhotoStack, please consider donating with PayPal or Patreon. It would mean a lot!</p>
-                    <div class="row">
-                        <div class="col-12">
-                            <p>
-                                <a class="btn btn-success w-100" href="https://www.patreon.com/corbindavenport" target="_blank" role="button">Donate via Patreon</a>
-                            </p>
-                        </div>
-                        <div class="col-12">
-                            <p>
-                                <a class="btn btn-success w-100" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank" role="button">Donate via PayPal</a>
-                            </p>
-                        </div>
+                    <p>PhotoStack is developed by <a href="https://corbin.io" target="_blank">Corbin Davenport</a>, and all the code is <a href="https://https://github.com/photostack/" target="_blank">freely available as open-source</a>. If you want to report a bug or suggest features, please <a href="https://github.com/photostack/photostack/issues/new" target="_blank">create an issue on GitHub</a>.</p>
+                    <p>PhotoStack was made by possible by the below supporters:</p>
+                    <!-- Donation links have to be hidden on the Android app to pass Play Store rules :( -->
+                    <div class="photostack-android-hide w-100">
+                        <p><a href="https://www.patreon.com/corbindavenport" target="_blank"><button type="button" class="btn btn-primary w-100">Support via Patreon</button></a></p>
+                        <p><a href=https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank"><button type="button" class="btn btn-primary w-100">Support via PayPal</button></a></p>
                     </div>
-                    <p>If you can't contribute financially, telling your friends about PhotoStack and <a href="https://github.com/photostack/photostack" target="_blank">starring it on GitHub</a> is also greatly appreciated!</p>
                 </div>
             </div>
         </div>
