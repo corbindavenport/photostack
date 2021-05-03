@@ -961,11 +961,13 @@ SettingsStore.getItem('welcome-completed').then(function (value) {
 })
 
 // Android app and Web Manifest shortcuts
-if (currentUrl.searchParams.get('open_watermarks')) {
-    $('#photostack-watermark-manager-modal').modal('show')
-} else if (currentUrl.searchParams.get('open_import')) {
-    $('#photostack-import-modal').modal('show')
-}
+window.addEventListener('load', function () {
+    if (currentUrl.searchParams.get('open_watermarks')) {
+        $('#photostack-watermark-manager-modal').modal('show')
+    } else if (currentUrl.searchParams.get('open_import')) {
+        $('#photostack-import-modal').modal('show')
+    }
+})
 
 /*
  
