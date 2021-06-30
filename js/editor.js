@@ -53,6 +53,29 @@ function increaseImageCount(number) {
     })
 }
 
+// Function to crop a canvas
+function cropCanvas(canvas, top, bottom, left, right) {
+    // Create a temp canvas
+    const newCanvas = document.createElement('canvas')
+    // Set its dimensions
+    newCanvas.width = (canvas.width - left - right)
+    newCanvas.height = (canvas.height - top - bottom)
+    // Draw the canvas in the new resized temp canvas 
+    // Helpful diagram: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage/canvas_drawimage.jpg
+    newCanvas.getContext('2d').drawImage(
+        canvas, // The original image
+        (0 + left), // Source X
+        (0 + top), // Source Y
+        (canvas.width - left - right), // Source width
+        (canvas.height - bottom - top), // Source height
+        0, // Destination X
+        0, // Destination Y
+        newCanvas.width, // Destination width
+        newCanvas.height // Destination height
+    )
+    return newCanvas
+}
+
 // Resize a canvas using Pica library
 function resizeCanvas(oldCanvas, width, height, globalAlpha = 1.0) {
     return new Promise(function (resolve) {
@@ -89,6 +112,18 @@ function applyCanvasSettings(canvas, watermarkObject = null, previewMode = false
     return new Promise(async function (resolve) {
         // Create aspect ratio from original canvas size
         var ratio = (canvas.width / canvas.height)
+        // Crop image
+        var cropNeeded = (
+            (document.getElementById('photostack-crop-top').value != 0) ||
+            (document.getElementById('photostack-crop-bottom').value != 0) ||
+            (document.getElementById('photostack-crop-left').value != 0) ||
+            (document.getElementById('photostack-crop-right').value != 0)
+        )
+        if (cropNeeded) {
+            canvas = cropCanvas(canvas, document.getElementById('photostack-crop-top').value, document.getElementById('photostack-crop-bottom').value, document.getElementById('photostack-crop-left').value, document.getElementById('photostack-crop-right').value)
+            // Update ratio
+            ratio = (canvas.width / canvas.height)
+        }
         // Resize image
         if (document.getElementById('photostack-image-width').value != '') {
             // Set new canvas size
@@ -108,7 +143,6 @@ function applyCanvasSettings(canvas, watermarkObject = null, previewMode = false
         }
         // Apply border
         if (parseInt(document.getElementById('photostack-border-width').value) > 0) {
-            console.log(document.getElementById('photostack-border-width').value)
             var borderSize = document.getElementById('photostack-border-width').value
             var borderColor = document.getElementById('photostack-border-color').value
             // Top border
