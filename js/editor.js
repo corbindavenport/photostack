@@ -370,7 +370,9 @@ function importFiles(files, element = null) {
                                         var base64 = 'data:image/webp;base64,' + data
                                     } else if (file.name.endsWith('.avif')) {
                                         var base64 = 'data:image/avif;base64,' + data
-                                    }
+                                    } else if (file.name.endsWith('.jxl')) {
+                                        var base64 = 'data:image/jxl;base64,' + data
+                                    } 
                                     // Once both the reader and image is done, resolve the Promise
                                     image.onload = function () {
                                         // Remove file ending
