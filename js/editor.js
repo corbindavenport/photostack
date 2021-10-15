@@ -330,7 +330,8 @@ function importFiles(files, element = null) {
         'image/gif', // .gif
         'image/bmp', // .bmp
         'image/webp', // .webp
-        'image/avif' // .avif
+        'image/avif', // .avif
+        'image/jxl' // .jxl
     ]
     // Get files
     console.log('Number of files selected: ' + files.length)
