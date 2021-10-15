@@ -376,9 +376,9 @@ function importFiles(files, element = null) {
                                         var filename = file.name
                                         if (filename.includes('.')) {
                                             filename = filename.slice(0, filename.indexOf("."))
-                                            image.setAttribute('data-file-name', filename)
+                                            image.setAttribute('data-filename', filename)
                                         } else {
-                                            image.setAttribute('data-file-name', filename)
+                                            image.setAttribute('data-filename', filename)
                                         }
                                         // Resolve promise
                                         console.log('Processed image:', file.name)
@@ -418,9 +418,9 @@ function importFiles(files, element = null) {
                     var filename = file.name
                     if (filename.includes('.')) {
                         filename = filename.slice(0, filename.indexOf("."))
-                        image.setAttribute('data-file-name', filename)
+                        image.setAttribute('data-filename', filename)
                     } else {
-                        image.setAttribute('data-file-name', filename)
+                        image.setAttribute('data-filename', filename)
                     }
                     // Resolve promise
                     console.log('Processed image:', file.name)
@@ -477,10 +477,10 @@ function importWebImage(url) {
             var filename = url.split('/').pop().split('#')[0].split('?')[0]
             filename = decodeURIComponent(filename) // Revert URI encoding
             filename = filename.slice(0, filename.indexOf(".")) // Remove file ending
-            image.setAttribute('data-file-name', filename)
+            image.setAttribute('data-filename', filename)
         } catch (error) {
             console.error('Error obtaining filename for image:', error)
-            image.setAttribute('data-file-name', 'Image ' + (globalFilesCount + 1))
+            image.setAttribute('data-filename', 'Image ' + (globalFilesCount + 1))
         }
         // Load image
         image.onload = async function () {
@@ -579,7 +579,6 @@ function asyncExport() {
             canvasContainer.appendChild(canvas)
             canvas.width = original.naturalWidth
             canvas.height = original.naturalHeight
-            canvas.setAttribute('data-file-name', original.getAttribute('data-file-name'))
             canvas.getContext('2d').drawImage(original, 0, 0)
             // Apply settings
             if (document.getElementById('photostack-watermark-select').value === 'no-watermark') {
@@ -595,6 +594,8 @@ function asyncExport() {
                 })
                 canvas = await applyCanvasSettings(canvas, watermarkObject)
             }
+            // Retain file name
+            canvas.dataset.filename = original.dataset.filename
             // Update progress bar and page title
             const previousProgress = parseInt(progressBar.getAttribute('aria-valuenow'))
             const newProgress = previousProgress + imgStep
@@ -610,7 +611,7 @@ function asyncExport() {
         var promises = $.map(canvases, function (canvas) {
             return new Promise(function (resolve) {
                 canvas.toBlob(function (blob) {
-                    resolve([blob, canvas.getAttribute('data-file-name')])
+                    resolve([blob, canvas.getAttribute('data-filename')])
                 }, imgFormat, imgQuality)
             })
         })
