@@ -798,6 +798,19 @@ testAVIF.onload = function () {
 }
 testAVIF.setAttribute('src', 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK42A=')
 
+// Allow JPEG XL imports if format is supported
+var testJPEGXL = new Image()
+testJPEGXL.onload = function () {
+    var formats = document.getElementById('photostack-import-file').getAttribute('accept')
+    // Main editor image picker
+    document.getElementById('photostack-import-file').setAttribute('accept', formats + ',image/jxl')
+    // Watermark editor image picker
+    document.getElementById('photostack-watermark-import-image').setAttribute('accept', formats + ',image/jxl')
+    // Add class to <html> tag like Modernizr
+    document.getElementsByTagName('html')[0].classList.add('jxl')
+}
+testJPEGXL.setAttribute('src', 'data:image/jxl;base64,AAAADEpYTCANCocKAAAAFGZ0eXBqeGwgAAAAAGp4bCAAAADCamJyZEBf3DaBIDRCIzRCIzRC0wiN0AgtAwIgWIEJgFCjBEQAAAAAwv+KAAAAAOD/RAAAAADw/yIAAAAA+H8RAAAAAPyfCAAAAAD+TwQAAAAA/y8CAAAAgP8XAQAAAMD/iQAAAADgfwEgAIgkCAoBAII/wIDgDyjA+AUACP4QAAEAAggECH4IA4IfooDghwAAAAAAAAAbJAD4BcRtW2iHl/qSLxcES4imZAoiSkXFjkbrEbunUS0LPjkfAq05FwAAAYtqeGxj/woAEBDCw8OAhHkARDWWr6Sx53UE9OgDvVo3DhroEIiw1iLM2WPZ68kgwYIiS67c4c6x+M6x7jlG154lo9Ho0rP8znH5fQDIOto6s5A/8boyI+Zc4gq7AAz4v7C04jc8DHWdWMJlDxMboQWK1qay0ttMdRc4K3ko8L33RyuvclnIWlHW1HGBhK+toakub7Jn5QFouo1nqACv8vbv33zLu3QTqB+kf//2hfr3r58IzrgQUBd8A8Hi6nAGgSV9YB4BskUExS7QrQNcLMsJHJqakLwTTM3gTlAYuTmKKtvy4QRo1BWk5EGmJpRJA2s8YS7Hd7+/ZRt8l+ZHdz/dAeBbABAA/AEMZAxkDGT+/w4AABgACAABAAAAAACAgCWJYsPUfQkCEFJgB4w29hoVGWMkYwxejwElOnIxDYj9K4ATQAzVb0OejYT5BJFx/N74ZXQPfP0ZhZ+a1+Sve6Q9zu7T9g9voIEP8YS24fmNeW25W4BaL/GArO2X6QPICAAAAAAAgJIE')
+
 // Add warning for Safari users
 const ifSafari = (navigator.userAgent.includes('Safari') && (!navigator.userAgent.includes('Chrome')))
 if (ifSafari) {
