@@ -26,11 +26,8 @@ window.onerror = function () {
     errorToast.show()
 }
 
-// Google Analytics
-window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date
-ga('create', 'UA-59452245-5', 'auto')
-ga('require', 'displayfeatures')
-ga('send', 'pageview', '/')
+// Plausible Analytics
+window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
 
 /*
 
@@ -654,11 +651,7 @@ function asyncExport() {
                 // Add functionality for File System save button
                 document.getElementById('photostack-export-filesystem-api-button').addEventListener('click', async function () {
                     // Send analytics event
-                    ga('send', {
-                        hitType: 'event',
-                        eventCategory: 'Export',
-                        eventAction: 'Export via File System API',
-                    })
+                    plausible('Export', {props: {method: 'File System API'}})
                     // Ask for export directory
                     var directory = await window.showDirectoryPicker()
                     if (directory) {
@@ -682,11 +675,7 @@ function asyncExport() {
             var shareData = { files: files }
             if (navigator.canShare && navigator.canShare(shareData)) {
                 document.getElementById('photostack-export-web-share-button').addEventListener('click', function () {
-                    ga('send', {
-                        hitType: 'event',
-                        eventCategory: 'Export',
-                        eventAction: 'Export via Web Share API',
-                    })
+                    plausible('Export', {props: {method: 'Web Share API'}})
                     navigator.share(shareData)
                         .then(function () {
                             console.log('Share successful.')
@@ -701,22 +690,14 @@ function asyncExport() {
             }
             // Download files separately
             document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
-                ga('send', {
-                    hitType: 'event',
-                    eventCategory: 'Export',
-                    eventAction: 'Export as individual files',
-                })
+                plausible('Export', {props: {method: 'Individual files'}})
                 files.forEach(function (file) {
                     saveAs(file)
                 })
             })
             // Download as ZIP
             document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
-                ga('send', {
-                    hitType: 'event',
-                    eventCategory: 'Export',
-                    eventAction: 'Export as ZIP',
-                })
+                plausible('Export', {props: {method: 'ZIP download'}})
                 // Change button appearance
                 document.getElementById('photostack-export-zip-button').disabled = true
                 document.getElementById('photostack-export-zip-button').innerText = 'Please wait...'
@@ -865,11 +846,7 @@ document.querySelectorAll('.photostack-clear-images-btn').forEach(function (el) 
 
 document.querySelectorAll('.photostack-import-file-btn').forEach(function (el) {
     el.addEventListener('click', function () {
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'Import',
-            eventAction: 'Import local files'
-        })
+        plausible('Import', {props: {method: 'Local file picker'}})
         $('#photostack-import-file').click()
     })
 })
@@ -884,11 +861,7 @@ document.querySelector('.photostack-import-dropbox-btn').addEventListener('click
     } else if (!navigator.onLine) {
         alert('You are not connected to the internet. Connect to the internet and try again.')
     } else {
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'Import',
-            eventAction: 'Import from Dropbox'
-        })
+        plausible('Import', {props: {method: 'Dropbox'}})
         importDropboxImage()
     }
 })
