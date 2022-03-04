@@ -3,6 +3,7 @@ nav, .photostack-mobile-toolbar {
 }
 
 body {
+    overscroll-behavior: contain;
     padding-top: 70px;
     background-color: #222;
 }
