@@ -730,12 +730,12 @@ document.getElementById('photostack-start-export-btn').addEventListener('click',
 })
 
 // Reset export status when the close button is clicked
-$('#photostack-export-modal').on('hidden.bs.modal', function (e) {
+document.getElementById('photostack-export-modal').addEventListener('hidden.bs.modal', function () {
     // Clear event listeners
-    $('#photostack-export-web-share-button').replaceWith($('#photostack-export-web-share-button').clone())
-    $('#photostack-export-separate-button').replaceWith($('#photostack-export-separate-button').clone())
-    $('#photostack-export-filesystem-api-button').replaceWith($('#photostack-export-filesystem-api-button').clone())
-    $('#photostack-export-zip-button').replaceWith($('#photostack-export-zip-button').clone())
+    document.getElementById('photostack-export-web-share-button').replaceWith(document.getElementById('photostack-export-web-share-button').cloneNode(true))
+    document.getElementById('photostack-export-separate-button').replaceWith(document.getElementById('photostack-export-separate-button').cloneNode(true))
+    document.getElementById('photostack-export-filesystem-api-button').replaceWith(document.getElementById('photostack-export-filesystem-api-button').cloneNode(true))
+    document.getElementById('photostack-export-zip-button').replaceWith(document.getElementById('photostack-export-zip-button').cloneNode(true))
     // Clear content
     document.querySelector('.photostack-export-modal-loading').style.display = 'none'
     document.querySelector('.photostack-export-modal-finished').style.display = 'none'
@@ -847,7 +847,7 @@ document.querySelectorAll('.photostack-clear-images-btn').forEach(function (el) 
 document.querySelectorAll('.photostack-import-file-btn').forEach(function (el) {
     el.addEventListener('click', function () {
         plausible('Import', {props: {method: 'Local file picker'}})
-        $('#photostack-import-file').click()
+        document.getElementById('photostack-import-file').click()
     })
 })
 
@@ -878,7 +878,7 @@ document.getElementById('photostack-reset-image-width-button').addEventListener(
 })
 
 document.getElementById('photostack-watermark-import-btn').addEventListener('click', function () {
-    $('#photostack-watermark-file-import').click()
+    document.getElementById('photostack-watermark-file-import').click()
 })
 
 document.getElementById('photostack-watermark-file-import').addEventListener('change', function () {
@@ -922,7 +922,7 @@ refreshWatermarks()
 
 $(document).bind('keyup', 'shift+o', function () {
     if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
-        $('#photostack-import-file').click()
+        document.getElementById('photostack-import-file').click()
     }
 })
 
@@ -959,26 +959,29 @@ $(document).bind('keyup', 'shift+x', function () {
 $(document).bind('keyup', 'shift+e', function () {
     // Make sure no modals are open and at least one image is imported
     if ((!document.querySelectorAll('.modal.show').length) && (globalFilesCount > 0)) {
-        $('#photostack-export-modal').modal('show')
+        var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-export-modal'))
+        modalEl.show()
     }
 })
 
 $(document).bind('keyup', 'shift+w', function () {
     if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
-        $('#photostack-watermark-manager-modal').modal('show')
+        var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-manager-modal'))
+        modalEl.show()
     }
 })
 
 // Show welcome page on first run
 SettingsStore.getItem('welcome-completed').then(function (value) {
-    if (localStorage.getItem('welcome-editor') === 'true') {
+    if (value === 'true') {
         // Migrate older variable from localStorage
         SettingsStore.setItem('welcome-completed', 'true')
         localStorage.removeItem('welcome-editor')
-    } else if (!value) {
-        $('#photostack-welcome-modal').modal('show')
+    } else {
+        var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-welcome-modal'))
+        modalEl.show()
         // Don't show welcome screen again after it is exited
-        $('#photostack-welcome-modal').on('hidden.bs.modal', function () {
+        document.getElementById('photostack-welcome-modal').addEventListener('hidden.bs.modal', function () {
             SettingsStore.setItem('welcome-completed', 'true')
         })
     }
@@ -987,9 +990,11 @@ SettingsStore.getItem('welcome-completed').then(function (value) {
 // Android app and Web Manifest shortcuts
 window.addEventListener('load', function () {
     if (currentUrl.searchParams.get('open_watermarks')) {
-        $('#photostack-watermark-manager-modal').modal('show')
+        var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-manager-modal'))
+        modalEl.show()
     } else if (currentUrl.searchParams.get('open_import')) {
-        $('#photostack-import-modal').modal('show')
+        var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-import-modal'))
+        modalEl.show()
     }
 })
 
@@ -1056,8 +1061,10 @@ function openWatermarkEditor(watermarkKey) {
         // Render preview image
         renderWatermarkPreviewCanvas()
         // Open the modal
-        $('#photostack-watermark-manager-modal').modal('hide')
-        $('#photostack-watermark-editor-modal').modal('show')
+        var managerModalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-manager-modal'))
+        var editorModalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-editor-modal'))
+        managerModalEl.hide()
+        editorModalEl.show()
     }).catch(function (err) {
         alert('Error: ' + err)
     })
@@ -1066,7 +1073,7 @@ function openWatermarkEditor(watermarkKey) {
 // Watermark editor event listeners
 
 watermarkEditor.querySelector('#photostack-watermark-editor-image-btn').addEventListener('click', function () {
-    $('#photostack-watermark-import-image').click()
+    document.getElementById('photostack-watermark-import-image').click()
 })
 
 watermarkEditor.querySelector('#photostack-watermark-import-image').addEventListener('change', function () {
@@ -1121,6 +1128,7 @@ watermarkEditor.querySelectorAll('.photostack-anchor-btn').forEach(function (but
 })
 
 watermarkEditor.querySelector('#photostack-watermark-editor-save-btn').addEventListener('click', function () {
+    var editorModalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-editor-modal'))
     var currentWatermark = watermarkEditor.getAttribute('data-watermark')
     // Save watermark back to storage
     watermarksStore.setItem(currentWatermark, {
@@ -1138,7 +1146,7 @@ watermarkEditor.querySelector('#photostack-watermark-editor-save-btn').addEventL
         anchorPosition: parseInt(watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary').id.replace('photostack-watermark-pos-', ''))
     }).then(function (value) {
         // Close modal once saved
-        $('#photostack-watermark-editor-modal').modal('hide')
+        editorModalEl.hide()
     }).catch(function (err) {
         alert('Error: ' + err)
     })
