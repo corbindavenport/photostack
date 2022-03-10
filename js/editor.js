@@ -919,15 +919,17 @@ eventNames.forEach(function (eventName) {
 refreshWatermarks()
 
 // Keyboard shortcuts
-
-$(document).bind('keyup', 'shift+o', function () {
-    if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
-        document.getElementById('photostack-import-file').click()
+document.addEventListener('keyup', function (event) {
+    // Ignore if a modal is open
+    if (document.querySelectorAll('.modal.show').length) {
+        return
     }
-})
-
-$(document).bind('keyup', 'shift+d', function () {
-    if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
+    // All keyboard shortcuts
+    if (event.shiftKey && event.key === 'O') {
+        // Import file 
+        document.getElementById('photostack-import-file').click()
+    } else if (event.shiftKey && event.key === 'D') {
+        // Dropbox import
         if (!Dropbox.isBrowserSupported()) {
             alert('Sorry, Dropbox does not support your web browser.')
         } else if (!navigator.onLine) {
@@ -944,28 +946,17 @@ $(document).bind('keyup', 'shift+d', function () {
                 }
             }
         }
-    }
-})
-
-$(document).bind('keyup', 'shift+x', function () {
-    // Make sure no modals are open and at least one image is imported
-    if ((!document.querySelectorAll('.modal.show').length) && (globalFilesCount > 0)) {
+    } else if (event.shiftKey && event.key === 'X' && (globalFilesCount > 0)) {
+        // Clear imported images
         if (confirm('Do you want to clear all imported images?')) {
             clearImportedImages()
         }
-    }
-})
-
-$(document).bind('keyup', 'shift+e', function () {
-    // Make sure no modals are open and at least one image is imported
-    if ((!document.querySelectorAll('.modal.show').length) && (globalFilesCount > 0)) {
+    } else if (event.shiftKey && event.key === 'E' && (globalFilesCount > 0)) {
+        // Show export modal
         var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-export-modal'))
         modalEl.show()
-    }
-})
-
-$(document).bind('keyup', 'shift+w', function () {
-    if (!document.querySelectorAll('.modal.show').length) { // Make sure no modals are open
+    } else if (event.shiftKey && event.key === 'W') {
+        // Show watermark manager modal
         var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-manager-modal'))
         modalEl.show()
     }
