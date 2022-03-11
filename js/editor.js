@@ -911,6 +911,11 @@ document.body.addEventListener('drop', function (e) {
     importFiles(files)
 })
 
+document.getElementById('photostack-import-file').addEventListener('change', function () {
+    // This prevents the modal from getting stuck when the 'drop' listener doesn't fire correctly
+    dragModal.hide()
+})
+
 // Prevent default browser drag/drop actions
 
 var eventNames = ['dragenter', 'dragover', 'dragleave', 'drop']
