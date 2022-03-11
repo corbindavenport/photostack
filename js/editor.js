@@ -27,7 +27,7 @@ window.onerror = function () {
 }
 
 // Plausible Analytics
-window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
+window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) }
 
 /*
 
@@ -333,15 +333,19 @@ function importFiles(files, element = null) {
     // Get files
     console.log('Number of files selected: ' + files.length)
     // Process files
-    var importPromises = $.map(files, function (file) {
+    var fileArray = Object.entries(files)
+    var importPromises = fileArray.map(function (file) {
         return new Promise(function (resolve) {
+            file = file[1]
             if (containerFiles.includes(file.type)) {
                 // This is a container file
                 var zip = new JSZip()
                 zip.loadAsync(file).then(function (zip) {
                     // Create a promise for each file in the container file
-                    var zipPromises = $.map(zip.files, function (file) {
+                    var zipFileArray = Object.entries(zip.files)
+                    var zipPromises = zipFileArray.map(function (file) {
                         return new Promise(function (resolve) {
+                            file = file[1]
                             // Only read files that are images, aren't directories, and aren't inside __MACOSX
                             var supportedImages = (
                                 file.name.endsWith('.png') ||
@@ -369,7 +373,7 @@ function importFiles(files, element = null) {
                                         var base64 = 'data:image/avif;base64,' + data
                                     } else if (file.name.endsWith('.jxl')) {
                                         var base64 = 'data:image/jxl;base64,' + data
-                                    } 
+                                    }
                                     // Once both the reader and image is done, resolve the Promise
                                     image.onload = function () {
                                         // Remove file ending
@@ -571,7 +575,8 @@ function asyncExport() {
         canvasContainer.removeChild(canvasContainer.firstChild)
     }
     // Render canvas for each original image
-    var canvasPromises = $.map(originals, function (original) {
+    var originalsArray = Array.from(originals)
+    var canvasPromises = originalsArray.map(function (original) {
         return new Promise(async function (resolve) {
             // Create canvas element
             var canvas = document.createElement('canvas')
@@ -608,7 +613,8 @@ function asyncExport() {
     // Continue once all canvases are rendered
     Promise.all(canvasPromises).then(function (canvases) {
         // Create promises for final render of each image
-        var promises = $.map(canvases, function (canvas) {
+        console.log(canvases)
+        var promises = canvases.map(function (canvas) {
             return new Promise(function (resolve) {
                 canvas.toBlob(function (blob) {
                     resolve([blob, canvas.getAttribute('data-filename')])
@@ -651,7 +657,7 @@ function asyncExport() {
                 // Add functionality for File System save button
                 document.getElementById('photostack-export-filesystem-api-button').addEventListener('click', async function () {
                     // Send analytics event
-                    plausible('Export', {props: {method: 'File System API'}})
+                    plausible('Export', { props: { method: 'File System API' } })
                     // Ask for export directory
                     var directory = await window.showDirectoryPicker()
                     if (directory) {
@@ -675,7 +681,7 @@ function asyncExport() {
             var shareData = { files: files }
             if (navigator.canShare && navigator.canShare(shareData)) {
                 document.getElementById('photostack-export-web-share-button').addEventListener('click', function () {
-                    plausible('Export', {props: {method: 'Web Share API'}})
+                    plausible('Export', { props: { method: 'Web Share API' } })
                     navigator.share(shareData)
                         .then(function () {
                             console.log('Share successful.')
@@ -690,14 +696,14 @@ function asyncExport() {
             }
             // Download files separately
             document.getElementById('photostack-export-separate-button').addEventListener('click', function () {
-                plausible('Export', {props: {method: 'Individual files'}})
+                plausible('Export', { props: { method: 'Individual files' } })
                 files.forEach(function (file) {
                     saveAs(file)
                 })
             })
             // Download as ZIP
             document.getElementById('photostack-export-zip-button').addEventListener('click', function () {
-                plausible('Export', {props: {method: 'ZIP download'}})
+                plausible('Export', { props: { method: 'ZIP download' } })
                 // Change button appearance
                 document.getElementById('photostack-export-zip-button').disabled = true
                 document.getElementById('photostack-export-zip-button').innerText = 'Please wait...'
@@ -846,7 +852,7 @@ document.querySelectorAll('.photostack-clear-images-btn').forEach(function (el) 
 
 document.querySelectorAll('.photostack-import-file-btn').forEach(function (el) {
     el.addEventListener('click', function () {
-        plausible('Import', {props: {method: 'Local file picker'}})
+        plausible('Import', { props: { method: 'Local file picker' } })
         document.getElementById('photostack-import-file').click()
     })
 })
@@ -861,7 +867,7 @@ document.querySelector('.photostack-import-dropbox-btn').addEventListener('click
     } else if (!navigator.onLine) {
         alert('You are not connected to the internet. Connect to the internet and try again.')
     } else {
-        plausible('Import', {props: {method: 'Dropbox'}})
+        plausible('Import', { props: { method: 'Dropbox' } })
         importDropboxImage()
     }
 })
@@ -1169,9 +1175,11 @@ function deleteWatermark(watermarkKey) {
 // Import watermark from JSON file
 function importWatermarkSettings(el) {
     // Create a promise for each file
-    var importPromises = $.map(el.files, function (file) {
+    var watermarkFileArray = Object.entries(el.files)
+    var importPromises = watermarkFileArray.map(function (file) {
         return new Promise(function (resolve) {
             // Read the file
+            file = file[1]
             var reader = new FileReader()
             reader.onload = function () {
                 // Make sure file is valid JSON
