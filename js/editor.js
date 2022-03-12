@@ -335,74 +335,72 @@ function importFiles(files, element = null) {
     // Process files
     var fileArray = Object.entries(files)
     var importPromises = fileArray.map(function (file) {
-        return new Promise(function (resolve) {
+        return new Promise(async function (resolve) {
             file = file[1]
             if (containerFiles.includes(file.type)) {
                 // This is a container file
-                var zip = new JSZip()
-                zip.loadAsync(file).then(function (zip) {
-                    // Create a promise for each file in the container file
-                    var zipFileArray = Object.entries(zip.files)
-                    var zipPromises = zipFileArray.map(function (file) {
-                        return new Promise(function (resolve) {
-                            file = file[1]
-                            // Only read files that are images, aren't directories, and aren't inside __MACOSX
-                            var supportedImages = (
-                                file.name.endsWith('.png') ||
-                                file.name.endsWith('.jpg') ||
-                                file.name.endsWith('.jpeg') ||
-                                file.name.endsWith('.bmp') ||
-                                (Modernizr.webp && file.name.endsWith('.webp')) ||
-                                (document.getElementsByTagName('html')[0].classList.contains('avif') && file.name.endsWith('.avif'))
-                            )
-                            if ((supportedImages) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
-                                // Add images to originals container
-                                file.async('base64').then(function (data) {
-                                    // Create image element
-                                    var image = document.createElement('img')
-                                    // Add MIME type to each image so the browser can render them
-                                    if (file.name.endsWith('.png')) {
-                                        var base64 = 'data:image/png;base64,' + data
-                                    } else if (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
-                                        var base64 = 'data:image/jpeg;base64,' + data
-                                    } else if (file.name.endsWith('.bmp')) {
-                                        var base64 = 'data:image/bmp;base64,' + data
-                                    } else if (file.name.endsWith('.webp')) {
-                                        var base64 = 'data:image/webp;base64,' + data
-                                    } else if (file.name.endsWith('.avif')) {
-                                        var base64 = 'data:image/avif;base64,' + data
-                                    } else if (file.name.endsWith('.jxl')) {
-                                        var base64 = 'data:image/jxl;base64,' + data
-                                    }
-                                    // Once both the reader and image is done, resolve the Promise
-                                    image.onload = function () {
-                                        // Remove file ending
-                                        var filename = file.name
-                                        if (filename.includes('.')) {
-                                            filename = filename.slice(0, filename.indexOf("."))
-                                            image.setAttribute('data-filename', filename)
-                                        } else {
-                                            image.setAttribute('data-filename', filename)
-                                        }
-                                        // Resolve promise
-                                        console.log('Processed image:', file.name)
-                                        resolve(image)
-                                    }
-                                    image.onerror = function () {
-                                        console.log('Could not import this image: ' + file.name)
-                                        resolve()
-                                    }
-                                    image.setAttribute('src', base64)
-                                })
-                            } else {
+                var zipInstance = new JSZip()
+                var zip = await zipInstance.loadAsync(file)
+                // Create a promise for each file in the container file
+                var zipFileArray = Object.entries(zip.files)
+                var zipPromises = zipFileArray.map(function (file) {
+                    return new Promise(async function (resolve) {
+                        file = file[1]
+                        // Only read files that are images, aren't directories, and aren't inside __MACOSX
+                        var supportedImages = (
+                            file.name.endsWith('.png') ||
+                            file.name.endsWith('.jpg') ||
+                            file.name.endsWith('.jpeg') ||
+                            file.name.endsWith('.bmp') ||
+                            (Modernizr.webp && file.name.endsWith('.webp')) ||
+                            (document.getElementsByTagName('html')[0].classList.contains('avif') && file.name.endsWith('.avif'))
+                        )
+                        if ((supportedImages) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
+                            // Add images to originals container
+                            var data = await file.async('base64')
+                            // Create image element
+                            var image = document.createElement('img')
+                            // Add MIME type to each image so the browser can render them
+                            if (file.name.endsWith('.png')) {
+                                var base64 = 'data:image/png;base64,' + data
+                            } else if (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
+                                var base64 = 'data:image/jpeg;base64,' + data
+                            } else if (file.name.endsWith('.bmp')) {
+                                var base64 = 'data:image/bmp;base64,' + data
+                            } else if (file.name.endsWith('.webp')) {
+                                var base64 = 'data:image/webp;base64,' + data
+                            } else if (file.name.endsWith('.avif')) {
+                                var base64 = 'data:image/avif;base64,' + data
+                            } else if (file.name.endsWith('.jxl')) {
+                                var base64 = 'data:image/jxl;base64,' + data
+                            }
+                            // Once both the reader and image is done, resolve the Promise
+                            image.onload = function () {
+                                // Remove file ending
+                                var filename = file.name
+                                if (filename.includes('.')) {
+                                    filename = filename.slice(0, filename.indexOf("."))
+                                    image.setAttribute('data-filename', filename)
+                                } else {
+                                    image.setAttribute('data-filename', filename)
+                                }
+                                // Resolve promise
+                                console.log('Processed image:', file.name)
+                                resolve(image)
+                            }
+                            image.onerror = function () {
+                                console.log('Could not import this image: ' + file.name)
                                 resolve()
                             }
-                        })
+                            image.setAttribute('src', base64)
+                        } else {
+                            resolve()
+                        }
                     })
-                    // Pass all processed images to main Promise
-                    Promise.all(zipPromises).then(function (data) {
-                        resolve(data)
-                    })
+                })
+                // Pass all processed images to main Promise
+                Promise.all(zipPromises).then(function (data) {
+                    resolve(data)
                 })
             } else if (imageFiles.includes(file.type)) {
                 // This is an image file
@@ -439,13 +437,10 @@ function importFiles(files, element = null) {
     })
     // Add processed files to originals container
     Promise.all(importPromises).then(async function (imageArray) {
-        // Promises for containers return arrays of objects, so we need to flatten the entire array
-        imageArray = imageArray.flat()
-        imageArray = imageArray.filter(function (e) {
-            return e instanceof HTMLElement
-        })
+        imageArray = Array.from(imageArray)
         // Update image counter
         increaseImageCount(imageArray.length)
+        console.log(imageArray)
         // Add images to originals container
         imageArray.forEach(function (imageEl) {
             document.getElementById('photostack-original-container').appendChild(imageEl)
