@@ -654,7 +654,9 @@ function asyncExport() {
                     // Send analytics event
                     plausible('Export', { props: { method: 'File System API' } })
                     // Ask for export directory
-                    var directory = await window.showDirectoryPicker()
+                    var directory = await window.showDirectoryPicker(
+                        {mode: 'readwrite'}
+                    )
                     if (directory) {
                         // Save each file
                         console.log('Saving files in ' + directory.name + ' directory...')
