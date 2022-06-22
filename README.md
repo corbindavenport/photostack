@@ -11,7 +11,7 @@ PhotoStack uses components from the following projects:
 - [Modernizr](https://modernizr.com/)
 - [Pica](https://github.com/nodeca/pica)
 
-Icon designed by [Mason Conrad](https://twitter.com/MasNConrad). Bootstrap theme is 'Darkly' from [Bootswatch](https://bootswatch.com/).
+Icon designed by [Mason Conrad](https://twitter.com/MasNConrad).
 
 ---------------------------------------------------------
 
