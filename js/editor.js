@@ -440,7 +440,6 @@ function importFiles(files, element = null) {
         imageArray = Array.from(imageArray)
         // Update image counter
         increaseImageCount(imageArray.length)
-        console.log(imageArray)
         // Add images to originals container
         imageArray.forEach(function (imageEl) {
             document.getElementById('photostack-original-container').appendChild(imageEl)
@@ -455,71 +454,6 @@ function importFiles(files, element = null) {
             element.value = ''
         }
     })
-}
-
-// Add image from URL
-function importWebImage(url) {
-    // Initialize import toast
-    var importToast = new bootstrap.Toast(document.getElementById('photostack-import-toast'), {
-        'autohide': false
-    })
-    // Show import toast
-    importToast.show()
-    // Get image
-    function addImageToCanvas(url) {
-        // Create image element
-        var image = document.createElement('img')
-        image.setAttribute('crossorigin', 'anonymous')
-        image.setAttribute('src', url)
-        // Get filename
-        try {
-            var filename = url.split('/').pop().split('#')[0].split('?')[0]
-            filename = decodeURIComponent(filename) // Revert URI encoding
-            filename = filename.slice(0, filename.indexOf(".")) // Remove file ending
-            image.setAttribute('data-filename', filename)
-        } catch (error) {
-            console.error('Error obtaining filename for image:', error)
-            image.setAttribute('data-filename', 'Image ' + (globalFilesCount + 1))
-        }
-        // Load image
-        image.onload = async function () {
-            console.log('Loaded image URL: ' + url)
-            // Save image to originals container
-            document.getElementById('photostack-original-container').appendChild(image)
-            // Increase image counter
-            increaseImageCount(1)
-            // Generate preview
-            await renderPreviewCanvas()
-            // Hide toast
-            importToast.hide()
-        }
-        image.onerror = function () {
-            alert('Could not import image: ' + url)
-            // Hide toast
-            setTimeout(function () {
-                importToast.hide()
-            }, 1000)
-        }
-    }
-    addImageToCanvas(url)
-}
-
-// Add image from Dropbox
-function importDropboxImage() {
-    // Set configuration for file picker
-    options = {
-        success: function (files) {
-            // Send each URL to importWebImage function
-            files.forEach(function (file) {
-                importWebImage(file.link)
-            })
-        },
-        linkType: "direct",
-        multiselect: true,
-        extensions: ['images'],
-        folderselect: false
-    }
-    Dropbox.choose(options)
 }
 
 // Clear all imported images and reset preview box
@@ -823,22 +757,6 @@ document.querySelectorAll('input[name="photostack-file-name"]').forEach(function
     })
 })
 
-// Show credits
-fetch('https://corbin.io/supporters.json')
-    .then(function (response) {
-        response.json().then(function (data) {
-            var creditsList = ''
-            for (var i = 0; i < data['supporters'].length; i++) {
-                creditsList += data['supporters'][i] + ', '
-            }
-            creditsList = creditsList.substring(0, creditsList.length - 2)
-            document.getElementById('photostack-credits').innerText = creditsList
-        })
-    })
-    .catch(function (err) {
-        document.getElementById('photostack-credits').innerText = 'There was an error fetching PhotoStack supporters.'
-    })
-
 // Append event listeners to buttons and other elements
 
 document.querySelectorAll('.photostack-clear-images-btn').forEach(function (el) {
@@ -856,17 +774,6 @@ document.querySelectorAll('.photostack-import-file-btn').forEach(function (el) {
 
 document.getElementById('photostack-import-file').addEventListener('change', function () {
     importFiles(this.files, this)
-})
-
-document.querySelector('.photostack-import-dropbox-btn').addEventListener('click', function () {
-    if (!Dropbox.isBrowserSupported()) {
-        alert('Sorry, Dropbox does not support your web browser.')
-    } else if (!navigator.onLine) {
-        alert('You are not connected to the internet. Connect to the internet and try again.')
-    } else {
-        plausible('Import', { props: { method: 'Dropbox' } })
-        importDropboxImage()
-    }
 })
 
 document.querySelectorAll('.photostack-preview-update').forEach(function (item) {
@@ -936,24 +843,6 @@ document.addEventListener('keyup', function (event) {
     if (event.shiftKey && event.key === 'O') {
         // Import file 
         document.getElementById('photostack-import-file').click()
-    } else if (event.shiftKey && event.key === 'D') {
-        // Dropbox import
-        if (!Dropbox.isBrowserSupported()) {
-            alert('Sorry, Dropbox does not support your web browser.')
-        } else if (!navigator.onLine) {
-            alert('You are not connected to the internet. Connect to the internet and try again.')
-        } else {
-            try {
-                importDropboxImage()
-            } catch {
-                // Ask user to allow popups
-                if (document.getElementsByTagName('html')[0].classList.contains('photostack-android')) {
-                    alert('This keyboard shortcut does not work on your device.')
-                } else {
-                    alert('Your browser is blocking popups. Please allow popups for the Dropbox keyboard shortcut to work.')
-                }
-            }
-        }
     } else if (event.shiftKey && event.key === 'X' && (globalFilesCount > 0)) {
         // Clear imported images
         if (confirm('Do you want to clear all imported images?')) {
