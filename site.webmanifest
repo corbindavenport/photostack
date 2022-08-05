@@ -1,6 +1,7 @@
 {
     "name": "PhotoStack",
     "short_name": "PhotoStack",
+    "description": "Convert, resize, watermark, and crop images in a few clicks.",
     "icons": [
         {
             "src": "img/icon_x192.png",
@@ -28,20 +29,5 @@
     "theme_color": "#303030",
     "background_color": "#303030",
     "display": "standalone",
-    "start_url": "/?utm_source=Installed%20App&utm_medium=Shortcut",
-    "shortcuts": [
-        {
-            "name": "Watermarks",
-            "description": "Open list of watermarks",
-            "url": "/?open_watermarks=true",
-            "icons": [
-                {
-                    "src": "/img/watermark-edit-shortcut.png",
-                    "type": "image/png",
-                    "sizes": "192x192",
-                    "purpose": "any maskable"
-                }
-            ]
-        }
-    ]
+    "start_url": "/?utm_source=Installed%20App&utm_medium=Shortcut"
 }
