@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="dark">
 
 <head>
     <meta charset="utf-8">
@@ -7,7 +7,7 @@
     <title>PhotoStack</title>
     <meta name="description" content="PhotoStack can convert, resize, watermark, and crop images in a few clicks.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="css/photostack.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
     <script src="js/shared.js"></script>
@@ -30,7 +30,7 @@
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-photostack fixed-top">
+    <nav class="navbar navbar-expand-lg bg-secondary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">PhotoStack</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@
             <!-- Preview container -->
             <div class="col-lg col-md-6 photostack-preview-container">
                 <!-- Temporary text for when no photos are imported -->
-                <div class="card photostack-preview-card bg-photostack">
+                <div class="card photostack-preview-card">
                     <div class="card-body" style="padding: 0">
                         <div class="text-center" id="photostack-editor-preview">
                             <p><br />A preview of your settings will appear here once you import some images.</p>
@@ -87,7 +87,7 @@
                     Safari may periodically delete PhotoStack's data, including saved watermarks. Press here for more information.
                 </div>
                 <!-- Resize card -->
-                <div class="card bg-photostack mb-3 mt-3 mt-md-0">
+                <div class="card mb-3 mt-3 mt-md-0">
                     <div class="card-header">
                         Resize
                     </div>
@@ -107,7 +107,7 @@
                     </div>
                 </div>
                 <!-- Advertisements card -->
-                <div class="card bg-photostack mb-3">
+                <div class="card mb-3">
                     <div class="card-header">
                         Advertisements
                     </div>
@@ -123,7 +123,7 @@
                     </div>
                 </div>
                 <!-- Watermarks card-->
-                <div class="card bg-photostack mb-3">
+                <div class="card mb-3">
                     <div class="card-header">
                         Watermark
                     </div>
@@ -139,7 +139,7 @@
                     </div>
                 </div>
                 <!-- Border card -->
-                <div class="card bg-photostack mb-3">
+                <div class="card mb-3">
                     <div class="card-header">
                         Border
                     </div>
@@ -151,7 +151,7 @@
                     </div>
                 </div>
                 <!-- Resize card -->
-                <div class="card bg-photostack mb-3 mt-3 mt-md-0">
+                <div class="card mb-3 mt-3 mt-md-0">
                     <div class="card-header">
                         Crop
                     </div>
@@ -178,7 +178,7 @@
                     </div>
                 </div>
                 <!-- Other options card-->
-                <div class="card bg-photostack mb-3">
+                <div class="card mb-3">
                     <div class="card-header">
                         Miscellaneous
                     </div>
@@ -193,7 +193,7 @@
         </div>
     </div>
     <!-- Import/export toolbar for mobile only -->
-    <div class="photostack-mobile-toolbar d-lg-none d-print-none">
+    <div class="photostack-mobile-toolbar bg-secondary d-lg-none d-print-none">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-4">
@@ -221,7 +221,7 @@
     <!-- Welcome modal -->
     <div class="modal fade" id="photostack-welcome-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content bg-photostack">
+            <div class="modal-content">
                 <div class="modal-body">
                     <div style="text-align: center; margin-bottom: 30px; margin-top: 20px;">
                         <h2>Welcome to PhotoStack!</h2>
@@ -238,7 +238,7 @@
     <!-- About modal -->
     <div class="modal fade" id="photostack-about-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content bg-photostack">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">About</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -260,7 +260,7 @@
     <!-- Keyboard shortcuts modal -->
     <div class="modal fade" id="photostack-keyboard-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content bg-photostack">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Keyboard shortcuts</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -298,7 +298,7 @@
     <!-- Safari storage help modal -->
     <div class="modal fade" id="photostack-safari-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-            <div class="modal-content bg-photostack">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-safari-modal-label">Important info for Safari</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -314,7 +314,7 @@
     <!-- Import modal -->
     <div class="modal fade" id="photostack-import-modal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content bg-photostack">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Import images</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -332,7 +332,7 @@
     <!-- Drag and drop modal -->
     <div class="modal fade" id="photostack-drag-modal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content bg-photostack">
+            <div class="modal-content">
                 <div class="modal-body">
                     <div class="modal-body">
                         <p style="text-align: center" class="lead">Drop your files to import them.</p>
@@ -346,7 +346,7 @@
     <div class="modal fade" id="photostack-export-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <!-- Initial UI -->
-            <div class="modal-content bg-photostack photostack-export-modal-initial">
+            <div class="modal-content photostack-export-modal-initial">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">
                         Export
@@ -391,7 +391,7 @@
                 </div>
             </div>
             <!-- Export in progress modal -->
-            <div class="modal-content bg-photostack photostack-export-modal-loading" style="display:none">
+            <div class="modal-content photostack-export-modal-loading" style="display:none">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
                 </div>
@@ -408,7 +408,7 @@
                 </div>
             </div>
             <!-- Completed export modal -->
-            <div class="modal-content bg-photostack photostack-export-modal-finished" style="display:none">
+            <div class="modal-content photostack-export-modal-finished" style="display:none">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-export-modal-label">Export images</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -437,7 +437,7 @@
     <!-- Watermark manager modal -->
     <div class="modal fade" id="photostack-watermark-manager-modal" tabindex="-1" role="dialog" aria-labelledby="#photostack-watermark-manager-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
-            <div class="modal-content bg-photostack">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-watermark-manager-modal-title">Watermarks</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -466,7 +466,7 @@
     <div class="modal fade" id="photostack-watermark-editor-modal" tabindex="-1" role="dialog" aria-labelledby="#photostack-watermark-editor-modal-title" aria-hidden="true">
         <input type="file" id="photostack-watermark-import-image" accept="image/jpeg,image/png,image/gif">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
-            <div class="modal-content bg-photostack">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="photostack-watermark-editor-modal-title"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -587,7 +587,7 @@
     <script src="js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.6.0/dist/jszip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/localforage@1.9.0/dist/localforage.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pica@6.1/dist/pica.min.js"></script>
     <script src="js/editor.js"></script>
