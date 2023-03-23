@@ -760,17 +760,13 @@ document.querySelectorAll('input[name="photostack-file-name"]').forEach(function
 
 // Append event listeners to buttons and other elements
 
-document.querySelectorAll('.photostack-clear-images-btn').forEach(function (el) {
-    el.addEventListener('click', function () {
-        clearImportedImages()
-    })
+document.querySelector('#photostack-clear-images-btn').addEventListener('click', function () {
+    clearImportedImages()
 })
 
-document.querySelectorAll('.photostack-import-file-btn').forEach(function (el) {
-    el.addEventListener('click', function () {
-        plausible('Import', { props: { method: 'Local file picker' } })
-        document.getElementById('photostack-import-file').click()
-    })
+document.querySelector('#photostack-import-file-btn').addEventListener('click', function () {
+    plausible('Import', { props: { method: 'Local file picker' } })
+    document.getElementById('photostack-import-file').click()
 })
 
 document.getElementById('photostack-import-file').addEventListener('change', function () {

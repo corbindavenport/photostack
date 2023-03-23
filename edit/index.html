@@ -25,44 +25,57 @@
     <meta name="twitter:image" content="https://photostack.app/img/maskable_icon_x512.png" />
     <meta name="twitter:image:alt" content="PhotoStack app icon" />
     <!-- Analytics -->
-    <script defer data-domain="edit.photostack.app" src="https://plausible.io/js/plausible.js"></script>
+    <script defer data-domain="photostack.app" src="https://plausible.io/js/plausible.js"></script>
 </head>
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg bg-secondary fixed-top">
+    <nav class="navbar fixed-top navbar-expand-sm bg-dark border-bottom">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">PhotoStack</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand d-sm-none" href="#">PhotoStack</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#photostack-about-modal">About</a>
+                        <a class="nav-link" href="/">
+                            <i class="bi bi-house-fill"></i>
+                            Home
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#photostack-keyboard-modal">Shortcuts</a>
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <i class="bi bi-images"></i>
+                            Editor
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/watermarks/">
+                            <i class="bi bi-pencil"></i>
+                            Watermarks
+                        </a>
                     </li>
                 </ul>
-                <form class="d-flex d-none d-lg-block">
+                <form class="d-flex">
                     <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false" aria-label="Import">
-                        <i class="bi bi-upload"></i>
-                        Import
+                        <i class="bi bi-folder-plus"></i>
+                        <span class="d-sm-none d-md-inline">Import</span>
                         <span class="badge bg-dark photostack-image-count">0</span>
                     </button>
-                    <button class="btn btn-primary photostack-clear-images-btn me-2" type="button" aria-label="Clear">
+                    <button class="btn btn-primary me-2" id="photostack-clear-images-btn" type="button" aria-label="Clear">
                         <i class="bi bi-trash"></i>
-                        Clear
+                        <span class="d-sm-none d-md-inline">Clear</span>
                     </button>
                     <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled aria-label="Export">
-                        <i class="bi bi-save"></i>
-                        Export
+                        <i class="bi bi-share-fill"></i>
+                        <span class="d-sm-none d-md-inline">Export</span>
                     </button>
                 </form>
             </div>
         </div>
     </nav>
+
     <!-- Main container -->
     <div class="container-fluid d-print-none">
         <div class="row">
@@ -192,32 +205,6 @@
             </div>
         </div>
     </div>
-    <!-- Import/export toolbar for mobile only -->
-    <div class="photostack-mobile-toolbar bg-secondary d-lg-none d-print-none">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-4">
-                    <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false" aria-label="Import">
-                        <i class="bi bi-upload d-none d-sm-inline"></i>
-                        Import
-                        <span class="badge bg-dark photostack-image-count">0</span>
-                    </button>
-                </div>
-                <div class="col-4">
-                    <button class="btn btn-primary photostack-clear-images-btn w-100" type="button" aria-label="Clear">
-                        <i class="bi bi-trash d-none d-sm-inline"></i>
-                        Clear
-                    </button>
-                </div>
-                <div class="col-4">
-                    <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled aria-label="Export">
-                        <i class="bi bi-save d-none d-sm-inline"></i>
-                        Export
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Welcome modal -->
     <div class="modal fade" id="photostack-welcome-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -322,7 +309,7 @@
                 <div class="modal-body">
                     <p>Select photos from your device or the web to get started. You can also drag and drop files into PhotoStack to import them.</p>
                     <p>
-                        <button class="btn btn-primary w-100 photostack-import-file-btn" type="button" data-bs-dismiss="modal">Import local files</button>
+                        <button class="btn btn-primary w-100" id="photostack-import-file-btn" type="button" data-bs-dismiss="modal">Import local files</button>
                     </p>
                     <p style="text-align: center" class="small">Supported file types: Images, ZIP, MS Office 2007+</p>
                 </div>
