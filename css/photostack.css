@@ -3,7 +3,9 @@ body {
     padding-top: 56px;
 }
 
-#photostack-watermark-preview, #photostack-editor-preview img, #photostack-watermark-editor-preview {
+#photostack-watermark-preview,
+#photostack-editor-preview img,
+#photostack-watermark-editor-preview {
     max-width: 100%;
 }
 
@@ -11,14 +13,21 @@ body {
     border-radius: 0.25rem;
 }
 
-#photostack-original-container, #photostack-canvas-container, #photostack-import-file, #photostack-watermark-file-import, #photostack-import-zip, #photostack-watermark-import-image, #photostack-watermark-cache {
-    display: none;
-}
 
-.photostack-preview-card {
+#photostack-editor-preview {
     position: -webkit-sticky;
     position: sticky;
-    top: 70px;
+    top: 58px;
+}
+
+#photostack-original-container,
+#photostack-canvas-container,
+#photostack-import-file,
+#photostack-watermark-file-import,
+#photostack-import-zip,
+#photostack-watermark-import-image,
+#photostack-watermark-cache {
+    display: none;
 }
 
 #photostack-watermark-manager-list {
@@ -34,12 +43,16 @@ body {
     max-width: 900px;
 }
 
-/* Styles for large devices */
+/* Styles for medium and up devices */
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
 
-    .photostack-preview-card img {
-        max-height: calc(100vh - 8rem);
+    #photostack-editor-preview {
+        min-height: calc(100vh - 58px);
+    }
+
+    #photostack-editor-preview img {
+        max-height: calc(100vh - 58px);
     }
 
 }
@@ -47,10 +60,6 @@ body {
 /* Styles for medium/small/x-small devices */
 
 @media (max-width: 991.98px) {
-
-    .photostack-preview-card img {
-        max-height: 60vh;
-    }
 
     /* Allow watermark editor to fill screen width */
 
@@ -63,6 +72,10 @@ body {
 /* Styles for small/x-small devices */
 
 @media (max-width: 767.98px) {
+
+    #photostack-editor-preview img {
+        max-height: 60vh;
+    }
 
     .toast-container {
         padding: 0 5px !important;

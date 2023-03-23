@@ -71,9 +71,6 @@
                         <i class="bi bi-share-fill"></i>
                         <span class="d-sm-none d-md-inline">Export</span>
                     </button>
-                    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#photostack-keyboard-modal" data-backdrop="static" data-keyboard="false" aria-label="Keyboard Shortcuts">
-                        <i class="bi bi-keyboard-fill"></i>
-                    </button>
                 </form>
             </div>
         </div>
@@ -83,27 +80,20 @@
     <div class="container-fluid d-print-none">
         <div class="row">
             <!-- Preview container -->
-            <div class="col-12 col-md-8 photostack-preview-container">
-                <!-- Temporary text for when no photos are imported -->
-                <div class="card photostack-preview-card">
-                    <div class="card-body" style="padding: 0">
-                        <div class="text-center" id="photostack-editor-preview">
-                            <p><br />A preview of your settings will appear here once you import some images.</p>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent">
-                        <small class="text-muted">Preview is limited to 800px wide.</small>
-                    </div>
+            <div class="col-12 col-md-8 photostack-preview-container text-center">
+                <div class="d-inline-flex align-items-center" id="photostack-editor-preview">
+                    <!-- Temporary text for when no photos are imported -->
+                    <div class="p-5 text-center w-100">A preview of your settings will appear here once you import some images.</div>
                 </div>
             </div>
             <!-- Settings panel container -->
-            <div class="col-12 col-md-4 p-0">
+            <div class="col-12 col-md-4">
                 <!-- Safari message -->
                 <div class="alert alert-warning photostack-safari-warning" data-bs-toggle="modal" data-bs-target="#photostack-safari-modal" style="display: none; cursor: pointer;">
                     Safari may periodically delete PhotoStack's data, including saved watermarks. Press here for more information.
                 </div>
                 <!-- Resize card -->
-                <div class="card mt-3 mt-md-0 rounded-0 border-bottom-0">
+                <div class="card mt-3">
                     <div class="card-header">
                         Resize
                     </div>
@@ -123,7 +113,7 @@
                     </div>
                 </div>
                 <!-- Advertisements card -->
-                <div class="card rounded-0 border-bottom-0">
+                <div class="card mt-3">
                     <div class="card-header">
                         Advertisements
                     </div>
@@ -139,7 +129,7 @@
                     </div>
                 </div>
                 <!-- Watermarks card-->
-                <div class="card rounded-0 border-bottom-0">
+                <div class="card mt-3">
                     <div class="card-header">
                         Watermark
                     </div>
@@ -155,7 +145,7 @@
                     </div>
                 </div>
                 <!-- Border card -->
-                <div class="card rounded-0 border-bottom-0">
+                <div class="card mt-3">
                     <div class="card-header">
                         Border
                     </div>
@@ -167,7 +157,7 @@
                     </div>
                 </div>
                 <!-- Resize card -->
-                <div class="card rounded-0 border-bottom-0">
+                <div class="card mt-3">
                     <div class="card-header">
                         Crop
                     </div>
@@ -194,7 +184,7 @@
                     </div>
                 </div>
                 <!-- Other options card-->
-                <div class="card rounded-0 border-bottom-0">
+                <div class="card mt-3">
                     <div class="card-header">
                         Miscellaneous
                     </div>
@@ -204,6 +194,9 @@
                             <label class="form-check-label" for="photostack-exif">Remove EXIF data</label>
                         </div>
                     </div>
+                </div>
+                <div class="mt-3 mb-3">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#photostack-keyboard-modal" data-backdrop="static" data-keyboard="false">Keyboard shortcuts</a>
                 </div>
             </div>
         </div>
