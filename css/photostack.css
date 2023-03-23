@@ -1,10 +1,6 @@
-nav, .photostack-mobile-toolbar {
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
-}
-
 body {
-    overscroll-behavior: contain;
-    padding-top: 70px;
+    overscroll-behavior-y: none;
+    padding-top: 56px;
 }
 
 #photostack-watermark-preview, #photostack-editor-preview img, #photostack-watermark-editor-preview {
@@ -38,18 +34,6 @@ body {
     max-width: 900px;
 }
 
-/* Mobile toolbar */
-
-.photostack-mobile-toolbar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #303030;
-    z-index: 200;
-    padding: 10px 0 10px 0;
-}
-
 /* Styles for large devices */
 
 @media (min-width: 992px) {
@@ -68,24 +52,6 @@ body {
         max-height: 60vh;
     }
 
-    /* Hide in-nav buttons on mobile, in favor of floating toolbar */
-    
-    nav .form-inline {
-        display: none;
-    }
-
-    /* Don't allow toasts to cover floating toolbar */
-
-    .toast-container {
-        bottom: 65px !important;
-    }
-
-    /* Fix bottom of container being cut off by mobile toolbar */
-
-    .col-lg-4 {
-        padding-bottom: 60px;
-    }
-
     /* Allow watermark editor to fill screen width */
 
     #photostack-watermark-editor-modal .modal-dialog {
@@ -97,11 +63,6 @@ body {
 /* Styles for small/x-small devices */
 
 @media (max-width: 767.98px) {
-
-    .photostack-mobile-toolbar .row div {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
 
     .toast-container {
         padding: 0 5px !important;

@@ -67,9 +67,12 @@
                         <i class="bi bi-trash"></i>
                         <span class="d-sm-none d-md-inline">Clear</span>
                     </button>
-                    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled aria-label="Export">
+                    <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled aria-label="Export">
                         <i class="bi bi-share-fill"></i>
                         <span class="d-sm-none d-md-inline">Export</span>
+                    </button>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#photostack-keyboard-modal" data-backdrop="static" data-keyboard="false" aria-label="Keyboard Shortcuts">
+                        <i class="bi bi-keyboard-fill"></i>
                     </button>
                 </form>
             </div>
@@ -80,7 +83,7 @@
     <div class="container-fluid d-print-none">
         <div class="row">
             <!-- Preview container -->
-            <div class="col-lg col-md-6 photostack-preview-container">
+            <div class="col-12 col-md-8 photostack-preview-container">
                 <!-- Temporary text for when no photos are imported -->
                 <div class="card photostack-preview-card">
                     <div class="card-body" style="padding: 0">
@@ -94,13 +97,13 @@
                 </div>
             </div>
             <!-- Settings panel container -->
-            <div class="col-lg-4 col-md-6">
+            <div class="col-12 col-md-4 p-0">
                 <!-- Safari message -->
                 <div class="alert alert-warning photostack-safari-warning" data-bs-toggle="modal" data-bs-target="#photostack-safari-modal" style="display: none; cursor: pointer;">
                     Safari may periodically delete PhotoStack's data, including saved watermarks. Press here for more information.
                 </div>
                 <!-- Resize card -->
-                <div class="card mb-3 mt-3 mt-md-0">
+                <div class="card mt-3 mt-md-0 rounded-0 border-bottom-0">
                     <div class="card-header">
                         Resize
                     </div>
@@ -120,7 +123,7 @@
                     </div>
                 </div>
                 <!-- Advertisements card -->
-                <div class="card mb-3">
+                <div class="card rounded-0 border-bottom-0">
                     <div class="card-header">
                         Advertisements
                     </div>
@@ -136,7 +139,7 @@
                     </div>
                 </div>
                 <!-- Watermarks card-->
-                <div class="card mb-3">
+                <div class="card rounded-0 border-bottom-0">
                     <div class="card-header">
                         Watermark
                     </div>
@@ -152,7 +155,7 @@
                     </div>
                 </div>
                 <!-- Border card -->
-                <div class="card mb-3">
+                <div class="card rounded-0 border-bottom-0">
                     <div class="card-header">
                         Border
                     </div>
@@ -164,7 +167,7 @@
                     </div>
                 </div>
                 <!-- Resize card -->
-                <div class="card mb-3 mt-3 mt-md-0">
+                <div class="card rounded-0 border-bottom-0">
                     <div class="card-header">
                         Crop
                     </div>
@@ -191,7 +194,7 @@
                     </div>
                 </div>
                 <!-- Other options card-->
-                <div class="card mb-3">
+                <div class="card rounded-0 border-bottom-0">
                     <div class="card-header">
                         Miscellaneous
                     </div>
@@ -214,32 +217,10 @@
                         <h2>Welcome to PhotoStack!</h2>
                     </div>
                     <p>Welcome to PhotoStack, the free and open-source batch photo editor.</p>
-                    <p>To get started, click the Import button at the <span class="d-lg-none">bottom</span><span class="d-none d-lg-inline">top-right</span> to import some images. When you're ready to save your work, click the Export button.</p>
+                    <p>To get started, <span class="d-sm-none">click the menu button at the top-right of the screen, then click Import</span><span class="d-none d-sm-inline">click the Import button at the top-right of the screen</span> to import some images. When you're ready to save your work, click the Export button.</p>
                     <p>
                         <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal" aria-label="Close">Let's go!</button>
                     </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- About modal -->
-    <div class="modal fade" id="photostack-about-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="photostack-export-modal-label">About</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div style="text-align: center; margin: 1em 0;">
-                        <h1>PhotoStack</h1>
-                    </div>
-                    <p>PhotoStack is developed by <a href="https://corbin.io" target="_blank">Corbin Davenport</a>, and all the code is <a href="https://github.com/photostack/" target="_blank">freely available as open-source</a>. If you want to report a bug or suggest features, please <a href="https://github.com/photostack/photostack/issues/new" target="_blank">create an issue on GitHub</a> or <a href="https://discord.gg/59wfy5cNHw" target="_blank">join the Discord group</a>.</p>
-                    <!-- Donation links have to be hidden on the Android app to pass Play Store rules :( -->
-                    <div class="photostack-android-hide w-100">
-                        <p><a href="https://cash.app/$corbdav" target="_blank"><button type="button" class="btn btn-primary w-100">Support via Cash App</button></a></p>
-                        <p><a href=https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank"><button type="button" class="btn btn-primary w-100">Support via PayPal</button></a></p>
-                    </div>
                 </div>
             </div>
         </div>
