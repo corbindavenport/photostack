@@ -10,13 +10,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/photostack.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
-    <script src="../js/shared.js"></script>
     <!-- Icons and theme -->
     <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="24x24" href="/img/icon_x24.png">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="shortcut icon" href="favicon.ico">
-    <meta name="theme-color" content="#222">
+    <meta name="theme-color" content="#212529">
     <!-- Twitter card -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:creator" content="@corbindavenport" />
@@ -245,10 +244,6 @@
                                 <td>Clear imported images</td>
                                 <td>Shift + X</td>
                             </tr>
-                            <tr>
-                                <td>Open watermarks</td>
-                                <td>Shift + W</td>
-                            </tr>
                         </tbody>
                     </table>
                     </p>
@@ -395,118 +390,6 @@
             </div>
         </div>
     </div>
-    <!-- Watermark manager modal -->
-    <div class="modal fade" id="photostack-watermark-manager-modal" tabindex="-1" role="dialog" aria-labelledby="#photostack-watermark-manager-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="photostack-watermark-manager-modal-title">Watermarks</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Watermarks stored in your <span class="photostack-android-hide">browser</span><span class="photostack-android-show">device</span> are displayed here. You can transfer them to other devices or browsers by exporting the watermarks to a file and importing them on another device/browser.</p>
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-6" style="padding-left: 0">
-                                <button type="button" id="photostack-watermark-new-btn" class="btn btn-primary w-100">New watermark</button>
-                            </div>
-                            <div class="col-6" style="padding-right: 0">
-                                <button type="button" id="photostack-watermark-import-btn" class="btn btn-primary w-100">Import from file</button>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="list-group list-group-flush" id="photostack-watermark-manager-list" role="tablist">
-                        <!-- This is populated by editor.js -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Watermark editor modal -->
-    <div class="modal fade" id="photostack-watermark-editor-modal" tabindex="-1" role="dialog" aria-labelledby="#photostack-watermark-editor-modal-title" aria-hidden="true">
-        <input type="file" id="photostack-watermark-import-image" accept="image/jpeg,image/png,image/gif">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="photostack-watermark-editor-modal-title"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" style="padding-left: 0; padding-right: 0">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <!-- Preview row -->
-                            <div class="col-12 col-sm-6">
-                                <img src="" id="photostack-watermark-editor-preview">
-                            </div>
-                            <!-- Watermark settings row -->
-                            <div class="col-12 col-sm-6">
-                                <!-- Image import -->
-                                <div class="mb-3">
-                                    <button class="btn btn-primary w-100" type="button" id="photostack-watermark-editor-image-btn">Select image</button>
-                                </div>
-                                <!-- Anchor position -->
-                                <div class="form-label mb-3">Anchor position</div>
-                                <div class="row mb-3">
-                                    <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-1">1</button>
-                                    </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-2">2</button>
-                                    </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-3">3</button>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-4">4</button>
-                                    </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-primary photostack-anchor-btn" id="photostack-watermark-pos-5">5</button>
-                                    </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-6">6</button>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-7">7</button>
-                                    </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-8">8</button>
-                                    </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn w-100 btn-secondary photostack-anchor-btn" id="photostack-watermark-pos-9">9</button>
-                                    </div>
-                                </div>
-                                <!-- Effects -->
-                                <div class="form-label mb-3">Effects</div>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text">Size</span>
-                                    <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-size" value="30" autocomplete="off" enterkeyhint="done">
-                                </div>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text">Opacity</span>
-                                    <input type="number" class="form-control" min="0" max="100" aria-label="Size" id="photostack-watermark-opacity" value="50" autocomplete="off" enterkeyhint="done">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="photostack-watermark-horizontal-inset" class="form-label">Horizontal inset</label>
-                                    <input type="range" class="form-range" autocomplete="off" id="photostack-watermark-horizontal-inset" min="-10" max="10" value="0" enterkeyhint="done">
-                                    <label for="photostack-watermark-vertical-inset" class="form-label">Vertical inset</label>
-                                    <input type="range" class="form-range" autocomplete="off" id="photostack-watermark-vertical-inset" min="-10" max="10" value="0" enterkeyhint="done">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Discard changes</button>
-                    <button type="button" class="btn btn-primary" id="photostack-watermark-editor-save-btn">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Import toast -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <!-- Import toast -->
@@ -537,7 +420,6 @@
     </div>
     <!-- File pickers -->
     <input type="file" id="photostack-import-file" multiple accept="image/jpeg,image/png,image/gif,image/bmp,application/zip,application/x-zip,application/x-zip-compressed,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.spreadsheetml.template,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.slideshow">
-    <input type="file" id="photostack-watermark-file-import" multiple accept=".json">
     <!-- Container where original photos are kept as <img> elements -->
     <div id="photostack-original-container" aria-hidden="true"></div>
     <!-- Container where canvas elements for each image are kept -->
@@ -551,6 +433,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/localforage@1.9.0/dist/localforage.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pica@6.1/dist/pica.min.js"></script>
+    <script src="/js/shared.js"></script>
     <script src="/js/editor.js"></script>
     <script src="/js/register-sw.js"></script>
 </body>
