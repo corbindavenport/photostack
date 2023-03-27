@@ -682,19 +682,3 @@ document.addEventListener('keyup', function (event) {
         modalEl.show()
     }
 })
-
-// Show welcome page on first run
-SettingsStore.getItem('welcome-completed').then(function (value) {
-    if (value === 'true') {
-        // Migrate older variable from localStorage
-        SettingsStore.setItem('welcome-completed', 'true')
-        localStorage.removeItem('welcome-editor')
-    } else {
-        var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-welcome-modal'))
-        modalEl.show()
-        // Don't show welcome screen again after it is exited
-        document.getElementById('photostack-welcome-modal').addEventListener('hidden.bs.modal', function () {
-            SettingsStore.setItem('welcome-completed', 'true')
-        })
-    }
-})
