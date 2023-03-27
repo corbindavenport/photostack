@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-bs-theme="dark">
+<html data-bs-theme="dark" data-photostack-mode="photo-editor">
 
 <head>
     <meta charset="utf-8">
@@ -138,9 +138,7 @@
                                 <option selected value="no-watermark">No watermark</option>
                             </select>
                         </div>
-                        <div class="mb-0">
-                            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#photostack-watermark-manager-modal">Manage watermarks</button>
-                        </div>
+                        <a href="/watermarks">Edit watermarks</a>
                     </div>
                 </div>
                 <!-- Border card -->
@@ -226,7 +224,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>PhotoStack offers keyboard shortcuts for common functions. These may not work <span class="photostack-android-hide">with all browsers</span><span class="photostack-android-show">on all devices</span>. Also, they will not work if any popups (like the watermark editor or this help menu) are open.</p>
+                    <p>PhotoStack offers keyboard shortcuts for common functions. These may not work with all browsers. Also, they will not work if any popups (like the watermark editor or this help menu) are open.</p>
                     <p>
                     <table class="table">
                         <thead>
@@ -319,7 +317,7 @@
                             <option value="image/png">Portable Network Graphics (.png)</option>
                             <option value="image/webp">WebP (.webp)</option>
                         </select>
-                        <small class="form-text text-muted">Image format support varies by <span class="photostack-android-hide">browser</span><span class="photostack-android-show">device</span>.</small>
+                        <small class="form-text text-muted">Image format support varies by browser.</small>
                     </div>
                     <div class="mb-3">
                         <label for="photostack-file-quality">Image quality</label>
@@ -358,7 +356,7 @@
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="photostack-export-modal-progress"></div>
                     </div>
                     </p>
-                    <p class="photostack-android-hide text-muted" style="text-align: center;">
+                    <p class="text-muted" style="text-align: center;">
                         Some browsers throttle background windows and tabs. To speed up exports, don't minimize PhotoStack or switch to another tab/window.
                     </p>
                 </div>
@@ -374,7 +372,7 @@
                         <p>
                             <button type="button" id="photostack-export-separate-button" class="btn w-100 btn-primary">Save images to Downloads</button>
                         </p>
-                        <p class="text-muted photostack-android-hide" style="text-align:center">Saving images to Downloads doesn't work correctly in some browsers. If you experience problems, use one of the other options.</p>
+                        <p class="text-muted" style="text-align:center">Saving images to Downloads doesn't work correctly in some browsers. If you experience problems, use one of the other options.</p>
                     </div>
                     <p>
                         <button type="button" id="photostack-export-filesystem-api-button" class="btn w-100 btn-primary">Save images to device</button>
@@ -385,7 +383,7 @@
                     <p>
                         <button type="button" id="photostack-export-zip-button" class="btn w-100 btn-primary">Save images as ZIP</button>
                     </p>
-                    <p class="photostack-android-hide" style="text-align: center">If you found PhotoStack useful, please donate via <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">PayPal</a> or <a href="https://cash.app/$corbdav" target="_blank">Cash App</a> to help support the project!</p>
+                    <p class="text-center">If you found PhotoStack useful, please donate via <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">PayPal</a> or <a href="https://cash.app/$corbdav" target="_blank">Cash App</a> to help support the project!</p>
                 </div>
             </div>
         </div>

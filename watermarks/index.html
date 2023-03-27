@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-photostack-mode="watermark-editor" data-bs-theme="dark">
 
 <head>
     <meta charset="utf-8">
@@ -13,7 +13,7 @@
     <!-- Icons and theme -->
     <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="24x24" href="/img/icon_x24.png">
-    <link rel="manifest" href="site.webmanifest">
+    <link rel="manifest" href="/site.webmanifest">
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="theme-color" content="#212529">
     <!-- Twitter card -->
@@ -65,26 +65,27 @@
 
     <div class="container mt-5 mb-5">
 
-        <div class="card">
-            <div class="card-body">
-                <p>Watermarks stored in your <span class="photostack-android-hide">browser</span><span class="photostack-android-show">device</span> are displayed here. You can transfer them to other devices or browsers by exporting the watermarks to a file and importing them on another device/browser.</p>
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-6" style="padding-left: 0">
-                            <button type="button" id="photostack-watermark-new-btn" class="btn btn-primary w-100">New watermark</button>
-                        </div>
-                        <div class="col-6" style="padding-right: 0">
-                            <button type="button" id="photostack-watermark-import-btn" class="btn btn-primary w-100">Import from file</button>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="list-group list-group-flush" id="photostack-watermark-manager-list" role="tablist">
-                    <!-- This is populated by editor.js -->
-                </div>
+        <div class="row mb-4">
+            <div class="col-6">
+                <button type="button" id="photostack-watermark-new-btn" class="btn btn-primary w-100">
+                    <i class="bi bi-file-earmark-plus"></i>
+                    New watermark
+                </button>
+            </div>
+            <div class="col-6">
+                <button type="button" id="photostack-watermark-import-btn" class="btn btn-primary w-100">
+                    <i class="bi bi-folder-plus"></i>
+                    Import watermark
+                </button>
             </div>
         </div>
-
+        <div class="list-group mb-4" id="photostack-watermark-manager-list" role="tablist">
+            <!-- This is populated by watermarks.js -->
+        </div>
+        <h3>How to use watermarks</h3>
+        <p>PhotoStack allows you to create custom watermarks, which can then be added to your images from the watermarks settings in the main editor. Watermark data is saved locally in your browsers storage, and is not automatically uploaded or shared.</p>
+        <p>You can backup or share watermarks by clicking Export, which saves them as a file to your device. You can then click Import on the Watermarks page on another device to add them to this list.</p>
+        <p><b>Missing some watermarks?</b> You may need to visit <a href="https://edit.photostack.app" target="_blank">open the previous version of PhotoStack</a> and export your old watermarks. After that, you can import them here.</p>
     </div>
 
     <!-- Watermark editor modal -->
@@ -171,16 +172,17 @@
             </div>
         </div>
     </div>
-
+    <!-- Watermark image cache -->
+    <img id="photostack-watermark-cache">
     <!-- File picker -->
     <input type="file" id="photostack-watermark-file-import" multiple accept=".json">
-
     <!-- Scripts -->
     <script src="/js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/localforage@1.9.0/dist/localforage.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pica@6.1/dist/pica.min.js"></script>
     <script src="/js/shared.js"></script>
     <script src="/js/watermarks.js"></script>
 

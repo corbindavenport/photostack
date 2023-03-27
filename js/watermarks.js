@@ -60,12 +60,11 @@ function openWatermarkEditor(watermarkKey) {
         // Render preview image
         renderWatermarkPreviewCanvas()
         // Open the modal
-        var managerModalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-manager-modal'))
         var editorModalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-editor-modal'))
-        managerModalEl.hide()
         editorModalEl.show()
     }).catch(function (err) {
         alert('Error: ' + err)
+        console.error(err)
     })
 }
 
@@ -84,6 +83,7 @@ watermarkEditor.querySelector('#photostack-watermark-import-image').addEventList
     }
     reader.onerror = function (err) {
         alert('Error: ' + err)
+        console.error(err)
     }
     // Once both the reader and image is done, we can safely add it to the originals container and clean up
     image.onload = function () {
@@ -148,6 +148,7 @@ watermarkEditor.querySelector('#photostack-watermark-editor-save-btn').addEventL
         editorModalEl.hide()
     }).catch(function (err) {
         alert('Error: ' + err)
+        console.error(err)
     })
 })
 
@@ -160,6 +161,7 @@ function exportWatermark(watermarkKey) {
         saveAs(blob, fileName)
     }).catch(function (err) {
         alert('Error: ' + err)
+        console.error(err)
     })
 }
 
@@ -170,6 +172,7 @@ function deleteWatermark(watermarkKey) {
             refreshWatermarks()
         }).catch(function (err) {
             alert('Error: ' + err)
+            console.error(err)
         })
     }
 }
@@ -189,6 +192,7 @@ function importWatermarkSettings(el) {
                     var watermarkObj = JSON.parse(reader.result)
                 } catch (err) {
                     alert('Error: ' + err)
+                    console.error(err)
                     return resolve()
                 }
                 // Add watermark to watermarksStore
@@ -197,11 +201,13 @@ function importWatermarkSettings(el) {
                     resolve()
                 }).catch(function (err) {
                     alert('Error: ' + err)
+                    console.error(err)
                     return resolve()
                 })
             }
             reader.onerror = function (event) {
                 alert('Error: ' + event)
+                console.error(err)
                 return resolve()
             }
             reader.readAsText(file)
@@ -282,6 +288,7 @@ document.getElementById('photostack-watermark-new-btn').addEventListener('click'
             refreshWatermarks()
         }).catch(function (err) {
             alert('Error: ' + err)
+            console.error(err)
         })
     }
 })
