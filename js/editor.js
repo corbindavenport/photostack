@@ -607,6 +607,10 @@ document.getElementById('photostack-reset-image-width-button').addEventListener(
     renderPreviewCanvas()
 })
 
+document.getElementById('photostack-print-btn').addEventListener('click', function () {
+    window.print()
+})
+
 // Drag and drop file upload
 
 const dragModal = new bootstrap.Modal(document.getElementById('photostack-drag-modal'))

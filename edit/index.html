@@ -29,7 +29,7 @@
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-sm bg-dark border-bottom">
+    <nav class="navbar fixed-top navbar-expand-sm bg-dark border-bottom d-print-none">
         <div class="container-fluid">
             <a class="navbar-brand d-sm-none" href="#">PhotoStack</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -181,7 +181,7 @@
                     </div>
                 </div>
                 <!-- Other options card-->
-                <div class="card mt-3">
+                <div class="card mt-3 mb-3">
                     <div class="card-header">
                         Miscellaneous
                     </div>
@@ -192,9 +192,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-3 mb-3">
+                <p>
                     <a href="#" data-bs-toggle="modal" data-bs-target="#photostack-keyboard-modal" data-backdrop="static" data-keyboard="false">Keyboard shortcuts</a>
-                </div>
+                </p>
+                <p>
+                    <a href="#" id="photostack-print-btn">Print preview</a>
+                </p>
             </div>
         </div>
     </div>
@@ -235,12 +238,20 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Import local images</td>
+                                <td>Import images</td>
                                 <td>Shift + O</td>
                             </tr>
                             <tr>
                                 <td>Clear imported images</td>
                                 <td>Shift + X</td>
+                            </tr>
+                            <tr>
+                                <td>Print the preview</td>
+                                <td>
+                                    Ctrl + P
+                                    <br>
+                                    Cmd + P
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -389,7 +400,7 @@
         </div>
     </div>
     <!-- Import toast -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3 d-print-none">
         <!-- Import toast -->
         <div id="photostack-import-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-body">
@@ -401,7 +412,7 @@
         </div>
     </div>
     <!-- Error toast -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3 d-print-none">
         <!-- Import toast -->
         <div id="photostack-error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
@@ -413,7 +424,7 @@
         </div>
     </div>
     <!-- Print UI -->
-    <div class="d-none d-print-block">
+    <div class="d-none d-print-block text-center">
         <img id="photostack-print-preview">
     </div>
     <!-- File pickers -->
