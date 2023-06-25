@@ -30,15 +30,6 @@ body {
     display: none;
 }
 
-#photostack-watermark-manager-list {
-    margin-left: -1rem;
-    margin-right: -1rem;
-}
-
-#photostack-watermark-manager-list div:first-of-type {
-    border-top-width: 1px !important;
-}
-
 #photostack-watermark-editor-modal .modal-dialog {
     max-width: 900px;
 }

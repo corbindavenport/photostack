@@ -227,48 +227,45 @@ async function refreshWatermarks() {
     document.getElementById('photostack-watermark-manager-list').innerHTML = ''
     // Add watermarks to editor dropdown menu and watermark manager
     await watermarksStore.iterate(function (value, key, iterationNumber) {
-        // Add watermark to select menu
-        var option = document.createElement('option')
-        option.innerText = key
-        option.value = key
-        // Add watermark to manager modal list
-        var listItem = document.createElement('div')
-        listItem.classList.add('list-group-item')
-        var itemTitle = document.createElement('h5')
-        itemTitle.innerText = key
-        listItem.appendChild(itemTitle)
-        // Add button container to list
-        var buttons = document.createElement('div')
-        buttons.classList.add('btn-group', 'w-100')
-        buttons.setAttribute('role', 'group')
-        listItem.appendChild(buttons)
+        // Create card
+        var card = document.createElement('div');
+        card.classList.add('card', 'mb-2');
+        // Create card content
+        var cardBody = document.createElement('div');
+        cardBody.classList.add('card-body');
+        card.appendChild(cardBody);
+        // Create card title
+        var cardTitle = document.createElement('h5');
+        cardTitle.classList.add('card-title');
+        cardTitle.innerText = key;
+        cardBody.appendChild(cardTitle);
         // Add edit button
         var editBtn = document.createElement('button')
-        editBtn.innerText = 'Edit'
-        editBtn.classList.add('btn', 'btn-primary', 'btn-sm')
+        editBtn.innerHTML = '<i class="bi bi-pencil me-2"></i>Edit';
+        editBtn.classList.add('btn', 'btn-primary', 'me-2', 'mt-1');
         editBtn.addEventListener('click', function () {
-            openWatermarkEditor(key)
-        })
-        buttons.appendChild(editBtn)
+            openWatermarkEditor(key);
+        });
+        cardBody.appendChild(editBtn);
         // Add export button
-        var exportBtn = document.createElement('button')
-        exportBtn.innerText = 'Export'
-        exportBtn.classList.add('btn', 'btn-secondary', 'btn-sm')
+        var exportBtn = document.createElement('button');
+        exportBtn.innerHTML = '<i class="bi bi-save me-2"></i>Export';
+        exportBtn.classList.add('btn', 'btn-secondary', 'me-2', 'mt-1');
         exportBtn.addEventListener('click', function () {
-            exportWatermark(key)
-        })
-        buttons.appendChild(exportBtn)
+            exportWatermark(key);
+        });
+        cardBody.appendChild(exportBtn);
         // Add delete button
-        var deleteBtn = document.createElement('button')
-        deleteBtn.innerText = 'Delete'
-        deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm')
+        var deleteBtn = document.createElement('button');
+        deleteBtn.innerHTML = '<i class="bi bi-trash me-2"></i>Delete';
+        deleteBtn.classList.add('btn', 'btn-danger', 'mt-1');
         deleteBtn.addEventListener('click', function () {
-            deleteWatermark(key)
-        })
-        buttons.appendChild(deleteBtn)
-        // Add everything to the list
-        document.getElementById('photostack-watermark-manager-list').appendChild(listItem)
-        console.log('Loaded watermark:', [key, value])
+            deleteWatermark(key);
+        });
+        cardBody.appendChild(deleteBtn);
+        // Add card to body
+        document.getElementById('photostack-watermark-manager-list').appendChild(card);
+        console.log('Loaded watermark:', [key, value]);
     })
 }
 
