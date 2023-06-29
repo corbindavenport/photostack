@@ -85,6 +85,7 @@ function renderPreviewCanvas() {
         }
         // Find elements
         var previewContainer = document.getElementById('photostack-editor-preview')
+        var previewInfo = document.getElementById('photostack-preview-info')
         var originalsContainer = document.getElementById('photostack-original-container')
         var canvasContainer = document.getElementById('photostack-canvas-container')
         // Create canvas element for first imported image
@@ -121,7 +122,7 @@ function renderPreviewCanvas() {
         } else {
             var previewImage = document.createElement('img')
             previewImage.onload = function () {
-                previewContainer.innerHTML = ''
+                previewInfo.classList.add('d-none')
                 previewContainer.appendChild(previewImage)
                 resolve()
             }
@@ -310,7 +311,8 @@ function clearImportedImages() {
         el.disabled = true
     })
     // Reset preview
-    document.getElementById('photostack-editor-preview').innerHTML = '<p><br />A preview of your settings will appear here once you import some images.</p>'
+    document.querySelector('#photostack-editor-preview img').remove()
+    document.querySelector('#photostack-preview-info').classList.remove('d-none')
 }
 
 // Async export with Promises

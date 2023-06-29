@@ -26,7 +26,7 @@
             "purpose": "maskable"
         }
     ],
-    "theme_color": "#343a40",
+    "theme_color": "#212529",
     "background_color": "#212529",
     "display": "standalone",
     "start_url": "/edit?utm_source=Installed%20App&utm_medium=Home%20Screen"
