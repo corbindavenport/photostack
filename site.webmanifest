@@ -1,56 +1,33 @@
 {
     "name": "PhotoStack",
     "short_name": "PhotoStack",
+    "description": "Convert, resize, watermark, and crop images in a few clicks.",
     "icons": [
         {
-            "src": "img/android-chrome-192x192.png",
+            "src": "img/icon_x192.png",
             "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any"
+            "type": "image/png"
         },
         {
-            "src": "img/android-chrome-512x512.png",
+            "src": "img/icon_x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "img/maskable_icon_x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "img/maskable_icon_x512.png",
             "sizes": "512x512",
             "type": "image/png",
-            "purpose": "any"
-        },
-        {
-            "src": "img/icon-maskable.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any maskable"
+            "purpose": "maskable"
         }
     ],
-    "theme_color": "#222",
-    "background_color": "#303030",
+    "theme_color": "#212529",
+    "background_color": "#212529",
     "display": "standalone",
-    "start_url": "/",
-    "shortcuts": [
-        {
-            "name": "Import",
-            "description": "Import images",
-            "url": "/?open_import=true",
-            "icons": [
-                {
-                    "src": "/img/import-shortcut.png",
-                    "type": "image/png",
-                    "sizes": "192x192",
-                    "purpose": "any maskable"
-                }
-            ]
-        },
-        {
-            "name": "Watermarks",
-            "description": "Open list of watermarks",
-            "url": "/?open_watermarks=true",
-            "icons": [
-                {
-                    "src": "/img/watermark-edit-shortcut.png",
-                    "type": "image/png",
-                    "sizes": "192x192",
-                    "purpose": "any maskable"
-                }
-            ]
-        }
-    ]
+    "start_url": "/edit?utm_source=Installed%20App&utm_medium=Home%20Screen"
 }

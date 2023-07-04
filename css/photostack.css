@@ -1,14 +1,26 @@
-nav, .photostack-mobile-toolbar {
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
-}
-
 body {
-    overscroll-behavior: contain;
-    padding-top: 70px;
-    background-color: #222;
+    overscroll-behavior-y: none;
+    padding-top: 56px;
 }
 
-#photostack-watermark-preview, #photostack-editor-preview img, #photostack-watermark-editor-preview {
+html {
+    scrollbar-color: rgb(73, 80, 87) rgb(33,37,41);
+    scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+    background-color: rgb(33,37,41);
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(73, 80, 87);
+    border-radius: 4px;
+}
+
+#photostack-watermark-preview,
+#photostack-editor-preview img,
+#photostack-watermark-editor-preview {
     max-width: 100%;
 }
 
@@ -16,100 +28,37 @@ body {
     border-radius: 0.25rem;
 }
 
-#photostack-original-container, #photostack-canvas-container, #photostack-import-file, #photostack-watermark-file-import, #photostack-import-zip, #photostack-watermark-import-image, #photostack-watermark-cache {
-    display: none;
-}
 
-.photostack-preview-card {
+#photostack-editor-preview {
     position: -webkit-sticky;
     position: sticky;
-    top: 70px;
+    top: 58px;
 }
 
-hr {
-    border-color: #444;
-}
-
-#photostack-watermark-manager-list {
-    margin-left: -1rem;
-    margin-right: -1rem;
-}
-
-#photostack-watermark-manager-list div:first-of-type {
-    border-top-width: 1px !important;
+#photostack-original-container,
+#photostack-canvas-container,
+#photostack-import-file,
+#photostack-watermark-file-import,
+#photostack-import-zip,
+#photostack-watermark-import-image,
+#photostack-watermark-cache {
+    display: none;
 }
 
 #photostack-watermark-editor-modal .modal-dialog {
     max-width: 900px;
 }
 
-/* Custom colors */
+/* Styles for medium and up devices */
 
-.bg-photostack {
-    background-color: #303030 !important;
-    color: #FFF !important;
-}
+@media (min-width: 768px) {
 
-.bg-photostack .list-group-item {
-    color: #FFF;
-}
+    #photostack-editor-preview {
+        min-height: calc(100vh - 58px);
+    }
 
-.bg-photostack .text-muted,.bg-photostack .form-text, .bg-photostack table {
-    color: #adb5bd !important;
-}
-
-.bg-photostack .btn-close {
-    filter: invert(100%);
-}
-
-.bg-photostack .list-group-item {
-    background-color: #303030;
-}
-
-.bg-photostack * {
-    border-color: #242424;
-}
-
-.bg-photostack .btn {
-    border-color: #242424;
-}
-
-.bg-photostack a {
-    color: #FFF;
-}
-
-.bg-photostack a:hover {
-    color: #adb5bd;
-}
-
-/* Styles for Android app */
-
-.photostack-android-show, .photostack-android .photostack-android-hide {
-    display: none;
-}
-
-.photostack-android .photostack-android-show, .photostack-android-hide {
-    display: inline-block;
-}
-
-/* Mobile toolbar */
-
-.photostack-mobile-toolbar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #303030;
-    z-index: 200;
-    padding: 10px 0 10px 0;
-}
-
-/* Styles for large devices */
-
-@media (min-width: 992px) {
-
-    .photostack-preview-card img {
-        max-height: calc(100vh - 8rem);
+    #photostack-editor-preview img {
+        max-height: calc(100vh - 58px);
     }
 
 }
@@ -117,28 +66,6 @@ hr {
 /* Styles for medium/small/x-small devices */
 
 @media (max-width: 991.98px) {
-
-    .photostack-preview-card img {
-        max-height: 60vh;
-    }
-
-    /* Hide in-nav buttons on mobile, in favor of floating toolbar */
-    
-    nav .form-inline {
-        display: none;
-    }
-
-    /* Don't allow toasts to cover floating toolbar */
-
-    .toast-container {
-        bottom: 65px !important;
-    }
-
-    /* Fix bottom of container being cut off by mobile toolbar */
-
-    .col-lg-4 {
-        padding-bottom: 60px;
-    }
 
     /* Allow watermark editor to fill screen width */
 
@@ -152,9 +79,8 @@ hr {
 
 @media (max-width: 767.98px) {
 
-    .photostack-mobile-toolbar .row div {
-        padding-left: 5px;
-        padding-right: 5px;
+    #photostack-editor-preview img {
+        max-height: 60vh;
     }
 
     .toast-container {
@@ -175,6 +101,7 @@ hr {
         background: #ffffff;
         color: #000;
         font-size: 18px;
+        padding: 0;
     }
 
 }

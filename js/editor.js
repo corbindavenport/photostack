@@ -73,174 +73,6 @@ function cropCanvas(canvas, top, bottom, left, right) {
     return newCanvas
 }
 
-// Resize a canvas using Pica library
-function resizeCanvas(oldCanvas, width, height, globalAlpha = 1.0) {
-    return new Promise(function (resolve) {
-        // Create canvas with new size
-        var newCanvas = document.createElement('canvas')
-        newCanvas.width = width
-        newCanvas.height = height
-        // Get settings
-        const options = {
-            unsharpAmount: parseInt(document.getElementById('photostack-resize-unsharp-amount').value),
-            unsharpRadius: 0.5,
-            unsharpThreshold: 2,
-            alpha: true
-        }
-        // Do the resize
-        pica().resize(oldCanvas, newCanvas, options).then(function () {
-            // We have to create ANOTHER canvas to apply transparency
-            if (globalAlpha != 1.0) {
-                var tempCanvas = document.createElement('canvas')
-                tempCanvas.width = newCanvas.width
-                tempCanvas.height = newCanvas.height
-                tempCanvas.getContext('2d').globalAlpha = globalAlpha
-                tempCanvas.getContext('2d').drawImage(newCanvas, 0, 0)
-                resolve(tempCanvas)
-            } else {
-                resolve(newCanvas)
-            }
-        })
-    })
-}
-
-// Apply settings to a canvas
-function applyCanvasSettings(canvas, watermarkObject = null, previewMode = false) {
-    return new Promise(async function (resolve) {
-        // Create aspect ratio from original canvas size
-        var ratio = (canvas.width / canvas.height)
-        // Crop image
-        var cropNeeded = (
-            (document.getElementById('photostack-crop-top').value != 0) ||
-            (document.getElementById('photostack-crop-bottom').value != 0) ||
-            (document.getElementById('photostack-crop-left').value != 0) ||
-            (document.getElementById('photostack-crop-right').value != 0)
-        )
-        if (cropNeeded) {
-            canvas = cropCanvas(canvas, document.getElementById('photostack-crop-top').value, document.getElementById('photostack-crop-bottom').value, document.getElementById('photostack-crop-left').value, document.getElementById('photostack-crop-right').value)
-            // Update ratio
-            ratio = (canvas.width / canvas.height)
-        }
-        // Resize image
-        if (document.getElementById('photostack-image-width').value != '') {
-            // Set new canvas size
-            var width = parseInt(document.getElementById('photostack-image-width').value)
-            if (previewMode && (width > 800)) {
-                width = 800
-            }
-            var height = width / ratio
-            // Do the resize
-            canvas = await resizeCanvas(canvas, width, height)
-        } else if (previewMode) {
-            // Set new canvas size
-            var width = 800
-            var height = width / ratio
-            // Do the resize
-            canvas = await resizeCanvas(canvas, width, height)
-        }
-        // Apply border
-        if (parseInt(document.getElementById('photostack-border-width').value) > 0) {
-            var borderSize = document.getElementById('photostack-border-width').value
-            var borderColor = document.getElementById('photostack-border-color').value
-            // Top border
-            canvas.getContext("2d").beginPath()
-            canvas.getContext("2d").lineWidth = borderSize
-            canvas.getContext("2d").strokeStyle = borderColor
-            canvas.getContext("2d").rect(0, 0, canvas.width, borderSize)
-            canvas.getContext("2d").stroke()
-            // Bottom border
-            canvas.getContext("2d").beginPath()
-            canvas.getContext("2d").lineWidth = borderSize
-            canvas.getContext("2d").strokeStyle = borderColor
-            canvas.getContext("2d").rect(0, (canvas.height - borderSize), canvas.width, borderSize)
-            canvas.getContext("2d").stroke()
-            // Left border
-            canvas.getContext("2d").beginPath()
-            canvas.getContext("2d").lineWidth = borderSize
-            canvas.getContext("2d").strokeStyle = borderColor
-            canvas.getContext("2d").rect(0, 0, borderSize, canvas.height)
-            canvas.getContext("2d").stroke()
-            // Right border
-            canvas.getContext("2d").beginPath()
-            canvas.getContext("2d").lineWidth = borderSize
-            canvas.getContext("2d").strokeStyle = borderColor
-            canvas.getContext("2d").rect((canvas.width - borderSize), 0, borderSize, canvas.height)
-            canvas.getContext("2d").stroke()
-        }
-        // Apply watermark
-        if (watermarkObject) {
-            // Load the watermark image
-            if (watermarkObject.image.length === document.getElementById('photostack-watermark-cache').src.length) {
-                // If the current image has already been loaded, avoid loading it again
-                var watermarkImage = document.getElementById('photostack-watermark-cache')
-            } else {
-                // Load the image and add it to cache
-                var watermarkImage = await new Promise(function (resolve) {
-                    var tempImage = document.getElementById('photostack-watermark-cache')
-                    tempImage.onload = function () {
-                        resolve(tempImage)
-                    }
-                    tempImage.src = watermarkObject.image
-                })
-            }
-            // Create temporary canvas for the watermark
-            var watermarkCanvas = document.createElement('canvas')
-            watermarkCanvas.width = watermarkImage.naturalWidth
-            watermarkCanvas.height = watermarkImage.naturalHeight
-            // Set opacity
-            var opacity = parseInt(watermarkObject.opacity) / 100
-            // Draw watermark to temporary canvas
-            watermarkCanvas.getContext('2d').drawImage(watermarkImage, 0, 0)
-            // Calculate new size of watermark
-            var resizeRatio = watermarkImage.naturalHeight / watermarkImage.naturalWidth
-            var userSize = parseInt(watermarkObject.size)
-            watermarkFinalWidth = canvas.width * (userSize / 100)
-            watermarkFinalHeight = watermarkFinalWidth * resizeRatio
-            // Do the resize
-            watermarkCanvas = await resizeCanvas(watermarkImage, watermarkFinalWidth, watermarkFinalHeight, opacity)
-            // Set horizontal and vertical insets
-            var horizontalInset = canvas.width * (watermarkObject.horizontalInset / 100)
-            var veritcalInset = canvas.height * (watermarkObject.veritcalInset / 100)
-            // Set anchor position
-            if (watermarkObject.anchorPosition === 1) {
-                // Top-left alignment
-                // Because the X and Y values start from the top-left, nothing happens here
-            } else if (watermarkObject.anchorPosition === 2) {
-                // Top-center alignment (Ignore: Horizontal)
-                horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
-            } else if (watermarkObject.anchorPosition === 3) {
-                // Top-right alignment
-                horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
-            } else if (watermarkObject.anchorPosition === 4) {
-                // Middle-left alignment (Ignore: Vertical)
-                veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
-            } else if (watermarkObject.anchorPosition === 5) {
-                // Middle-center alignment (Ignore: Vertical & Horizontal)
-                horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
-                veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
-            } else if (watermarkObject.anchorPosition === 6) {
-                // Middle-right alignment (Ignore: Vertical)
-                horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
-                veritcalInset = (canvas.height / 2) - (watermarkCanvas.height / 2)
-            } else if (watermarkObject.anchorPosition === 7) {
-                // Bottom-left alignment
-                veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
-            } else if (watermarkObject.anchorPosition === 8) {
-                // Bottom-center alignment (Ignore: Horizontal)
-                veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
-                horizontalInset = (canvas.width / 2) - (watermarkCanvas.width / 2)
-            } else if (watermarkObject.anchorPosition === 9) {
-                // Bottom-right alignment
-                veritcalInset = canvas.height - watermarkCanvas.height - veritcalInset
-                horizontalInset = canvas.width - watermarkCanvas.width - horizontalInset
-            }
-            // Draw completed image to temporary canvas
-            canvas.getContext('2d').drawImage(watermarkCanvas, horizontalInset, veritcalInset)
-        }
-        resolve(canvas)
-    })
-}
-
 // Render canvas of first image, apply settings, and show a preview
 function renderPreviewCanvas() {
     return new Promise(async function (resolve) {
@@ -253,6 +85,7 @@ function renderPreviewCanvas() {
         }
         // Find elements
         var previewContainer = document.getElementById('photostack-editor-preview')
+        var previewInfo = document.getElementById('photostack-preview-info')
         var originalsContainer = document.getElementById('photostack-original-container')
         var canvasContainer = document.getElementById('photostack-canvas-container')
         // Create canvas element for first imported image
@@ -289,7 +122,7 @@ function renderPreviewCanvas() {
         } else {
             var previewImage = document.createElement('img')
             previewImage.onload = function () {
-                previewContainer.innerHTML = ''
+                previewInfo.classList.add('d-none')
                 previewContainer.appendChild(previewImage)
                 resolve()
             }
@@ -440,7 +273,6 @@ function importFiles(files, element = null) {
         imageArray = Array.from(imageArray)
         // Update image counter
         increaseImageCount(imageArray.length)
-        console.log(imageArray)
         // Add images to originals container
         imageArray.forEach(function (imageEl) {
             document.getElementById('photostack-original-container').appendChild(imageEl)
@@ -455,71 +287,6 @@ function importFiles(files, element = null) {
             element.value = ''
         }
     })
-}
-
-// Add image from URL
-function importWebImage(url) {
-    // Initialize import toast
-    var importToast = new bootstrap.Toast(document.getElementById('photostack-import-toast'), {
-        'autohide': false
-    })
-    // Show import toast
-    importToast.show()
-    // Get image
-    function addImageToCanvas(url) {
-        // Create image element
-        var image = document.createElement('img')
-        image.setAttribute('crossorigin', 'anonymous')
-        image.setAttribute('src', url)
-        // Get filename
-        try {
-            var filename = url.split('/').pop().split('#')[0].split('?')[0]
-            filename = decodeURIComponent(filename) // Revert URI encoding
-            filename = filename.slice(0, filename.indexOf(".")) // Remove file ending
-            image.setAttribute('data-filename', filename)
-        } catch (error) {
-            console.error('Error obtaining filename for image:', error)
-            image.setAttribute('data-filename', 'Image ' + (globalFilesCount + 1))
-        }
-        // Load image
-        image.onload = async function () {
-            console.log('Loaded image URL: ' + url)
-            // Save image to originals container
-            document.getElementById('photostack-original-container').appendChild(image)
-            // Increase image counter
-            increaseImageCount(1)
-            // Generate preview
-            await renderPreviewCanvas()
-            // Hide toast
-            importToast.hide()
-        }
-        image.onerror = function () {
-            alert('Could not import image: ' + url)
-            // Hide toast
-            setTimeout(function () {
-                importToast.hide()
-            }, 1000)
-        }
-    }
-    addImageToCanvas(url)
-}
-
-// Add image from Dropbox
-function importDropboxImage() {
-    // Set configuration for file picker
-    options = {
-        success: function (files) {
-            // Send each URL to importWebImage function
-            files.forEach(function (file) {
-                importWebImage(file.link)
-            })
-        },
-        linkType: "direct",
-        multiselect: true,
-        extensions: ['images'],
-        folderselect: false
-    }
-    Dropbox.choose(options)
 }
 
 // Clear all imported images and reset preview box
@@ -544,7 +311,8 @@ function clearImportedImages() {
         el.disabled = true
     })
     // Reset preview
-    document.getElementById('photostack-editor-preview').innerHTML = '<p><br />A preview of your settings will appear here once you import some images.</p>'
+    document.querySelector('#photostack-editor-preview img').remove()
+    document.querySelector('#photostack-preview-info').classList.remove('d-none')
 }
 
 // Async export with Promises
@@ -654,9 +422,10 @@ function asyncExport() {
                     // Send analytics event
                     plausible('Export', { props: { method: 'File System API' } })
                     // Ask for export directory
-                    var directory = await window.showDirectoryPicker(
-                        {mode: 'readwrite'}
-                    )
+                    var directory = await window.showDirectoryPicker({
+                        mode: 'readwrite',
+                        startIn: 'pictures'
+                    })
                     if (directory) {
                         // Save each file
                         console.log('Saving files in ' + directory.name + ' directory...')
@@ -765,10 +534,7 @@ if (!Modernizr.todataurlwebp) {
 Modernizr.on('webp', function (result) {
     if (result) {
         var formats = document.getElementById('photostack-import-file').getAttribute('accept')
-        // Main editor image picker
         document.getElementById('photostack-import-file').setAttribute('accept', formats + ',image/webp')
-        // Watermark editor image picker
-        document.getElementById('photostack-watermark-import-image').setAttribute('accept', formats + ',image/webp')
     }
 })
 
@@ -776,10 +542,7 @@ Modernizr.on('webp', function (result) {
 var testAVIF = new Image()
 testAVIF.onload = function () {
     var formats = document.getElementById('photostack-import-file').getAttribute('accept')
-    // Main editor image picker
     document.getElementById('photostack-import-file').setAttribute('accept', formats + ',image/avif')
-    // Watermark editor image picker
-    document.getElementById('photostack-watermark-import-image').setAttribute('accept', formats + ',image/avif')
     // Add class to <html> tag like Modernizr
     document.getElementsByTagName('html')[0].classList.add('avif')
 }
@@ -789,10 +552,7 @@ testAVIF.setAttribute('src', 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZ
 var testJPEGXL = new Image()
 testJPEGXL.onload = function () {
     var formats = document.getElementById('photostack-import-file').getAttribute('accept')
-    // Main editor image picker
     document.getElementById('photostack-import-file').setAttribute('accept', formats + ',image/jxl')
-    // Watermark editor image picker
-    document.getElementById('photostack-watermark-import-image').setAttribute('accept', formats + ',image/jxl')
     // Add class to <html> tag like Modernizr
     document.getElementsByTagName('html')[0].classList.add('jxl')
 }
@@ -823,50 +583,19 @@ document.querySelectorAll('input[name="photostack-file-name"]').forEach(function
     })
 })
 
-// Show credits
-fetch('https://corbin.io/supporters.json')
-    .then(function (response) {
-        response.json().then(function (data) {
-            var creditsList = ''
-            for (var i = 0; i < data['supporters'].length; i++) {
-                creditsList += data['supporters'][i] + ', '
-            }
-            creditsList = creditsList.substring(0, creditsList.length - 2)
-            document.getElementById('photostack-credits').innerText = creditsList
-        })
-    })
-    .catch(function (err) {
-        document.getElementById('photostack-credits').innerText = 'There was an error fetching PhotoStack supporters.'
-    })
-
 // Append event listeners to buttons and other elements
 
-document.querySelectorAll('.photostack-clear-images-btn').forEach(function (el) {
-    el.addEventListener('click', function () {
-        clearImportedImages()
-    })
+document.querySelector('#photostack-clear-images-btn').addEventListener('click', function () {
+    clearImportedImages()
 })
 
-document.querySelectorAll('.photostack-import-file-btn').forEach(function (el) {
-    el.addEventListener('click', function () {
-        plausible('Import', { props: { method: 'Local file picker' } })
-        document.getElementById('photostack-import-file').click()
-    })
+document.querySelector('#photostack-import-file-btn').addEventListener('click', function () {
+    plausible('Import', { props: { method: 'Local file picker' } })
+    document.getElementById('photostack-import-file').click()
 })
 
 document.getElementById('photostack-import-file').addEventListener('change', function () {
     importFiles(this.files, this)
-})
-
-document.querySelector('.photostack-import-dropbox-btn').addEventListener('click', function () {
-    if (!Dropbox.isBrowserSupported()) {
-        alert('Sorry, Dropbox does not support your web browser.')
-    } else if (!navigator.onLine) {
-        alert('You are not connected to the internet. Connect to the internet and try again.')
-    } else {
-        plausible('Import', { props: { method: 'Dropbox' } })
-        importDropboxImage()
-    }
 })
 
 document.querySelectorAll('.photostack-preview-update').forEach(function (item) {
@@ -880,12 +609,8 @@ document.getElementById('photostack-reset-image-width-button').addEventListener(
     renderPreviewCanvas()
 })
 
-document.getElementById('photostack-watermark-import-btn').addEventListener('click', function () {
-    document.getElementById('photostack-watermark-file-import').click()
-})
-
-document.getElementById('photostack-watermark-file-import').addEventListener('change', function () {
-    importWatermarkSettings(this)
+document.getElementById('photostack-print-btn').addEventListener('click', function () {
+    window.print()
 })
 
 // Drag and drop file upload
@@ -924,6 +649,18 @@ eventNames.forEach(function (eventName) {
 })
 
 // Get list of watermarks when page is loaded
+
+async function refreshWatermarks() {
+    // Add watermarks to editor dropdown menu and watermark manager
+    await watermarksStore.iterate(function (value, key, iterationNumber) {
+        var option = document.createElement('option')
+        option.innerText = key
+        option.value = key
+        document.getElementById('photostack-watermark-select').appendChild(option)
+        console.log('Loaded watermark:', [key, value])
+    })
+}
+
 refreshWatermarks()
 
 // Keyboard shortcuts
@@ -936,24 +673,6 @@ document.addEventListener('keyup', function (event) {
     if (event.shiftKey && event.key === 'O') {
         // Import file 
         document.getElementById('photostack-import-file').click()
-    } else if (event.shiftKey && event.key === 'D') {
-        // Dropbox import
-        if (!Dropbox.isBrowserSupported()) {
-            alert('Sorry, Dropbox does not support your web browser.')
-        } else if (!navigator.onLine) {
-            alert('You are not connected to the internet. Connect to the internet and try again.')
-        } else {
-            try {
-                importDropboxImage()
-            } catch {
-                // Ask user to allow popups
-                if (document.getElementsByTagName('html')[0].classList.contains('photostack-android')) {
-                    alert('This keyboard shortcut does not work on your device.')
-                } else {
-                    alert('Your browser is blocking popups. Please allow popups for the Dropbox keyboard shortcut to work.')
-                }
-            }
-        }
     } else if (event.shiftKey && event.key === 'X' && (globalFilesCount > 0)) {
         // Clear imported images
         if (confirm('Do you want to clear all imported images?')) {
@@ -963,327 +682,5 @@ document.addEventListener('keyup', function (event) {
         // Show export modal
         var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-export-modal'))
         modalEl.show()
-    } else if (event.shiftKey && event.key === 'W') {
-        // Show watermark manager modal
-        var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-manager-modal'))
-        modalEl.show()
-    }
-})
-
-// Show welcome page on first run
-SettingsStore.getItem('welcome-completed').then(function (value) {
-    if (value === 'true') {
-        // Migrate older variable from localStorage
-        SettingsStore.setItem('welcome-completed', 'true')
-        localStorage.removeItem('welcome-editor')
-    } else {
-        var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-welcome-modal'))
-        modalEl.show()
-        // Don't show welcome screen again after it is exited
-        document.getElementById('photostack-welcome-modal').addEventListener('hidden.bs.modal', function () {
-            SettingsStore.setItem('welcome-completed', 'true')
-        })
-    }
-})
-
-// Android app and Web Manifest shortcuts
-window.addEventListener('load', function () {
-    if (currentUrl.searchParams.get('open_watermarks')) {
-        var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-manager-modal'))
-        modalEl.show()
-    } else if (currentUrl.searchParams.get('open_import')) {
-        var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-import-modal'))
-        modalEl.show()
-    }
-})
-
-/*
- 
-    WATERMARKS
- 
-*/
-
-const watermarkEditor = document.getElementById('photostack-watermark-editor-modal')
-
-// Render canvas of first image, apply settings, and show a preview
-async function renderWatermarkPreviewCanvas(watermarkObject = null) {
-    // Create white preview window for watermark
-    var canvas = document.createElement('canvas')
-    canvas.width = 800
-    canvas.height = 600
-    canvas.getContext('2d').fillStyle = '#FFFFFF'
-    canvas.getContext('2d').fillRect(0, 0, canvas.width, canvas.height)
-    // Apply settings
-    canvas = await applyCanvasSettings(canvas, {
-        // Image
-        image: watermarkEditor.getAttribute('data-image'),
-        // Size
-        size: watermarkEditor.querySelector('#photostack-watermark-size').value,
-        // Opacity
-        opacity: parseInt(watermarkEditor.querySelector('#photostack-watermark-opacity').value),
-        // Horizontal inset
-        horizontalInset: parseInt(watermarkEditor.querySelector('#photostack-watermark-horizontal-inset').value),
-        // Vertical inset
-        veritcalInset: parseInt(watermarkEditor.querySelector('#photostack-watermark-vertical-inset').value),
-        // Anchor position
-        anchorPosition: parseInt(watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary').id.replace('photostack-watermark-pos-', ''))
-    })
-    // Add preview to window
-    var previewImage = document.getElementById('photostack-watermark-editor-preview')
-    previewImage.setAttribute('src', canvas.toDataURL())
-}
-
-// Open watermark in watermark editor
-function openWatermarkEditor(watermarkKey) {
-    // Add data to modal before opening
-    watermarkEditor.querySelector('#photostack-watermark-editor-modal-title').innerText = watermarkKey
-    watermarkEditor.setAttribute('data-watermark', watermarkKey)
-    watermarksStore.getItem(watermarkKey).then(function (watermarkObj) {
-        // Set image
-        watermarkEditor.setAttribute('data-image', watermarkObj.image)
-        // Set size in UI
-        watermarkEditor.querySelector('#photostack-watermark-size').value = watermarkObj.size
-        // Set opacity in UI
-        watermarkEditor.querySelector('#photostack-watermark-opacity').value = watermarkObj.opacity
-        // Set horizontal inset in UI
-        watermarkEditor.querySelector('#photostack-watermark-horizontal-inset').value = parseInt(watermarkObj.horizontalInset)
-        // Set vertical inset in UI
-        watermarkEditor.querySelector('#photostack-watermark-vertical-inset').value = parseInt(watermarkObj.veritcalInset)
-        // Clear .btn-primary style from the currently-active anchor position
-        var oldAnchor = watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary')
-        oldAnchor.classList.remove('btn-primary')
-        oldAnchor.classList.add('btn-secondary')
-        // Add .btn-primary style to the correct value
-        var newAnchor = watermarkEditor.querySelector('#photostack-watermark-pos-' + watermarkObj.anchorPosition)
-        newAnchor.classList.remove('btn-secondary')
-        newAnchor.classList.add('btn-primary')
-        // Render preview image
-        renderWatermarkPreviewCanvas()
-        // Open the modal
-        var managerModalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-manager-modal'))
-        var editorModalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-editor-modal'))
-        managerModalEl.hide()
-        editorModalEl.show()
-    }).catch(function (err) {
-        alert('Error: ' + err)
-    })
-}
-
-// Watermark editor event listeners
-
-watermarkEditor.querySelector('#photostack-watermark-editor-image-btn').addEventListener('click', function () {
-    document.getElementById('photostack-watermark-import-image').click()
-})
-
-watermarkEditor.querySelector('#photostack-watermark-import-image').addEventListener('change', function () {
-    var image = document.createElement('img')
-    var reader = new FileReader()
-    // Set the image source to the reader result, once the reader is done
-    reader.onload = function () {
-        image.src = reader.result
-    }
-    reader.onerror = function (err) {
-        alert('Error: ' + err)
-    }
-    // Once both the reader and image is done, we can safely add it to the originals container and clean up
-    image.onload = function () {
-        // Save image to watermark editor
-        watermarkEditor.setAttribute('data-image', image.src)
-        // Render preview again
-        renderWatermarkPreviewCanvas()
-        // Clear file select
-        this.value = ''
-    }
-    reader.readAsDataURL(this.files[0])
-})
-
-watermarkEditor.querySelector('#photostack-watermark-size').addEventListener('change', function () {
-    renderWatermarkPreviewCanvas()
-})
-
-watermarkEditor.querySelector('#photostack-watermark-opacity').addEventListener('change', function () {
-    renderWatermarkPreviewCanvas()
-})
-
-watermarkEditor.querySelector('#photostack-watermark-horizontal-inset').addEventListener('change', function () {
-    renderWatermarkPreviewCanvas()
-})
-
-watermarkEditor.querySelector('#photostack-watermark-vertical-inset').addEventListener('change', function () {
-    renderWatermarkPreviewCanvas()
-})
-
-watermarkEditor.querySelectorAll('.photostack-anchor-btn').forEach(function (button) {
-    button.addEventListener('click', function () {
-        // Clear .btn-primary style from the currently-active button
-        var previousButton = watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary')
-        previousButton.classList.remove('btn-primary')
-        previousButton.classList.add('btn-secondary')
-        // Add .btn-primary style to the button that was just clicked
-        button.classList.remove('btn-secondary')
-        button.classList.add('btn-primary')
-        renderWatermarkPreviewCanvas()
-    })
-})
-
-watermarkEditor.querySelector('#photostack-watermark-editor-save-btn').addEventListener('click', function () {
-    var editorModalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-watermark-editor-modal'))
-    var currentWatermark = watermarkEditor.getAttribute('data-watermark')
-    // Save watermark back to storage
-    watermarksStore.setItem(currentWatermark, {
-        // Image
-        image: watermarkEditor.getAttribute('data-image'),
-        // Size
-        size: watermarkEditor.querySelector('#photostack-watermark-size').value,
-        // Opacity
-        opacity: parseInt(watermarkEditor.querySelector('#photostack-watermark-opacity').value),
-        // Horizontal inset
-        horizontalInset: parseInt(watermarkEditor.querySelector('#photostack-watermark-horizontal-inset').value),
-        // Vertical inset
-        veritcalInset: parseInt(watermarkEditor.querySelector('#photostack-watermark-vertical-inset').value),
-        // Anchor position
-        anchorPosition: parseInt(watermarkEditor.querySelector('.photostack-anchor-btn.btn-primary').id.replace('photostack-watermark-pos-', ''))
-    }).then(function (value) {
-        // Close modal once saved
-        editorModalEl.hide()
-    }).catch(function (err) {
-        alert('Error: ' + err)
-    })
-})
-
-// Export watermark to JSON file
-function exportWatermark(watermarkKey) {
-    watermarksStore.getItem(watermarkKey).then(function (value) {
-        var watermarkText = JSON.stringify(value)
-        var fileName = watermarkKey + ".json"
-        var blob = new Blob([watermarkText], { type: 'application/json;charset=utf-8' })
-        saveAs(blob, fileName)
-    }).catch(function (err) {
-        alert('Error: ' + err)
-    })
-}
-
-// Delete watermark from storage
-function deleteWatermark(watermarkKey) {
-    if (confirm('Are you sure you want to delete the watermark "' + watermarkKey + '"? This cannot be undone.')) {
-        watermarksStore.removeItem(watermarkKey).then(function () {
-            refreshWatermarks()
-        }).catch(function (err) {
-            alert('Error: ' + err)
-        })
-    }
-}
-
-// Import watermark from JSON file
-function importWatermarkSettings(el) {
-    // Create a promise for each file
-    var watermarkFileArray = Object.entries(el.files)
-    var importPromises = watermarkFileArray.map(function (file) {
-        return new Promise(function (resolve) {
-            // Read the file
-            file = file[1]
-            var reader = new FileReader()
-            reader.onload = function () {
-                // Make sure file is valid JSON
-                try {
-                    var watermarkObj = JSON.parse(reader.result)
-                } catch (err) {
-                    alert('Error: ' + err)
-                    return resolve()
-                }
-                // Add watermark to watermarksStore
-                var watermarkName = file.name.replace('.json', '')
-                watermarksStore.setItem(watermarkName, watermarkObj).then(function () {
-                    resolve()
-                }).catch(function (err) {
-                    alert('Error: ' + err)
-                    return resolve()
-                })
-            }
-            reader.onerror = function (event) {
-                alert('Error: ' + event)
-                return resolve()
-            }
-            reader.readAsText(file)
-        })
-    })
-    // When all promises are returned, clean up
-    Promise.all(importPromises).then(function () {
-        // Clear file select
-        document.getElementById('photostack-watermark-file-import').value = ''
-        // Refresh watermarks
-        refreshWatermarks()
-    })
-}
-
-async function refreshWatermarks() {
-    // Reset lists
-    document.getElementById('photostack-watermark-select').innerHTML = '<option selected="" value="no-watermark">No watermark</option>'
-    document.getElementById('photostack-watermark-manager-list').innerHTML = ''
-    // Add watermarks to editor dropdown menu and watermark manager
-    await watermarksStore.iterate(function (value, key, iterationNumber) {
-        // Add watermark to select menu
-        var option = document.createElement('option')
-        option.innerText = key
-        option.value = key
-        document.getElementById('photostack-watermark-select').appendChild(option)
-        // Add watermark to manager modal list
-        var listItem = document.createElement('div')
-        listItem.classList.add('list-group-item')
-        var itemTitle = document.createElement('h5')
-        itemTitle.innerText = key
-        listItem.appendChild(itemTitle)
-        // Add button container to list
-        var buttons = document.createElement('div')
-        buttons.classList.add('btn-group', 'w-100')
-        buttons.setAttribute('role', 'group')
-        listItem.appendChild(buttons)
-        // Add edit button
-        var editBtn = document.createElement('button')
-        editBtn.innerText = 'Edit'
-        editBtn.classList.add('btn', 'btn-primary', 'btn-sm')
-        editBtn.addEventListener('click', function () {
-            openWatermarkEditor(key)
-        })
-        buttons.appendChild(editBtn)
-        // Add export button
-        var exportBtn = document.createElement('button')
-        exportBtn.innerText = 'Export'
-        exportBtn.classList.add('btn', 'btn-secondary', 'btn-sm')
-        exportBtn.addEventListener('click', function () {
-            exportWatermark(key)
-        })
-        buttons.appendChild(exportBtn)
-        // Add delete button
-        var deleteBtn = document.createElement('button')
-        deleteBtn.innerText = 'Delete'
-        deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm')
-        deleteBtn.addEventListener('click', function () {
-            deleteWatermark(key)
-        })
-        buttons.appendChild(deleteBtn)
-        // Add everything to the list
-        document.getElementById('photostack-watermark-manager-list').appendChild(listItem)
-        console.log('Loaded watermark:', [key, value])
-    })
-}
-
-document.getElementById('photostack-watermark-new-btn').addEventListener('click', function () {
-    var name = prompt('What do you want to call the watermark?')
-    if (name && (name != '')) {
-        // Create new watermark in storage
-        watermarksStore.setItem(name, {
-            image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABmJLR0QA/wAAAAAzJ3zzAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH5AEKFxkQjAI2aQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAALSURBVAjXY2AAAgAABQAB4iYFmwAAAABJRU5ErkJggg==', // 1x1 transparent PNG
-            size: 30,
-            opacity: 50,
-            horizontalInset: 0,
-            veritcalInset: 0,
-            anchorPosition: 5
-        }).then(function () {
-            openWatermarkEditor(name)
-            refreshWatermarks()
-        }).catch(function (err) {
-            alert('Error: ' + err)
-        })
     }
 })
