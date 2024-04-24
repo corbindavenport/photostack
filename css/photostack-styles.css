@@ -3,21 +3,6 @@ body {
     padding-top: 56px;
 }
 
-html {
-    scrollbar-color: rgb(73, 80, 87) rgb(33,37,41);
-    scrollbar-width: thin;
-}
-
-::-webkit-scrollbar {
-    background-color: rgb(33,37,41);
-    width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: rgb(73, 80, 87);
-    border-radius: 4px;
-}
-
 #photostack-watermark-preview,
 #photostack-editor-preview img,
 #photostack-watermark-editor-preview {

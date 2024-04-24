@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-bs-theme="dark" data-photostack-mode="photo-editor">
+<html data-photostack-mode="photo-editor">
 
 <head>
     <meta charset="utf-8">
@@ -15,8 +15,10 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="24x24" href="/img/icon_x24.png">
     <link rel="manifest" href="/site.webmanifest">
-    <link rel="shortcut icon" href="favicon.ico">
-    <meta name="theme-color" content="#212529">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="color-scheme" content="dark light">
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFF">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#212529">
     <!-- Open Graph card -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="PhotoStack" />
@@ -32,7 +34,7 @@
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-sm bg-dark border-bottom d-print-none">
+    <nav class="navbar fixed-top navbar-expand-sm bg-body-secondary border-bottom d-print-none">
         <div class="container-fluid">
             <a class="navbar-brand d-sm-none" href="#">PhotoStack</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,19 +62,42 @@
                     </li>
                 </ul>
                 <form class="d-flex">
+                    <!-- Import button -->
                     <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#photostack-import-modal" data-backdrop="static" data-keyboard="false" aria-label="Import">
                         <i class="bi bi-folder-plus me-md-2"></i>
                         <span class="d-sm-none d-md-inline me-md-2">Import</span>
-                        <span class="badge bg-dark photostack-image-count">0</span>
+                        <span class="badge bg-dark photostack-image-count d-sm-none d-md-inline">0</span>
                     </button>
+                    <!-- Clear button -->
                     <button class="btn btn-primary me-2" id="photostack-clear-images-btn" type="button" aria-label="Clear">
                         <i class="bi bi-trash me-md-2"></i>
                         <span class="d-sm-none d-md-inline">Clear</span>
                     </button>
+                    <!-- Export button -->
                     <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled aria-label="Export">
                         <i class="bi bi-save me-md-2"></i>
                         <span class="d-sm-none d-md-inline">Export</span>
                     </button>
+                    <!-- Theme toggle -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item photostack-theme-btn" data-theme="light" href="#">
+                                <i class="bi bi-brightness-high-fill me-2"></i>
+                                Light mode
+                            </a></li>
+                            <li><a class="dropdown-item photostack-theme-btn" data-theme="dark" href="#">
+                                <i class="bi bi-moon-fill me-2"></i>
+                                Dark mode
+                            </a></li>
+                            <li><a class="dropdown-item photostack-theme-btn" data-theme="auto" href="#">
+                                <i class="bi bi-circle-half me-2"></i>
+                                Auto theme
+                            </a></li>
+                        </ul>
+                    </div>
                 </form>
             </div>
         </div>

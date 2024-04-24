@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -16,8 +16,10 @@
     <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="24x24" href="img/icon_x24.png">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" href="favicon.ico">
-    <meta name="theme-color" content="#212529">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="color-scheme" content="dark light">
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFF">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#212529">
     <!-- Open Graph card -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="PhotoStack" />
@@ -34,14 +36,14 @@
 <body style="padding-top: 40px;">
 
     <!-- Nav bar -->
-    <nav class="navbar fixed-top navbar-expand-sm bg-dark border-bottom">
+    <nav class="navbar fixed-top navbar-expand-sm bg-body-secondary border-bottom">
         <div class="container-fluid">
             <a class="navbar-brand d-sm-none" href="#">PhotoStack</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">
                             <i class="bi bi-house-fill"></i>
@@ -61,6 +63,28 @@
                         </a>
                     </li>
                 </ul>
+                <form class="d-flex">
+                    <!-- Theme toggle -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item photostack-theme-btn" data-theme="light" href="#">
+                                <i class="bi bi-brightness-high-fill me-2"></i>
+                                Light mode
+                            </a></li>
+                            <li><a class="dropdown-item photostack-theme-btn" data-theme="dark" href="#">
+                                <i class="bi bi-moon-fill me-2"></i>
+                                Dark mode
+                            </a></li>
+                            <li><a class="dropdown-item photostack-theme-btn" data-theme="auto" href="#">
+                                <i class="bi bi-circle-half me-2"></i>
+                                Auto theme
+                            </a></li>
+                        </ul>
+                    </div>
+                </form>
             </div>
         </div>
     </nav>
