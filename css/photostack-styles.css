@@ -3,6 +3,10 @@ body {
     padding-top: 56px;
 }
 
+.navbar {
+    background: #487096 !important;
+}
+
 #photostack-watermark-preview,
 #photostack-editor-preview img,
 #photostack-watermark-editor-preview {

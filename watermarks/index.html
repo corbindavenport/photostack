@@ -8,15 +8,15 @@
     <meta name="description" content="PhotoStack can convert, resize, watermark, and crop images in a few clicks.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/photostack-styles.css">
+    <script src="/js/shared.js"></script>
     <!-- Icons and theme -->
     <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="24x24" href="/img/icon_x24.png">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="shortcut icon" href="/favicon.ico">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#3d5f7f">
     <!-- Open Graph card -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="PhotoStack" />
@@ -33,7 +33,7 @@
 <body style="padding-top: 40px;">
 
     <!-- Nav bar -->
-    <nav class="navbar fixed-top navbar-expand-sm bg-body-secondary border-bottom">
+    <nav class="navbar fixed-top navbar-expand-sm bg-body-secondary border-bottom" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand d-sm-none" href="#">PhotoStack</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,7 +63,7 @@
                 <form class="d-flex">
                     <!-- Theme toggle -->
                     <div class="dropdown">
-                        <button class="btn btn-outline-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
+                        <button class="btn btn-outline-light dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
                             <i class="bi bi-moon-stars-fill"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -206,7 +206,7 @@
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/localforage@1.9.0/dist/localforage.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pica@6.1/dist/pica.min.js"></script>
-    <script src="/js/shared.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="/js/watermarks.js"></script>
 
 </body>
