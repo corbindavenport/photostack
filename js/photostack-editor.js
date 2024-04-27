@@ -10,6 +10,8 @@ const SettingsStore = localforage.createInstance({
 
 const currentUrl = new URL(window.location)
 
+const isApplePlatform = /MacIntel|iPhone|iPod|iPad/.test(navigator.platform)
+
 var globalFilesCount = 0
 
 // Prevent unload
@@ -291,6 +293,10 @@ function importFiles(files, element = null) {
 
 // Clear all imported images and reset preview box
 function clearImportedImages() {
+    // Confirm action
+    if (!confirm('Do you want to clear all imported images?')) {
+        return
+    }
     // Remove imported images
     var originalsContainer = document.getElementById('photostack-original-container')
     while (originalsContainer.firstChild) {
@@ -664,23 +670,38 @@ async function refreshWatermarks() {
 refreshWatermarks()
 
 // Keyboard shortcuts
-document.addEventListener('keyup', function (event) {
+// Some shortcuts are cloned from Adobe Lightroom: https://helpx.adobe.com/lightroom-classic/help/keyboard-shortcuts.html
+document.addEventListener('keydown', function (event) {
+    var exportModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-export-modal'))
     // Ignore if a modal is open
     if (document.querySelectorAll('.modal.show').length) {
         return
     }
     // All keyboard shortcuts
-    if (event.shiftKey && event.key === 'O') {
-        // Import file 
+    if (event.metaKey && event.shiftKey && (event.code === 'KeyI') && isApplePlatform) {
+        // Import on Mac: Command+Shift+I
+        event.preventDefault()
         document.getElementById('photostack-import-file').click()
-    } else if (event.shiftKey && event.key === 'X' && (globalFilesCount > 0)) {
-        // Clear imported images
-        if (confirm('Do you want to clear all imported images?')) {
-            clearImportedImages()
-        }
-    } else if (event.shiftKey && event.key === 'E' && (globalFilesCount > 0)) {
-        // Show export modal
-        var modalEl = bootstrap.Modal.getOrCreateInstance(document.getElementById('photostack-export-modal'))
-        modalEl.show()
+    } else if (event.ctrlKey && event.shiftKey && (event.code === 'KeyI') && (!isApplePlatform)) {
+        // Import on PC: Ctrl+Shift+I
+        event.preventDefault()
+        document.getElementById('photostack-import-file').click()
+    } else if (event.metaKey && (event.code === 'KeyD') && (globalFilesCount > 0) && isApplePlatform) {
+        // Delete imported images on Mac: Command+D
+        clearImportedImages()
+    } else if (event.ctrlKey && (event.code === 'KeyD') && (globalFilesCount > 0) && (!isApplePlatform)) {
+        // Delete imported images on PC: Ctrl+D
+        clearImportedImages()
+    } else if (event.shiftKey && (event.code === 'KeyE') && (globalFilesCount > 0)) {
+        // Export: Shift + E
+        exportModal.show()
+    } else if (event.metaKey && (event.code === 'KeyS') && (globalFilesCount > 0) && isApplePlatform) {
+        // Export on Mac: Command+S
+        event.preventDefault()
+        exportModal.show()
+    } else if (event.ctrlKey && (event.code === 'KeyS') && (globalFilesCount > 0) && (!isApplePlatform)) {
+        // Export on PC: Ctrl+S
+        event.preventDefault()
+        exportModal.show()
     }
 })
