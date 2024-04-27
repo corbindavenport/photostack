@@ -83,17 +83,17 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item photostack-theme-btn" data-theme="light" href="#">
-                                <i class="bi bi-brightness-high-fill me-2"></i>
-                                Light mode
-                            </a></li>
+                                    <i class="bi bi-brightness-high-fill me-2"></i>
+                                    Light mode
+                                </a></li>
                             <li><a class="dropdown-item photostack-theme-btn" data-theme="dark" href="#">
-                                <i class="bi bi-moon-fill me-2"></i>
-                                Dark mode
-                            </a></li>
+                                    <i class="bi bi-moon-fill me-2"></i>
+                                    Dark mode
+                                </a></li>
                             <li><a class="dropdown-item photostack-theme-btn" data-theme="auto" href="#">
-                                <i class="bi bi-circle-half me-2"></i>
-                                Auto theme
-                            </a></li>
+                                    <i class="bi bi-circle-half me-2"></i>
+                                    Auto theme
+                                </a></li>
                         </ul>
                     </div>
                 </form>
@@ -148,7 +148,6 @@
                         Advertisement
                     </div>
                     <div class="card-body" style="padding: 0; overflow: hidden;">
-                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8658798838164073" data-ad-slot="2199465112" data-ad-format="auto" data-full-width-responsive="true"></ins>
                         <script>
                             (adsbygoogle = window.adsbygoogle || []).push({});
@@ -391,21 +390,15 @@
                 </div>
                 <div class="modal-body">
                     <div id="photostack-legacy-download">
-                        <p>
-                            <button type="button" id="photostack-export-separate-button" class="btn w-100 btn-primary">Save images to Downloads</button>
-                        </p>
-                        <p class="text-muted" style="text-align:center">Saving images to Downloads doesn't work correctly in some browsers. If you experience problems, use one of the other options.</p>
+                        <button type="button" id="photostack-export-separate-button" class="btn w-100 btn-primary">
+                            Save images to Downloads
+                            <br>
+                            (may not work in all browsers)
+                        </button>
                     </div>
-                    <p>
-                        <button type="button" id="photostack-export-filesystem-api-button" class="btn w-100 btn-primary">Save images to device</button>
-                    </p>
-                    <p>
-                        <button type="button" id="photostack-export-web-share-button" class="btn w-100 btn-primary">Share images to installed application</button>
-                    </p>
-                    <p>
-                        <button type="button" id="photostack-export-zip-button" class="btn w-100 btn-primary">Save images as ZIP</button>
-                    </p>
-                    <p class="text-center">If you found PhotoStack useful, please donate via <a href="https://www.patreon.com/corbindavenport" target="_blank">Patreon</a>, <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=PhotoStack%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">PayPal</a>, or <a href="https://cash.app/$corbdav" target="_blank">Cash App</a> to help support the project!</p>
+                    <button type="button" id="photostack-export-filesystem-api-button" class="btn w-100 btn-primary mt-3">Save images to device</button>
+                    <button type="button" id="photostack-export-web-share-button" class="btn w-100 btn-primary mt-3">Share images to installed application</button>
+                    <button type="button" id="photostack-export-zip-button" class="btn w-100 btn-primary mt-3">Save images as ZIP</button>
                 </div>
             </div>
         </div>
@@ -455,6 +448,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="/js/photostack-editor.js"></script>
     <script src="/js/register-sw.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8658798838164073" crossorigin="anonymous"></script>
 </body>
 
 </html>
