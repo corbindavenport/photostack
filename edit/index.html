@@ -32,7 +32,7 @@
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-sm border-bottom d-print-none" data-bs-theme="dark">
+    <nav class="navbar fixed-top bg-body-secondary navbar-expand-sm border-bottom d-print-none">
         <div class="container-fluid">
             <a class="navbar-brand d-sm-none" href="#">PhotoStack</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,24 +61,24 @@
                 </ul>
                 <form class="d-flex">
                     <!-- Import button -->
-                    <button class="btn btn-outline-light me-2" id="photostack-import-file-btn" type="button" aria-label="Import">
+                    <button class="btn btn-primary me-2" id="photostack-import-file-btn" type="button" aria-label="Import">
                         <i class="bi bi-folder-plus me-md-2"></i>
                         <span class="d-sm-none d-md-inline me-md-2">Import</span>
                         <span class="badge bg-dark photostack-image-count d-sm-none d-md-inline">0</span>
                     </button>
                     <!-- Clear button -->
-                    <button class="btn btn-outline-light me-2" id="photostack-clear-images-btn" type="button" aria-label="Clear">
+                    <button class="btn btn-primary me-2" id="photostack-clear-images-btn" type="button" aria-label="Clear">
                         <i class="bi bi-trash me-md-2"></i>
                         <span class="d-sm-none d-md-inline">Clear</span>
                     </button>
                     <!-- Export button -->
-                    <button class="btn btn-outline-light me-2" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled aria-label="Export">
+                    <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled aria-label="Export">
                         <i class="bi bi-save me-md-2"></i>
                         <span class="d-sm-none d-md-inline">Export</span>
                     </button>
                     <!-- Theme toggle -->
                     <div class="dropdown">
-                        <button class="btn btn-outline-light dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
+                        <button class="btn btn-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
                             <i class="bi bi-moon-stars-fill"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
