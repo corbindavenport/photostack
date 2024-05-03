@@ -1,29 +1,9 @@
-# photostack
+# PhotoStack
 
-PhotoStack is a free and open-source batch photo editor that runs entirely on the web, complete with watermarking support and compatibility with all major browsers.
+PhotoStack is a free and open-source batch photo editor that runs in web browsers, complete with offline support. It can crop, resize, and convert many images at once. You can also create and save watermarks and apply them to images.
 
-PhotoStack uses components from the following projects:
+PhotoStack uses components from [Bootstrap](https://getbootstrap.com), [FileSaver.js](https://github.com/eligrey/FileSaver.js/), [JSZip](https://stuk.github.io/jszip/), [Modernizr](https://modernizr.com/), and [Pica](https://github.com/nodeca/pica). The icon was designed by [Mason Conrad](https://twitter.com/MasNConrad).
 
-- [jQuery](https://jquery.com/)
-- [Bootstrap](https://getbootstrap.com)
-- [FileSaver.js](https://github.com/eligrey/FileSaver.js/)
-- [JSZip](https://stuk.github.io/jszip/)
-- [Modernizr](https://modernizr.com/)
-- [Pica](https://github.com/nodeca/pica)
+**[Open PhotoStack in your browser](https://photostack.app)**
 
-Icon designed by [Mason Conrad](https://twitter.com/MasNConrad).
-
----------------------------------------------------------
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+![Screenshot of PhotoStack](screen.png)
