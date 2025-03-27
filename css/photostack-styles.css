@@ -6,7 +6,13 @@ body {
 #photostack-watermark-preview,
 #photostack-editor-preview img,
 #photostack-watermark-editor-preview {
+    pointer-events: none;
+    user-select: none;
     max-width: 100%;
+}
+
+#photostack-editor-preview img {
+    pointer-events: none;
 }
 
 #photostack-watermark-editor-preview {

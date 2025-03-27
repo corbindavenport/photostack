@@ -12,6 +12,29 @@ const currentUrl = new URL(window.location)
 
 const isApplePlatform = /MacIntel|iPhone|iPod|iPad/.test(navigator.platform)
 
+const containerFileTypes = [
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.template', // .dotx
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.template', // .xltx
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
+    'application/vnd.openxmlformats-officedocument.presentationml.template', // .potx
+    'application/vnd.openxmlformats-officedocument.presentationml.slideshow', // .ppsx
+    'application/zip', // .zip
+    'application/x-zip', // .zip
+    'application/x-zip-compressed' // .zip
+];
+
+const imageFileTypes = [
+    'image/jpeg', // .jpg
+    'image/png', // .png
+    'image/gif', // .gif
+    'image/bmp', // .bmp
+    'image/webp', // .webp
+    'image/avif', // .avif
+    'image/jxl' // .jxl
+]
+
 var globalFilesCount = 0
 
 // Prevent unload
@@ -135,160 +158,118 @@ function renderPreviewCanvas() {
     })
 }
 
+// Convert a file to a data URL
+async function fileToDataURL(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            resolve(event.target.result);
+        };
+        reader.onerror = (error) => {
+            reject(error);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+// Load an image element and add it to the originals container if successful
+async function processImage(imgEl, dataUrl, fileName) {
+    return new Promise((resolve) => {
+        imgEl.onload = function () {
+            console.log('Processed image:', fileName);
+            document.getElementById('photostack-original-container').appendChild(imgEl)
+            increaseImageCount(1);
+            resolve();
+        }
+        imgEl.onerror = function () {
+            console.log('Could not import this image: ' + fileName);
+            resolve()
+        }
+        // Load the image to strigger the onload() or onerror()
+        imgEl.setAttribute('src', dataUrl);
+    });
+}
+
 // Unified importer for local files (images and ZIPs)
-function importFiles(files, element = null) {
-    // Initialize import toast
+async function importFiles(files, element = null) {
+    // Initialize and show import toast
     var importToast = new bootstrap.Toast(document.getElementById('photostack-import-toast'), {
         'autohide': false
     })
-    // Show import toast
-    importToast.show()
-    // Define file types
-    var containerFiles = [
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.template', // .dotx
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.template', // .xltx
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
-        'application/vnd.openxmlformats-officedocument.presentationml.template', // .potx
-        'application/vnd.openxmlformats-officedocument.presentationml.slideshow', // .ppsx
-        'application/zip', // .zip
-        'application/x-zip', // .zip
-        'application/x-zip-compressed' // .zip
-    ]
-    var imageFiles = [
-        'image/jpeg', // .jpg
-        'image/png', // .png
-        'image/gif', // .gif
-        'image/bmp', // .bmp
-        'image/webp', // .webp
-        'image/avif', // .avif
-        'image/jxl' // .jxl
-    ]
-    // Get files
-    console.log('Number of files selected: ' + files.length)
-    // Process files
-    var fileArray = Object.entries(files)
-    var importPromises = fileArray.map(function (file) {
-        return new Promise(async function (resolve) {
-            file = file[1]
-            if (containerFiles.includes(file.type)) {
-                // This is a container file
-                var zipInstance = new JSZip()
-                var zip = await zipInstance.loadAsync(file)
-                // Create a promise for each file in the container file
-                var zipFileArray = Object.entries(zip.files)
-                var zipPromises = zipFileArray.map(function (file) {
-                    return new Promise(async function (resolve) {
-                        file = file[1]
-                        // Only read files that are images, aren't directories, and aren't inside __MACOSX
-                        var supportedImages = (
-                            file.name.endsWith('.png') ||
-                            file.name.endsWith('.jpg') ||
-                            file.name.endsWith('.jpeg') ||
-                            file.name.endsWith('.bmp') ||
-                            (Modernizr.webp && file.name.endsWith('.webp')) ||
-                            (document.getElementsByTagName('html')[0].classList.contains('avif') && file.name.endsWith('.avif'))
-                        )
-                        if ((supportedImages) && (!file.dir) && (!file.name.includes('__MACOSX/'))) {
-                            // Add images to originals container
-                            var data = await file.async('base64')
-                            // Create image element
-                            var image = document.createElement('img')
-                            // Add MIME type to each image so the browser can render them
-                            if (file.name.endsWith('.png')) {
-                                var base64 = 'data:image/png;base64,' + data
-                            } else if (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
-                                var base64 = 'data:image/jpeg;base64,' + data
-                            } else if (file.name.endsWith('.bmp')) {
-                                var base64 = 'data:image/bmp;base64,' + data
-                            } else if (file.name.endsWith('.webp')) {
-                                var base64 = 'data:image/webp;base64,' + data
-                            } else if (file.name.endsWith('.avif')) {
-                                var base64 = 'data:image/avif;base64,' + data
-                            } else if (file.name.endsWith('.jxl')) {
-                                var base64 = 'data:image/jxl;base64,' + data
-                            }
-                            // Once both the reader and image is done, resolve the Promise
-                            image.onload = function () {
-                                // Remove file ending
-                                var filename = file.name
-                                if (filename.includes('.')) {
-                                    filename = filename.slice(0, filename.indexOf("."))
-                                    image.setAttribute('data-filename', filename)
-                                } else {
-                                    image.setAttribute('data-filename', filename)
-                                }
-                                // Resolve promise
-                                console.log('Processed image:', file.name)
-                                resolve(image)
-                            }
-                            image.onerror = function () {
-                                console.log('Could not import this image: ' + file.name)
-                                resolve()
-                            }
-                            image.setAttribute('src', base64)
-                        } else {
-                            resolve()
-                        }
-                    })
-                })
-                // Pass all processed images to main Promise
-                Promise.all(zipPromises).then(function (data) {
-                    resolve(data)
-                })
-            } else if (imageFiles.includes(file.type)) {
-                // This is an image file
-                var image = document.createElement('img')
-                var reader = new FileReader()
-                // Set the image source to the reader result, once the reader is done
-                reader.onload = function () {
-                    image.src = reader.result
+    importToast.show();
+    // Process each file
+    for (const file of files) {
+        if (containerFileTypes.includes(file.type)) {
+            // This is a container file
+            const zipFile = await JSZip().loadAsync(file);
+            const zippedFiles = Object.entries(zipFile.files);
+            console.log('Detected container file with contents:', zippedFiles);
+            for (const zippedFile of zippedFiles) {
+                const zippedFileName = zippedFile[1].name.match(/([^\\/]+)$/)?.[1]; // Example: image.png
+                const zippedFileExt = zippedFile[1].name.split('.').pop().toLowerCase(); // Example: png
+                const imgEl = document.createElement('img');
+                let dataUrl;
+                // Add each compatible file to originals container
+                if (zippedFile[1].dir || zippedFile[1].name.includes('__MACOSX/')) {
+                    // Exit early for directories or files in a __MACOSX directory
+                    continue;
+                } else if (zippedFileExt === 'png') {
+                    // PNG image
+                    const imgData = await zippedFile[1].async('base64');
+                    dataUrl = 'data:image/png;base64,' + imgData;
+                    imgEl.setAttribute('data-filename', zippedFileName.replace('.png', ''));
+                } else if ((zippedFileExt === 'jpeg') || (zippedFileExt === 'jpeg')) {
+                    // JPEG image
+                    const imgData = await zippedFile[1].async('base64');
+                    dataUrl = 'data:image/jpeg;base64,' + imgData;
+                    imgEl.setAttribute('data-filename', zippedFileName.replace('.jpeg', '').replace('.jpeg', ''));
+                } else if (zippedFileExt === 'bmp') {
+                    // BMP image
+                    const imgData = await zippedFile[1].async('base64');
+                    dataUrl = 'data:image/bmp;base64,' + imgData;
+                    imgEl.setAttribute('data-filename', zippedFileName.replace('.bmp', ''));
+                } else if (Modernizr.webp && zippedFileExt === 'webp') {
+                    // WebP image
+                    const imgData = await zippedFile[1].async('base64');
+                    dataUrl = 'data:image/webp;base64,' + imgData;
+                    imgEl.setAttribute('data-filename', zippedFileName.replace('.webp', ''));
+                } else if (document.getElementsByTagName('html')[0].classList.contains('avif') && (zippedFileExt === 'avif')) {
+                    // AVIF file
+                    const imgData = await zippedFile[1].async('base64');
+                    dataUrl = 'data:image/avif;base64,' + imgData;
+                    imgEl.setAttribute('data-filename', zippedFileName.replace('.avif', ''));
+                } else if (zippedFileExt === 'jxl') {
+                    // JPEG XL file
+                    const imgData = await zippedFile[1].async('base64');
+                    dataUrl = 'data:image/jxl;base64,' + imgData;
+                    imgEl.setAttribute('data-filename', zippedFileName.replace('.jxl', ''));
+                } else {
+                    // Unknown file type
+                    continue;
                 }
-                reader.onerror = function () {
-                    console.log('Could not import this image: ' + file.name)
-                    resolve()
-                }
-                // Once both the reader and image is done, resolve the Promise
-                image.onload = function () {
-                    // Remove file ending
-                    var filename = file.name
-                    if (filename.includes('.')) {
-                        filename = filename.slice(0, filename.indexOf("."))
-                        image.setAttribute('data-filename', filename)
-                    } else {
-                        image.setAttribute('data-filename', filename)
-                    }
-                    // Resolve promise
-                    console.log('Processed image:', file.name)
-                    resolve(image)
-                }
-                reader.readAsDataURL(file)
-            } else {
-                console.log('Could not detect format of this file, skipping:', file)
-                resolve()
+                // Add image to originals container
+                await processImage(imgEl, dataUrl, zippedFileName);
             }
-        })
-    })
-    // Add processed files to originals container
-    Promise.all(importPromises).then(async function (imageArray) {
-        imageArray = Array.from(imageArray)
-        // Update image counter
-        increaseImageCount(imageArray.length)
-        // Add images to originals container
-        imageArray.forEach(function (imageEl) {
-            document.getElementById('photostack-original-container').appendChild(imageEl)
-        })
-        // Generate preview if needed
-        await renderPreviewCanvas()
-        // Hide import toast and reset <input> if needed
-        setTimeout(function () {
-            importToast.hide()
-        }, 1000)
-        if (element) {
-            element.value = ''
+        } else if (imageFileTypes.includes(file.type)) {
+            // This is an image file
+            const imgEl = document.createElement('img');
+            const imgFileName = file.name.replace(/\.[^/.]+$/, '');  // Example: image.png
+            // Process image
+            const dataUrl = await fileToDataURL(file);
+            imgEl.setAttribute('data-filename', imgFileName);
+            // Add image to originals container
+            await processImage(imgEl, dataUrl, file.name);
         }
-    })
+    }
+    // Generate preview if needed
+    await renderPreviewCanvas();
+    // Hide import toast and reset <input> if needed
+    setTimeout(function () {
+        importToast.hide()
+    }, 1000)
+    if (element) {
+        element.value = '';
+    }
 }
 
 // Clear all imported images and reset preview box
