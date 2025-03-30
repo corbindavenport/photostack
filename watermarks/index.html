@@ -31,7 +31,7 @@
     <script defer data-domain="photostack.app" src="https://plausible.io/js/plausible.js"></script>
 </head>
 
-<body style="padding-top: 40px;">
+<body style="padding-top: 56px;">
 
     <!-- Nav bar -->
     <nav class="navbar fixed-top bg-body-secondary navbar-expand-sm border-bottom">
@@ -61,25 +61,26 @@
                         </a>
                     </li>
                 </ul>
-                <form class="d-flex">
+                <form class="d-flex flex-column flex-sm-row">
                     <!-- Theme toggle -->
+                    <button class="btn btn-primary dropdown-toggle mt-2 mt-sm-0" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
+                        <i class="bi bi-moon-stars-fill me-2 me-sm-0 me-md-2"></i>
+                        <span class="d-sm-none">Change theme</span>
+                    </button>
                     <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
-                            <i class="bi bi-moon-stars-fill"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
+                        <ul class="dropdown-menu dropdown-menu-end w-100 w-sm-auto">
                             <li><a class="dropdown-item photostack-theme-btn" data-theme="light" href="#">
-                                <i class="bi bi-brightness-high-fill me-2"></i>
-                                Light mode
-                            </a></li>
+                                    <i class="bi bi-brightness-high-fill me-2"></i>
+                                    Light mode
+                                </a></li>
                             <li><a class="dropdown-item photostack-theme-btn" data-theme="dark" href="#">
-                                <i class="bi bi-moon-fill me-2"></i>
-                                Dark mode
-                            </a></li>
+                                    <i class="bi bi-moon-fill me-2"></i>
+                                    Dark mode
+                                </a></li>
                             <li><a class="dropdown-item photostack-theme-btn" data-theme="auto" href="#">
-                                <i class="bi bi-circle-half me-2"></i>
-                                Auto theme
-                            </a></li>
+                                    <i class="bi bi-circle-half me-2"></i>
+                                    Auto theme
+                                </a></li>
                         </ul>
                     </div>
                 </form>
@@ -203,7 +204,6 @@
     <!-- File picker -->
     <input type="file" id="photostack-watermark-file-import" multiple accept=".json">
     <!-- Scripts -->
-    <script src="/js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/localforage@1.9.0/dist/localforage.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pica@7.0.0/dist/pica.min.js"></script>

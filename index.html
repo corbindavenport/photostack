@@ -30,10 +30,10 @@
     <script defer data-domain="photostack.app" src="https://plausible.io/js/plausible.js"></script>
 </head>
 
-<body style="padding-top: 40px;">
+<body style="padding-top: 56px;">
 
     <!-- Nav bar -->
-    <nav class="navbar fixed-top bg-body-secondary navbar-expand-sm border-bottom">
+    <nav class="navbar fixed-top bg-body-secondary navbar-expand-sm">
         <div class="container-fluid">
             <a class="navbar-brand d-sm-none" href="#">PhotoStack</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,13 +60,14 @@
                         </a>
                     </li>
                 </ul>
-                <form class="d-flex">
+                <form class="d-flex flex-column flex-sm-row">
                     <!-- Theme toggle -->
+                    <button class="btn btn-primary dropdown-toggle mt-2 mt-sm-0" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
+                        <i class="bi bi-moon-stars-fill me-2 me-sm-0 me-md-2"></i>
+                        <span class="d-sm-none">Change theme</span>
+                    </button>
                     <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
-                            <i class="bi bi-moon-stars-fill"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
+                        <ul class="dropdown-menu dropdown-menu-end w-100 w-sm-auto">
                             <li><a class="dropdown-item photostack-theme-btn" data-theme="light" href="#">
                                     <i class="bi bi-brightness-high-fill me-2"></i>
                                     Light mode
@@ -86,45 +87,52 @@
         </div>
     </nav>
 
+    <!-- Banner container -->
+    <div class="container-fluid bg-body-secondary">
+        <div class="container pb-5 pt-5">
+            <div class="display-1 mb-2">
+                Welcome to PhotoStack
+            </div>
+            <div class="display-6 mb-5">
+                The ultimate batch photo editor
+            </div>
+            <!-- Main buttons -->
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="/edit/">
+                        <button type="button" class="btn btn-primary mb-2 btn-lg w-100">
+                            <i class="bi bi-images"></i>
+                            <br>
+                            Edit images
+                        </button>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="/watermarks/">
+                        <button type="button" class="btn btn-primary mb-2 btn-lg w-100">
+                            <i class="bi bi-pencil"></i>
+                            <br>
+                            Create watermarks
+                        </button>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="https://github.com/corbindavenport/photostack" target="_blank">
+                        <button type="button" class="btn btn-primary mb-2 btn-lg w-100">
+                            <i class="bi bi-github"></i>
+                            <br>
+                            See PhotoStack on GitHub
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="border-bottom" style="position: sticky; top: 56px; z-index: 1030;"></div>
+
     <!-- Main container -->
 
     <div class="container mt-5 mb-5">
-        <div class="display-1 mb-2">
-            Welcome to PhotoStack
-        </div>
-        <div class="display-6 mb-5">
-            The ultimate batch photo editor
-        </div>
-        <!-- Main buttons -->
-        <div class="row">
-            <div class="col-md-4">
-                <a href="/edit/">
-                    <button type="button" class="btn btn-primary mb-2 btn-lg w-100">
-                        <i class="bi bi-images"></i>
-                        <br>
-                        Start editing your photos
-                    </button>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="/watermarks/">
-                    <button type="button" class="btn btn-primary mb-2 btn-lg w-100">
-                        <i class="bi bi-pencil"></i>
-                        <br>
-                        Make some watermarks
-                    </button>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="https://github.com/corbindavenport/photostack" target="_blank">
-                    <button type="button" class="btn btn-primary mb-2 btn-lg w-100">
-                        <i class="bi bi-github"></i>
-                        <br>
-                        See PhotoStack on GitHub
-                    </button>
-                </a>
-            </div>
-        </div>
         <!-- Advertisement -->
         <div class="row mt-5">
             <div class="col-12">
@@ -136,7 +144,7 @@
                         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8658798838164073" data-ad-slot="4927660646" data-ad-format="auto" data-full-width-responsive="true">
                         </ins>
                         <div class="photostack-ads-fallback p-3">
-                            You're blocking ads! Please <a href="#support">donate</a> to support continued development. It would mean a lot!
+                            You're blocking ads! Please <a href="#support">donate</a> to support continued development!
                         </div>
                         <script>
                             (adsbygoogle = window.adsbygoogle || []).push({});

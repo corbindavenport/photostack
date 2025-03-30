@@ -60,29 +60,30 @@
                         </a>
                     </li>
                 </ul>
-                <form class="d-flex">
+                <form class="d-flex flex-column flex-sm-row">
                     <!-- Import button -->
-                    <button class="btn btn-primary me-2" id="photostack-import-file-btn" type="button" aria-label="Import">
-                        <i class="bi bi-folder-plus me-md-2"></i>
-                        <span class="d-sm-none d-md-inline me-md-2">Import</span>
+                    <button class="btn btn-primary me-0 me-sm-2 mt-2 mt-sm-0" id="photostack-import-file-btn" type="button" aria-label="Import">
+                        <i class="bi bi-folder-plus me-2 me-sm-0 me-md-2"></i>
+                        <span class="d-sm-none d-md-inline me-2 me-sm-0 me-md-2">Import</span>
                         <span class="badge bg-dark photostack-image-count d-sm-none d-md-inline">0</span>
                     </button>
                     <!-- Clear button -->
-                    <button class="btn btn-primary me-2" id="photostack-clear-images-btn" type="button" aria-label="Clear">
-                        <i class="bi bi-trash me-md-2"></i>
+                    <button class="btn btn-primary me-0 me-sm-2 mt-2 mt-sm-0" id="photostack-clear-images-btn" type="button" aria-label="Clear">
+                        <i class="bi bi-trash me-2 me-sm-0 me-md-2"></i>
                         <span class="d-sm-none d-md-inline">Clear</span>
                     </button>
                     <!-- Export button -->
-                    <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled aria-label="Export">
-                        <i class="bi bi-save me-md-2"></i>
+                    <button class="btn btn-primary me-0 me-sm-2 mt-2 mt-sm-0" type="button" data-bs-toggle="modal" data-bs-target="#photostack-export-modal" data-backdrop="static" data-keyboard="false" disabled aria-label="Export">
+                        <i class="bi bi-save me-2 me-sm-0 me-md-2"></i>
                         <span class="d-sm-none d-md-inline">Export</span>
                     </button>
                     <!-- Theme toggle -->
+                    <button class="btn btn-primary dropdown-toggle mt-2 mt-sm-0" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
+                        <i class="bi bi-moon-stars-fill me-2 me-sm-0 me-md-2"></i>
+                        <span class="d-sm-none">Change theme</span>
+                    </button>
                     <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
-                            <i class="bi bi-moon-stars-fill"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
+                        <ul class="dropdown-menu dropdown-menu-end w-100 w-sm-auto">
                             <li><a class="dropdown-item photostack-theme-btn" data-theme="light" href="#">
                                     <i class="bi bi-brightness-high-fill me-2"></i>
                                     Light mode
@@ -110,10 +111,8 @@
                 <div class="d-inline-flex align-items-center" id="photostack-editor-preview">
                     <!-- Temporary text for when no photos are imported -->
                     <div id="photostack-preview-info" class="p-3 p-md-5 text-center w-100">
-                        <b>A preview will appear here once you import some images.</b>
-                        <br>
-                        <br>
-                        To get started, <span class="d-sm-none">click the menu button at the top-right of the screen, then click <i class="bi bi-folder-plus"></i> Import</span><span class="d-none d-sm-inline">click the <i class="bi bi-folder-plus"></i> Import button at the top-right of the screen</span> to import some images. When you're ready to save your work, click the <i class="bi bi-save"></i> Export button.
+                        <p>To get started, <span class="d-sm-none">click the menu button at the top-right of the screen, then click <i class="bi bi-folder-plus"></i> Import</span><span class="d-none d-sm-inline">click the <i class="bi bi-folder-plus"></i> Import button at the top-right of the screen</span> to import some images. When you're ready to save your work, click the <i class="bi bi-save"></i> Export button.</p>
+                        <p class="text-muted" id="photostack-file-format-list">Checking supported files...</p>
                     </div>
                 </div>
             </div>
@@ -151,7 +150,7 @@
                     <div class="card-body" style="padding: 0; overflow: hidden;">
                         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8658798838164073" data-ad-slot="2199465112" data-ad-format="auto" data-full-width-responsive="true"></ins>
                         <div class="photostack-ads-fallback p-3">
-                            You're blocking ads! Please <a href="/#support">donate</a> to support continued development. It would mean a lot!
+                            You're blocking ads! Please <a href="/#support">donate</a> to support continued development!
                         </div>
                         <script>
                             (adsbygoogle = window.adsbygoogle || []).push({});
@@ -313,9 +312,8 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="modal-body">
-                        <p style="text-align: center" class="lead">Drop your files to import them.</p>
-                        <p style="text-align: center" class="text-muted">Supported file types: Images, ZIP, MS Office 2007+</p>
+                    <div class="modal-body text-center lead">
+                        Drop images to import
                     </div>
                 </div>
             </div>
@@ -444,7 +442,6 @@
     <!-- Watermark image cache -->
     <img id="photostack-watermark-cache">
     <!-- Scripts -->
-    <script src="/js/modernizr-custom.js"></script> <!-- canvas.toDataURL + Promises + WebP check -->
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/localforage@1.9.0/dist/localforage.min.js"></script>

@@ -290,33 +290,13 @@ document.getElementById('photostack-watermark-new-btn').addEventListener('click'
     }
 })
 
-// Allow WebP imports if the image format is supported
-Modernizr.on('webp', function (result) {
-    if (result) {
-        var formats = document.getElementById('photostack-watermark-import-image').getAttribute('accept')
-        document.getElementById('photostack-watermark-import-image').setAttribute('accept', formats + ',image/webp')
-    }
-})
-
-// Allow AVIF imports if the image format is supported
-var testAVIF = new Image()
-testAVIF.onload = function () {
-    var formats = document.getElementById('photostack-watermark-import-image').getAttribute('accept')
-    document.getElementById('photostack-watermark-import-image').setAttribute('accept', formats + ',image/avif')
-    // Add class to <html> tag like Modernizr
-    document.getElementsByTagName('html')[0].classList.add('avif')
+// Update interface and form elements based on supported image formats
+async function updateSupportedFormats() {
+    const importForm = document.getElementById('photostack-watermark-import-image');
+    const supportedImportFormats = await checkSupportedImportFormats();
+    // Add supported file types to file picker
+    importForm.setAttribute('accept', importForm.getAttribute('accept') + ',' + supportedImportFormats.mimeTypes.join(','))
 }
-testAVIF.setAttribute('src', 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK42A=')
-
-// Allow JPEG XL imports if format is supported
-var testJPEGXL = new Image()
-testJPEGXL.onload = function () {
-    var formats = document.getElementById('photostack-watermark-import-image').getAttribute('accept')
-    document.getElementById('photostack-watermark-import-image').setAttribute('accept', formats + ',image/jxl')
-    // Add class to <html> tag like Modernizr
-    document.getElementsByTagName('html')[0].classList.add('jxl')
-}
-testJPEGXL.setAttribute('src', 'data:image/jxl;base64,AAAADEpYTCANCocKAAAAFGZ0eXBqeGwgAAAAAGp4bCAAAADCamJyZEBf3DaBIDRCIzRCIzRC0wiN0AgtAwIgWIEJgFCjBEQAAAAAwv+KAAAAAOD/RAAAAADw/yIAAAAA+H8RAAAAAPyfCAAAAAD+TwQAAAAA/y8CAAAAgP8XAQAAAMD/iQAAAADgfwEgAIgkCAoBAII/wIDgDyjA+AUACP4QAAEAAggECH4IA4IfooDghwAAAAAAAAAbJAD4BcRtW2iHl/qSLxcES4imZAoiSkXFjkbrEbunUS0LPjkfAq05FwAAAYtqeGxj/woAEBDCw8OAhHkARDWWr6Sx53UE9OgDvVo3DhroEIiw1iLM2WPZ68kgwYIiS67c4c6x+M6x7jlG154lo9Ho0rP8znH5fQDIOto6s5A/8boyI+Zc4gq7AAz4v7C04jc8DHWdWMJlDxMboQWK1qay0ttMdRc4K3ko8L33RyuvclnIWlHW1HGBhK+toakub7Jn5QFouo1nqACv8vbv33zLu3QTqB+kf//2hfr3r58IzrgQUBd8A8Hi6nAGgSV9YB4BskUExS7QrQNcLMsJHJqakLwTTM3gTlAYuTmKKtvy4QRo1BWk5EGmJpRJA2s8YS7Hd7+/ZRt8l+ZHdz/dAeBbABAA/AEMZAxkDGT+/w4AABgACAABAAAAAACAgCWJYsPUfQkCEFJgB4w29hoVGWMkYwxejwElOnIxDYj9K4ATQAzVb0OejYT5BJFx/N74ZXQPfP0ZhZ+a1+Sve6Q9zu7T9g9voIEP8YS24fmNeW25W4BaL/GArO2X6QPICAAAAAAAgJIE')
 
 document.getElementById('photostack-watermark-import-btn').addEventListener('click', function () {
     document.getElementById('photostack-watermark-file-import').click()
@@ -328,3 +308,6 @@ document.getElementById('photostack-watermark-file-import').addEventListener('ch
 
 // Get list of watermarks when page is loaded
 refreshWatermarks()
+
+// Update list of supported formats
+updateSupportedFormats();

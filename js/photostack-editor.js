@@ -45,8 +45,8 @@ const importToast = new bootstrap.Toast(document.getElementById('photostack-impo
 
 const navCollapse = new bootstrap.Collapse('#navbarNav', {
     toggle: false
-  })
-  
+})
+
 
 var globalFilesCount = 0;
 
@@ -71,6 +71,26 @@ window.plausible = window.plausible || function () { (window.plausible.q = windo
     MAIN EDITOR
 
 */
+
+// Update interface and form elements based on supported image formats
+async function updateSupportedFormats() {
+    const canvas = document.createElement('canvas');
+    const importForm = document.getElementById('photostack-import-file');
+    const supportedImportFormats = await checkSupportedImportFormats();
+    // Check WebP for exports
+    if (!canvas.toDataURL('image/webp').includes('data:image/webp')) {
+        document.querySelector('#photostack-file-format option[value="image/webp"]').setAttribute('disabled', true);
+    }
+    // Check JPEG for exports
+    if (!canvas.toDataURL('image/jpeg').includes('data:image/jpeg')) {
+        document.querySelector('#photostack-file-format option[value="image/jpeg"]').setAttribute('disabled', true);
+    }
+    // Add supported file types to file picker
+    importForm.setAttribute('accept', importForm.getAttribute('accept') + ',' + supportedImportFormats.mimeTypes.join(','))
+    // Display all supported file types in interface
+    document.getElementById('photostack-file-format-list').innerText = 'Supported files: JPEG, PNG, GIF, BMP, ZIP, Microsoft Office 2007+, ' + supportedImportFormats.formatList.join(', ');
+    console.log('Supported file formats for import:', importForm.getAttribute('accept').split(','));
+}
 
 // Increase image count after imports
 function increaseImageCount(number) {
@@ -204,6 +224,9 @@ async function processImage(imgEl, dataUrl, fileName) {
 
 // Unified importer for local files (images and ZIPs)
 async function importFiles(files, element = null) {
+    const supportsWebP = document.getElementById('photostack-import-file').getAttribute('accept').includes('image/webp');
+    const supportsJPEGXL = document.getElementById('photostack-import-file').getAttribute('accept').includes('image/jxl');
+    const supportsAVIF = document.getElementById('photostack-import-file').getAttribute('accept').includes('image/avif');
     // Show import toast, and hide drag and drop modal if needed
     dragModal.hide();
     importToast.show();
@@ -238,17 +261,17 @@ async function importFiles(files, element = null) {
                     const imgData = await zippedFile[1].async('base64');
                     dataUrl = 'data:image/bmp;base64,' + imgData;
                     imgEl.setAttribute('data-filename', zippedFileName.replace('.bmp', ''));
-                } else if (Modernizr.webp && zippedFileExt === 'webp') {
+                } else if (supportsWebP && zippedFileExt === 'webp') {
                     // WebP image
                     const imgData = await zippedFile[1].async('base64');
                     dataUrl = 'data:image/webp;base64,' + imgData;
                     imgEl.setAttribute('data-filename', zippedFileName.replace('.webp', ''));
-                } else if (document.getElementsByTagName('html')[0].classList.contains('avif') && (zippedFileExt === 'avif')) {
+                } else if (supportsAVIF && (zippedFileExt === 'avif')) {
                     // AVIF file
                     const imgData = await zippedFile[1].async('base64');
                     dataUrl = 'data:image/avif;base64,' + imgData;
                     imgEl.setAttribute('data-filename', zippedFileName.replace('.avif', ''));
-                } else if (zippedFileExt === 'jxl') {
+                } else if (supportsJPEGXL && (zippedFileExt === 'jxl')) {
                     // JPEG XL file
                     const imgData = await zippedFile[1].async('base64');
                     dataUrl = 'data:image/jxl;base64,' + imgData;
@@ -517,43 +540,8 @@ document.getElementById('photostack-export-modal').addEventListener('hidden.bs.m
     }
 })
 
-// Remove image formats from Export card that aren't supported
-if (!Modernizr.todataurljpeg) {
-    var option = document.querySelector('#photostack-file-format option[value="image/jpeg"]')
-    option.setAttribute('disabled', true)
-}
-if (!Modernizr.todataurlwebp) {
-    var option = document.querySelector('#photostack-file-format option[value="image/webp"]')
-    option.setAttribute('disabled', true)
-}
-
-// Allow WebP imports if the image format is supported
-Modernizr.on('webp', function (result) {
-    if (result) {
-        var formats = document.getElementById('photostack-import-file').getAttribute('accept')
-        document.getElementById('photostack-import-file').setAttribute('accept', formats + ',image/webp')
-    }
-})
-
-// Allow AVIF imports if the image format is supported
-var testAVIF = new Image()
-testAVIF.onload = function () {
-    var formats = document.getElementById('photostack-import-file').getAttribute('accept')
-    document.getElementById('photostack-import-file').setAttribute('accept', formats + ',image/avif')
-    // Add class to <html> tag like Modernizr
-    document.getElementsByTagName('html')[0].classList.add('avif')
-}
-testAVIF.setAttribute('src', 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK42A=')
-
-// Allow JPEG XL imports if format is supported
-var testJPEGXL = new Image()
-testJPEGXL.onload = function () {
-    var formats = document.getElementById('photostack-import-file').getAttribute('accept')
-    document.getElementById('photostack-import-file').setAttribute('accept', formats + ',image/jxl')
-    // Add class to <html> tag like Modernizr
-    document.getElementsByTagName('html')[0].classList.add('jxl')
-}
-testJPEGXL.setAttribute('src', 'data:image/jxl;base64,AAAADEpYTCANCocKAAAAFGZ0eXBqeGwgAAAAAGp4bCAAAADCamJyZEBf3DaBIDRCIzRCIzRC0wiN0AgtAwIgWIEJgFCjBEQAAAAAwv+KAAAAAOD/RAAAAADw/yIAAAAA+H8RAAAAAPyfCAAAAAD+TwQAAAAA/y8CAAAAgP8XAQAAAMD/iQAAAADgfwEgAIgkCAoBAII/wIDgDyjA+AUACP4QAAEAAggECH4IA4IfooDghwAAAAAAAAAbJAD4BcRtW2iHl/qSLxcES4imZAoiSkXFjkbrEbunUS0LPjkfAq05FwAAAYtqeGxj/woAEBDCw8OAhHkARDWWr6Sx53UE9OgDvVo3DhroEIiw1iLM2WPZ68kgwYIiS67c4c6x+M6x7jlG154lo9Ho0rP8znH5fQDIOto6s5A/8boyI+Zc4gq7AAz4v7C04jc8DHWdWMJlDxMboQWK1qay0ttMdRc4K3ko8L33RyuvclnIWlHW1HGBhK+toakub7Jn5QFouo1nqACv8vbv33zLu3QTqB+kf//2hfr3r58IzrgQUBd8A8Hi6nAGgSV9YB4BskUExS7QrQNcLMsJHJqakLwTTM3gTlAYuTmKKtvy4QRo1BWk5EGmJpRJA2s8YS7Hd7+/ZRt8l+ZHdz/dAeBbABAA/AEMZAxkDGT+/w4AABgACAABAAAAAACAgCWJYsPUfQkCEFJgB4w29hoVGWMkYwxejwElOnIxDYj9K4ATQAzVb0OejYT5BJFx/N74ZXQPfP0ZhZ+a1+Sve6Q9zu7T9g9voIEP8YS24fmNeW25W4BaL/GArO2X6QPICAAAAAAAgJIE')
+// Update list of supported formats
+updateSupportedFormats();
 
 // Add warning for Safari users
 const ifSafari = (navigator.userAgent.includes('Safari') && (!navigator.userAgent.includes('Chrome')))

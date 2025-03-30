@@ -215,3 +215,57 @@ function resizeCanvas(oldCanvas, width, height, globalAlpha = 1.0) {
         });
     })
 }
+
+// Function to check if the browser can import JPEG Xl, AVIF, or WebP images
+async function checkSupportedImportFormats() {
+    const mimeTypes = []
+    const formatList = [];
+    // Check JPEG XL
+    await new Promise(function (resolve, reject) {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = reject;
+        img.src = 'data:image/jxl;base64,/woAEJAUNwIAE4gCALQAtZ8gAAAVKqOMG7yc6/nyQ4fFtI3rDG21bWEJY7O9MEhIOGyY4s3xwRATlSQA';
+    })
+        .then(function () {
+            formatList.push('JPEG XL');
+            mimeTypes.push('image/jxl');
+        })
+        .catch(function () {
+            // JPEG XL is not supported
+        });
+    // Check AVIF
+    await new Promise(function (resolve, reject) {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = reject;
+        img.src = 'data:image/avif;base64,AAAAHGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZgAAANZtZXRhAAAAAAAAACFoZGxyAAAAAAAAAABwaWN0AAAAAAAAAAAAAAAAAAAAAA5waXRtAAAAAAABAAAAImlsb2MAAAAAREAAAQABAAAAAAD6AAEAAAAAAAAAGgAAACNpaW5mAAAAAAABAAAAFWluZmUCAAAAAAEAAGF2MDEAAAAAVmlwcnAAAAA4aXBjbwAAAAxhdjFDgQAMAAAAABRpc3BlAAAAAAAAAAEAAAABAAAAEHBpeGkAAAAAAwgICAAAABZpcG1hAAAAAAAAAAEAAQOBAgMAAAAibWRhdBIACggYAAYICGg0IDIMGAAKKKKEAACwEpqY';
+    })
+        .then(function () {
+            formatList.push('AVIF');
+            mimeTypes.push('image/avif');
+        })
+        .catch(function () {
+            // AVIF is not supported
+        });
+    // Check WebP
+    await new Promise(function (resolve, reject) {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = reject;
+        img.src = 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAgA0JaQAA3AA/vuUAAA=';
+    })
+        .then(function () {
+            formatList.push('WebP');
+            mimeTypes.push('image/webp');
+        })
+        .catch(function () {
+            // WebP is not supported
+        });
+    // Return supported formats
+    const returnData = {
+        'mimeTypes': mimeTypes,
+        'formatList': formatList
+    };
+    return returnData;
+}
