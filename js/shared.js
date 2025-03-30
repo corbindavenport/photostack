@@ -186,7 +186,6 @@ function resizeCanvas(oldCanvas, width, height, globalAlpha = 1.0) {
         } else {
             var unsharpAmount = 50
         }
-        console.log('made')
         const options = {
             unsharpAmount: (unsharpAmount * 2),
             unsharpRadius: 0.5,
