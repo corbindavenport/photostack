@@ -16,9 +16,9 @@ function applyTheme() {
 }
 
 // Add click events to theme switcher after the page has loaded
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     document.querySelectorAll('.photostack-theme-btn').forEach(function (el) {
-        el.addEventListener('click', function() {
+        el.addEventListener('click', function () {
             localStorage.setItem('theme', el.dataset.theme);
             applyTheme();
         })
@@ -26,7 +26,7 @@ window.addEventListener('load', function() {
 })
 
 // Handle changes to system theme
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
     applyTheme();
 })
 
@@ -39,15 +39,14 @@ function applyCanvasSettings(canvas, watermarkObject = null, previewMode = false
         // Create aspect ratio from original canvas size
         var ratio = (canvas.width / canvas.height)
         // Crop image
+        var cropNeeded = false;
         if (editorMode === 'photo-editor') {
-            var cropNeeded = (
+            cropNeeded = (
                 (document.getElementById('photostack-crop-top').value != 0) ||
                 (document.getElementById('photostack-crop-bottom').value != 0) ||
                 (document.getElementById('photostack-crop-left').value != 0) ||
                 (document.getElementById('photostack-crop-right').value != 0)
             )
-        } else {
-            cropNeeded = false
         }
         if (cropNeeded) {
             canvas = cropCanvas(canvas, document.getElementById('photostack-crop-top').value, document.getElementById('photostack-crop-bottom').value, document.getElementById('photostack-crop-left').value, document.getElementById('photostack-crop-right').value)
@@ -176,25 +175,30 @@ function applyCanvasSettings(canvas, watermarkObject = null, previewMode = false
 
 // Resize a canvas using Pica library
 function resizeCanvas(oldCanvas, width, height, globalAlpha = 1.0) {
-    return new Promise(function (resolve) {
+    return new Promise(function (resolve, reject) {
         // Create canvas with new size
         var newCanvas = document.createElement('canvas')
         newCanvas.width = width
         newCanvas.height = height
         // Get settings
         if (editorMode === 'photo-editor') {
-            var unsharpAmount =  parseInt(document.getElementById('photostack-resize-unsharp-amount').value)
+            var unsharpAmount = parseInt(document.getElementById('photostack-resize-unsharp-amount').value)
         } else {
             var unsharpAmount = 50
         }
+        console.log('made')
         const options = {
-            unsharpAmount: unsharpAmount,
+            unsharpAmount: (unsharpAmount * 2),
             unsharpRadius: 0.5,
-            unsharpThreshold: 2,
+            unsharpThreshold: 1,
             alpha: true
         }
+        // Configure Pica without Web Workers support, because it's broken in Safari and possibly other browsers
+        const picaObj = pica({
+            features: [ 'js', 'wasm' ]
+        });
         // Do the resize
-        pica().resize(oldCanvas, newCanvas, options).then(function () {
+        picaObj.resize(oldCanvas, newCanvas, options).then(function () {
             // We have to create ANOTHER canvas to apply transparency
             if (globalAlpha != 1.0) {
                 var tempCanvas = document.createElement('canvas')
@@ -206,6 +210,9 @@ function resizeCanvas(oldCanvas, width, height, globalAlpha = 1.0) {
             } else {
                 resolve(newCanvas)
             }
-        })
+        }).catch(function (error) {
+            console.error('Resize error:', error);
+            reject(error);
+        });
     })
 }

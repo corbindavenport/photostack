@@ -218,7 +218,7 @@ async function importFiles(files, element = null) {
                     const imgData = await zippedFile[1].async('base64');
                     dataUrl = 'data:image/png;base64,' + imgData;
                     imgEl.setAttribute('data-filename', zippedFileName.replace('.png', ''));
-                } else if ((zippedFileExt === 'jpeg') || (zippedFileExt === 'jpeg')) {
+                } else if ((zippedFileExt === 'jpg') || (zippedFileExt === 'jpeg')) {
                     // JPEG image
                     const imgData = await zippedFile[1].async('base64');
                     dataUrl = 'data:image/jpeg;base64,' + imgData;
