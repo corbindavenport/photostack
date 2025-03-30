@@ -48,6 +48,15 @@ ins.adsbygoogle[data-ad-status]+.photostack-ads-fallback {
     bottom: env(safe-area-inset-bottom, 0) !important;
 }
 
+/* Hide Safari warning in installed web app */
+
+@media all and (display-mode: standalone) {
+    .photostack-safari-warning {
+        display: none !important;
+    }
+}
+
+
 /* Styles for medium and up devices */
 
 @media (min-width: 768px) {
