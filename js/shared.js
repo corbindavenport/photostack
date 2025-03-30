@@ -262,6 +262,20 @@ async function checkSupportedImportFormats() {
         .catch(function () {
             // WebP is not supported
         });
+    // Check HEIC
+    await new Promise(function (resolve, reject) {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = reject;
+        img.src = 'data:image/heic;base64,AAAAGGZ0eXBoZWljAAAAAG1pZjFoZWljAAABaW1ldGEAAAAAAAAAIWhkbHIAAAAAAAAAAHBpY3QAAAAAAAAAAAAAAAAAAAAADnBpdG0AAAAAAAEAAAAiaWxvYwAAAABEQAABAAEAAAAAAYkAAQAAAAAAAAAiAAAAI2lpbmYAAAAAAAEAAAAVaW5mZQIAAAAAAQAAaHZjMQAAAADpaXBycAAAAMppcGNvAAAAdmh2Y0MBA3AAAAAAAAAAAAAe8AD8/fj4AAAPAyAAAQAYQAEMAf//A3AAAAMAkAAAAwAAAwAeugJAIQABACpCAQEDcAAAAwCQAAADAAADAB6gIIEFluqumubgIaDAgAAAAwCAAAADAIQiAAEABkQBwXPBiQAAABRpc3BlAAAAAAAAAEAAAABAAAAAKGNsYXAAAAABAAAAAQAAAAEAAAAB////wQAAAAL////BAAAAAgAAABBwaXhpAAAAAAMICAgAAAAXaXBtYQAAAAAAAAABAAEEgQIEgwAAACptZGF0AAAAHigBrwUSEkzg+gO95VbllohZgK+7ZVijmVxgk1O3gA==';
+    })
+        .then(function () {
+            formatList.push('HEIC');
+            mimeTypes.push('image/heic');
+        })
+        .catch(function () {
+            // HEIC is not supported
+        });
     // Return supported formats
     const returnData = {
         'mimeTypes': mimeTypes,

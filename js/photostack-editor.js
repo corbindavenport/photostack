@@ -32,7 +32,8 @@ const imageFileTypes = [
     'image/bmp', // .bmp
     'image/webp', // .webp
     'image/avif', // .avif
-    'image/jxl' // .jxl
+    'image/jxl', // .jxl
+    'image/heic' // .jxl
 ];
 
 const dragModal = new bootstrap.Modal(document.getElementById('photostack-drag-modal'));
@@ -396,7 +397,6 @@ function asyncExport() {
     // Continue once all canvases are rendered
     Promise.all(canvasPromises).then(function (canvases) {
         // Create promises for final render of each image
-        console.log(canvases)
         var promises = canvases.map(function (canvas) {
             return new Promise(function (resolve) {
                 canvas.toBlob(function (blob) {
