@@ -44,6 +44,10 @@ ins.adsbygoogle[data-ad-status]+.photostack-ads-fallback {
     display: none;
 }
 
+.toast-container.bottom-0 {
+    bottom: env(safe-area-inset-bottom, 0) !important;
+}
+
 /* Styles for medium and up devices */
 
 @media (min-width: 768px) {
@@ -76,14 +80,6 @@ ins.adsbygoogle[data-ad-status]+.photostack-ads-fallback {
 
     #photostack-editor-preview img {
         max-height: 60vh;
-    }
-
-    .toast-container {
-        padding: 0 5px !important;
-    }
-
-    .toast-container {
-        width: 100%;
     }
 
 }

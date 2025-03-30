@@ -1,16 +1,16 @@
 const watermarksStore = localforage.createInstance({
     name: 'Watermarks',
     driver: [localforage.WEBSQL, localforage.INDEXEDDB]
-})
+});
 
 const SettingsStore = localforage.createInstance({
     name: 'Settings',
     driver: [localforage.WEBSQL, localforage.INDEXEDDB]
-})
+});
 
-const currentUrl = new URL(window.location)
+const currentUrl = new URL(window.location);
 
-const isApplePlatform = /MacIntel|iPhone|iPod|iPad/.test(navigator.platform)
+const isApplePlatform = /MacIntel|iPhone|iPod|iPad/.test(navigator.platform);
 
 const containerFileTypes = [
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
@@ -33,9 +33,22 @@ const imageFileTypes = [
     'image/webp', // .webp
     'image/avif', // .avif
     'image/jxl' // .jxl
-]
+];
 
-var globalFilesCount = 0
+const dragModal = new bootstrap.Modal(document.getElementById('photostack-drag-modal'));
+
+const errorToast = new bootstrap.Toast(document.getElementById('photostack-error-toast'));
+
+const importToast = new bootstrap.Toast(document.getElementById('photostack-import-toast'), {
+    'autohide': false
+});
+
+const navCollapse = new bootstrap.Collapse('#navbarNav', {
+    toggle: false
+  })
+  
+
+var globalFilesCount = 0;
 
 // Prevent unload
 window.onbeforeunload = function () {
@@ -47,7 +60,6 @@ window.onbeforeunload = function () {
 
 // Show errors in UI
 window.onerror = function () {
-    var errorToast = new bootstrap.Toast(document.getElementById('photostack-error-toast'))
     errorToast.show()
 }
 
@@ -192,10 +204,8 @@ async function processImage(imgEl, dataUrl, fileName) {
 
 // Unified importer for local files (images and ZIPs)
 async function importFiles(files, element = null) {
-    // Initialize and show import toast
-    var importToast = new bootstrap.Toast(document.getElementById('photostack-import-toast'), {
-        'autohide': false
-    })
+    // Show import toast, and hide drag and drop modal if needed
+    dragModal.hide();
     importToast.show();
     // Process each file
     for (const file of files) {
@@ -602,8 +612,6 @@ document.getElementById('photostack-print-btn').addEventListener('click', functi
 
 // Drag and drop file upload
 
-const dragModal = new bootstrap.Modal(document.getElementById('photostack-drag-modal'))
-
 document.body.addEventListener('dragenter', function (e) {
     console.log('Drag enter detected')
     dragModal.show()
@@ -615,7 +623,6 @@ document.body.addEventListener('dragleave', function (e) {
 })
 
 document.body.addEventListener('drop', function (e) {
-    dragModal.hide()
     var files = e.dataTransfer.files
     importFiles(files)
 })
@@ -623,6 +630,8 @@ document.body.addEventListener('drop', function (e) {
 document.getElementById('photostack-import-file').addEventListener('change', function () {
     // This prevents the modal from getting stuck when the 'drop' listener doesn't fire correctly
     dragModal.hide()
+    // This hides the navbar dropdown after a file is selected on small screens
+    navCollapse.hide()
 })
 
 // Prevent default browser drag/drop actions
